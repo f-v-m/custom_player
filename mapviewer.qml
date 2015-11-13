@@ -512,7 +512,7 @@ Item {
 
     function calcRoute() {
         // clear away any old data in the query
-        map.routeQuery.clearWaypoints();
+        //map.routeQuery.clearWaypoints();
 
 
 
@@ -529,8 +529,8 @@ Item {
 
         map.routeQuery.routeOptimizations = RouteQuery.ShortestRoute
 
-        map.center = startC
-        map.zoomLevel = 10
+        //map.center = startC
+        //map.zoomLevel = 11
 
         map.routeModel.update();
 
@@ -558,7 +558,7 @@ Item {
         startC = QtPositioning.coordinate(parseFloat(x1),
                                                 parseFloat(y1));
         map.center = startC
-        map.zoomLevel = 11
+        map.zoomLevel = 16
         //map.update();
     }
 

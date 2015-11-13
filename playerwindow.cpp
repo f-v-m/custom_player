@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <iostream>
+#include <sstream>
 #include <QWidget>
 
 //#include <QtGui>
@@ -98,6 +99,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     setWindowIcon(QIcon("E:/workspace/QtAV/examples/simpleplayerimages/top/logo.png"));
     initMyPlayer();
     initMySubtitles();
+
 
 
 
@@ -323,6 +325,7 @@ void PlayerWindow::onPlayListClick(const QString &key, const QString &value)
 
 void PlayerWindow::play(const QString &name)
 {
+
     cout << name.toStdString() << " from play func" << endl;
     mFile = name;
     cout << mFile.toStdString() << " from play func" << endl;
@@ -351,9 +354,11 @@ void PlayerWindow::play(const QString &name)
     m_player2->play(name);
     m_player2->setVideoStream(1);
 
-    QString sub = mpSubtitle->m_s->getText().toStdString();
-    QMetaObject::invokeMethod(object, "mapcenter",
-                              Q_ARG(QVariant, QVariant::fromValue(37.495959)),
-                              Q_ARG(QVariant, QVariant::fromValue(126.985670)));
+
+
+
     //m_player2->play(name);
 }
+
+
+

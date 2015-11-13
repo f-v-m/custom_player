@@ -38,6 +38,7 @@ void PlayerWindow::openMedia()
     */
     play(file);
 
+
     //m_player->setSubtitleStream(3);
 }
 
@@ -54,14 +55,16 @@ void PlayerWindow::seek(int pos)
 void PlayerWindow::playPause()
 {
 
+
 //    QMetaObject::invokeMethod(object, "createMap", Qt::QueuedConnection);
+    /*
     QMetaObject::invokeMethod(object, "changeCoorinates",
-                              Q_ARG(QVariant, QVariant::fromValue(37.495959)),
-                              Q_ARG(QVariant, QVariant::fromValue(126.985670)),
+                              Q_ARG(QVariant, QVariant::fromValue(a)),
+                              Q_ARG(QVariant, QVariant::fromValue(b)),
                               Q_ARG(QVariant, QVariant::fromValue(37.498571)),
                               Q_ARG(QVariant, QVariant::fromValue(126.985085))
-                              );
-    QMetaObject::invokeMethod(object, "calcRoute", Qt::QueuedConnection);
+                              );*/
+    //QMetaObject::invokeMethod(object, "calcRoute", Qt::QueuedConnection);
     //QMetaObject::invokeMethod(object, "mapcenter", Qt::QueuedConnection);
 
     using namespace std;
@@ -73,7 +76,9 @@ void PlayerWindow::playPause()
     m_player->pause(!m_player->isPaused());
     m_player2->pause(!m_player2->isPaused());
 
-    cout << m_player->subtitleStreamCount() << mpSubtitle->isEnabled() <<"| azaza" <<endl;
-    cout << mpSubtitle->m_s->getText().toStdString() << endl;
+    //cout << m_player->subtitleStreamCount() << mpSubtitle->isEnabled() <<"| azaza" <<endl;
+    //cout << mpSubtitle->m_s->getText().toStdString() << endl;
+
+
 }
 

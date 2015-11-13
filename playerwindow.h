@@ -100,6 +100,10 @@ private:
     QString mFile;
     QString mTitle;
 
+    QString tmpX = "";
+    QString tmpY = "";
+    bool isLoadRoute = true;
+
 
 };
 

@@ -554,9 +554,11 @@ Item {
 //! [routerequest1]
     }
 
-    function mapcenter(){
+    function mapcenter(x1, y1){
+        startC = QtPositioning.coordinate(parseFloat(x1),
+                                                parseFloat(y1));
         map.center = startC
-        map.zoomLevel = 10
+        map.zoomLevel = 11
         //map.update();
     }
 

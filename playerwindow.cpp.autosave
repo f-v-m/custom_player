@@ -352,6 +352,7 @@ void PlayerWindow::play(const QString &name)
     m_player2->setVideoStream(1);
 
     QString sub = mpSubtitle->m_s->getText().toStdString();
+    
     QMetaObject::invokeMethod(object, "mapcenter",
                               Q_ARG(QVariant, QVariant::fromValue(37.495959)),
                               Q_ARG(QVariant, QVariant::fromValue(126.985670)));

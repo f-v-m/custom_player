@@ -22,18 +22,21 @@
 #include <QWidgetAction>
 
 
-
+using namespace std;
 
 void PlayerWindow::openMedia()
 {
     QString file = QFileDialog::getOpenFileName(0, tr("Open a video"));
     if (file.isEmpty())
         return;
+    cout << file.toStdString() << " from open func" << endl;
+    /*
     m_player->play(file);
 
     m_player2->play(file);
     m_player2->setVideoStream(1);
-
+    */
+    play(file);
 
     //m_player->setSubtitleStream(3);
 }

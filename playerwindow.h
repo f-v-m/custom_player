@@ -45,6 +45,8 @@ private slots:
     void setButtonsStyle();
     void play(const QString &name);
 
+    void parseSub();
+
 
 
 signals:
@@ -103,6 +105,9 @@ private:
     QString tmpX = "";
     QString tmpY = "";
     bool isLoadRoute = true;
+    bool isFirstSubt = true;
+    int counter = 4;
+    QString sub;
 
 
 };

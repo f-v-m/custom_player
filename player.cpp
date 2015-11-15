@@ -75,7 +75,7 @@ void PlayerWindow::playPause()
     }
     m_player->pause(!m_player->isPaused());
     m_player2->pause(!m_player2->isPaused());
-
+    QMetaObject::invokeMethod(object, "calcRoute2", Qt::QueuedConnection);
     //cout << m_player->subtitleStreamCount() << mpSubtitle->isEnabled() <<"| azaza" <<endl;
     //cout << mpSubtitle->m_s->getText().toStdString() << endl;
 

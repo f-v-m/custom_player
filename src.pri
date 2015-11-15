@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     $$PWD/map.cpp \
     $$PWD/subtitles.cpp \
     $$PWD/player.cpp \
-    $$PWD/controls.cpp
+    $$PWD/controls.cpp \
+    $$PWD/ui_buttons.cpp
 
 HEADERS += \
     playerwindow.h \

@@ -70,6 +70,7 @@ void PlayerWindow::setButtonsStyle(){
     changeButtonSize(patrol, 111, 51);
 
 
+
     m_openBtn->setStyleSheet("QPushButton { background-color: black; }");
     //PLAYBUTTON
     m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/play_hover.png);} "
@@ -111,33 +112,35 @@ void PlayerWindow::setButtonsStyle(){
                              "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/fullscreen_normal.png)}");
 
     //OBDI
-    obdi->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/OBDI_hover.png);} "
-                             "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/OBDI_normal.png)}");
+    obdi->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/OBDI_normal.png);} "
+                             "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/OBDI_hover.png)}");
     //LEFT SIGNAL
-    left_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_normal.png)}");
+    left_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_hover.png)}");
     //WHEEL ANGLE
-    wheel_angle->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_normal.png)}");
+    wheel_angle->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_hover.png);}"
+                               "QPushButton { color: white ;}"
+                               "QPushButton { text-align: right }");
     //BRAKE
-    brake->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_normal.png)}");
+    brake->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_hover.png)}");
 
     //temperature
-    temperature->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/temprature_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/temprature_normal.png)}");
+    temperature->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/temprature_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/temprature_hover.png)}");
     //ACCELERATE
-    accelerate->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/accelerate_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/accelerate_normal.png)}");
+    accelerate->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/accelerate_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/accelerate_hover.png)}");
     //VOLTAGE
-    voltage->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_normal.png)}");
+    voltage->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_hover.png)}");
     //RIGHT SIGNAL
-    right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_normal.png)}");
+    right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_hover.png)}");
     //PETROL
-    patrol->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_hover.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_normal.png)}");
+    patrol->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_normal.png);} "
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_hover.png)}");
 }
 
 

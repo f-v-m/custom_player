@@ -95,11 +95,10 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     palette.setColor(QPalette::Background, Qt::black);
     this->setPalette(palette);
 
-    setWindowTitle(QString::fromLatin1("Player"));
+    setWindowTitle(QString::fromLatin1("Viewer"));
     setWindowIcon(QIcon("E:/workspace/QtAV/examples/simpleplayerimages/top/logo.png"));
     initMyPlayer();
     initMySubtitles();
-
 
 
 
@@ -152,6 +151,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     view->setGeometry(QRect(100, 100, 400, 300));
     container = QWidget::createWindowContainer(view, this);
 
+    connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(parseSub()));
     //______
 
     //_______PLAYLIST_____
@@ -192,6 +192,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(updateSlider()));
     connect(m_player, SIGNAL(started()), SLOT(updateSlider()));
+
+
     m_slider->setMinimumHeight(32);
     m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/small_player_handle.png);"
                             "width: 30px; "
@@ -227,7 +229,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/file_list_bg.png); }");
     bot_buttons->setMaximumHeight(150);
     QHBoxLayout *bottom_buttons = new QHBoxLayout();
     bot_buttons->setLayout(bottom_buttons);
@@ -300,6 +302,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
+
 }
 
 
@@ -351,8 +354,8 @@ void PlayerWindow::play(const QString &name)
     //mpHistory->insertItemAt(item, 0);
     cout << name.toStdString() << " from play func" << endl;
     m_player->play(name);
-    m_player2->play(name);
-    m_player2->setVideoStream(1);
+    //m_player2->play(name);
+    //m_player2->setVideoStream(1);
 
 
 

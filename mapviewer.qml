@@ -14,6 +14,8 @@ Item {
     property variant parameters
     property variant startC
     property variant endC
+    property variant routePoint
+    property variant routePoint2
 
     Rectangle {
         id: backgroundRect
@@ -284,6 +286,7 @@ Item {
                  startAddress.street = routeDialog.startStreet
                  startAddress.city = routeDialog.startCity
 
+
                  endAddress.country = routeDialog.endCountry
                  endAddress.street = routeDialog.endStreet
                  endAddress.city = routeDialog.endCity
@@ -354,6 +357,7 @@ Item {
             messageDialog.state = ""
 
             // fill out the Address element
+
             geocodeAddress.street = dialogModel.get(0).inputText
             geocodeAddress.city = dialogModel.get(1).inputText
             geocodeAddress.state = dialogModel.get(2).inputText
@@ -512,7 +516,7 @@ Item {
 
     function calcRoute() {
         // clear away any old data in the query
-        //map.routeQuery.clearWaypoints();
+        map.routeQuery.clearWaypoints();
 
 
 
@@ -521,18 +525,23 @@ Item {
 
         map.routeQuery.addWaypoint(endC)
 
+        map.routeQuery.travelModes = RouteQuery.CarTravel
+
+        map.routeQuery.routeOptimizations = RouteQuery.ShortestRoute
+/*
         for (var i=0; i<9; i++) {
             map.routeQuery.setFeatureWeight(i, 0)
         }
 
-        map.routeQuery.travelModes = RouteQuery.CarTravel
-
-        map.routeQuery.routeOptimizations = RouteQuery.ShortestRoute
-
+        for (var i=0; i<routeDialog.features.length; i++) {
+            map.routeQuery.setFeatureWeight(routeDialog.features[i], RouteQuery.AvoidFeatureWeight)
+        }
+*/
         //map.center = startC
         //map.zoomLevel = 11
 
         map.routeModel.update();
+
 
 //! [routerequest0]
 
@@ -553,6 +562,51 @@ Item {
 
 //! [routerequest1]
     }
+
+    function startRoute(x1, y1){
+        routePoint = QtPositioning.coordinate(parseFloat(x1),
+                                                        parseFloat(y1));
+        //map.routeQuery.addWaypoint(routePoint)
+
+        map.center = routePoint
+        map.zoomLevel = 16
+    }
+
+    function addPoint(x1, y1){
+        routePoint = QtPositioning.coordinate(parseFloat(x1),
+                                                        parseFloat(y1));
+        map.routeQuery.addWaypoint(routePoint)
+/*
+        map.geocodeModel.query = routePoint
+        map.geocodeModel.update()
+*/
+
+    }
+
+    function calcRoute2() {
+        map.routeQuery.clearWaypoints();
+
+
+        //console.log("point1: ", routePoint, " point2: ", routePoint2);
+        for (var i=0; i<9; i++) {
+            map.routeQuery.setFeatureWeight(i, 0)
+        }
+
+
+        map.routeQuery.travelModes = RouteQuery.CarTravel
+
+        map.routeQuery.routeOptimizations = RouteQuery.ShortestRoute
+
+
+
+        //map.center = startC
+        //map.zoomLevel = 11
+
+        map.routeModel.update();
+
+
+    }
+
 
     function mapcenter(x1, y1){
         startC = QtPositioning.coordinate(parseFloat(x1),
@@ -638,6 +692,17 @@ Item {
                                               parseFloat(y2));
 
 
+    }
+
+    function changeEndCoorinate(x2, y2){
+
+        endC = QtPositioning.coordinate(parseFloat(x2),
+                                              parseFloat(y2));
+    }
+
+    function changeStartCoordinate(x1, y1){
+        startC = QtPositioning.coordinate(parseFloat(x1),
+                                                parseFloat(y1));
     }
 
 

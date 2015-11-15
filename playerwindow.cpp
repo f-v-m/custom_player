@@ -92,7 +92,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QPalette palette;
     QColor oldBackColor = palette.color( QPalette::Background );
-    palette.setColor(QPalette::Background, Qt::black);
+    palette.setColor(QPalette::Background, Qt::gray);
     this->setPalette(palette);
 
     setWindowTitle(QString::fromLatin1("Viewer"));
@@ -104,13 +104,16 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     setLayout (mainLayout);
+
+
     QVBoxLayout *vertLeft = new QVBoxLayout();
     QVBoxLayout *vertRight = new QVBoxLayout();
 
     QWidget *widg = new QWidget();
-    widg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
+    widg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     widg->setMaximumHeight(35);
     QHBoxLayout *hb = new QHBoxLayout();
+    widg->setMaximumWidth(1000);
     widg->setLayout(hb);
     m_vo = new VideoOutput(this);
     m_vo2 = new VideoOutput(this);
@@ -166,8 +169,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QWidget *leftVertWidg = new QWidget();
     QWidget *rightVertWidg = new QWidget();
 
-    leftVertWidg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bg/sep.png); }");
-    rightVertWidg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bg/sep.png); }");
+    leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
 
     leftVertWidg->setLayout(vertLeft);
     rightVertWidg->setLayout(vertRight);
@@ -186,7 +189,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
-    m_slider->setStyleSheet("QSlider { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
+    //m_slider->setStyleSheet("QSlider { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
     connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int)));
     connect(mpPlayList, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
 
@@ -199,6 +202,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
                             "width: 30px; "
                             "margin: -8px,0 ;"
                             "height: 30px; }");
+    m_slider->setMaximumWidth(1000);
 
 
     vertLeft->addWidget(m_slider);
@@ -227,12 +231,15 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     hb->addWidget(b7);
 
 
+
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/file_list_bg.png); }");
+    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/buttons_bg.png); }");
     bot_buttons->setMaximumHeight(150);
     QHBoxLayout *bottom_buttons = new QHBoxLayout();
     bot_buttons->setLayout(bottom_buttons);
+    bot_buttons->setMaximumWidth(1000);
+
 
 
 
@@ -290,14 +297,13 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
-    vertRight->addWidget(m_openBtn);
 
-
-
-    connect(m_openBtn, SIGNAL(clicked()), SLOT(openMedia()));
     connect(m_playBtn, SIGNAL(clicked()), SLOT(playPause()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player2, SLOT(stop()));
+    connect(b2, SIGNAL(clicked()), SLOT(rearCamera()));
+    connect(forward_button, SIGNAL(clicked()), SLOT(forwardSeek()));
+    connect(back_button, SIGNAL(clicked()), SLOT(backSeek()));
     //connect(new_button, SIGNAL(clicked()), SLOT(azaza()));
 
 
@@ -354,8 +360,8 @@ void PlayerWindow::play(const QString &name)
     //mpHistory->insertItemAt(item, 0);
     cout << name.toStdString() << " from play func" << endl;
     m_player->play(name);
-    //m_player2->play(name);
-    //m_player2->setVideoStream(1);
+    m_player2->play(name);
+    m_player2->setVideoStream(1);
 
 
 

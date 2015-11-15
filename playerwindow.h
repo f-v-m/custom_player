@@ -46,6 +46,10 @@ private slots:
     void play(const QString &name);
 
     void parseSub();
+    void rearCamera();
+
+    void forwardSeek();
+    void backSeek();
 
 
 
@@ -62,7 +66,7 @@ private:
     QSlider *m_slider;
     QWidget *container;
     //_______________BUTTONS:
-    QPushButton *m_openBtn;
+
     QPushButton *m_playBtn;
     QPushButton *m_stopBtn;
 
@@ -108,6 +112,7 @@ private:
     bool isFirstSubt = true;
     int counter = 4;
     QString sub;
+    bool rearCamIsEnabled = true;
 
 
 };

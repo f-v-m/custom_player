@@ -71,7 +71,7 @@ void PlayerWindow::setButtonsStyle(){
 
 
 
-    m_openBtn->setStyleSheet("QPushButton { background-color: black; }");
+
     //PLAYBUTTON
     m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/play_hover.png);} "
                              "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/play_normal.png)}");
@@ -156,7 +156,7 @@ void PlayerWindow::changeButtonSize(QPushButton *button, int w, int h){
 
 
 void PlayerWindow::initButtons(){
-    m_openBtn = new QPushButton(tr("Open"));
+
     m_playBtn = new QPushButton(tr(""));
     m_stopBtn = new QPushButton(tr(""));
     //new_button = new QPushButton(tr("azaza"));

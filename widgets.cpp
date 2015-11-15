@@ -24,7 +24,7 @@
 void PlayerWindow::setWidgetsSize(){
     mpPlayList->setMaximumHeight(200);
     mpPlayList->setMinimumWidth(340);
-    m_vo->widget()->setMinimumSize(640, 360);
+    m_vo->widget()->setMinimumSize(640, 250);
     m_vo->widget()->setMaximumSize(1120, 630);
     m_vo2->widget()->setMinimumSize(320, 180);
     container->setMinimumSize(320, 180);

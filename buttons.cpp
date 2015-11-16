@@ -51,13 +51,13 @@ void PlayerWindow::setButtonsStyle(){
 
     changeButtonSize(back_button);
     changeButtonSize(forward_button);
-    changeButtonSize(b1);
-    changeButtonSize(b2);
-    changeButtonSize(b3);
-    changeButtonSize(b4);
-    changeButtonSize(b5);
-    changeButtonSize(b6);
-    changeButtonSize(b7);
+    changeButtonSize(b1, 25, 25);
+    changeButtonSize(b2, 25, 25);
+    changeButtonSize(b3, 25, 25);
+    changeButtonSize(b4, 25, 25);
+    changeButtonSize(b5, 25, 25);
+    changeButtonSize(b6, 25, 25);
+    changeButtonSize(b7, 25, 25);
 
     changeButtonSize(obdi, 123, 115);
     changeButtonSize(left_signal, 111, 51);
@@ -121,7 +121,7 @@ void PlayerWindow::setButtonsStyle(){
     wheel_angle->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_normal.png);} "
                                 "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/whell_angle_hover.png);}"
                                "QPushButton { color: white ;}"
-                               "QPushButton { text-align: right }");
+                               "QPushButton { text-align: center }");
     //BRAKE
     brake->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_normal.png);} "
                                 "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_hover.png)}");

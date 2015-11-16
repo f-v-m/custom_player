@@ -55,18 +55,6 @@ void PlayerWindow::seek(int pos)
 void PlayerWindow::playPause()
 {
 
-
-//    QMetaObject::invokeMethod(object, "createMap", Qt::QueuedConnection);
-    /*
-    QMetaObject::invokeMethod(object, "changeCoorinates",
-                              Q_ARG(QVariant, QVariant::fromValue(a)),
-                              Q_ARG(QVariant, QVariant::fromValue(b)),
-                              Q_ARG(QVariant, QVariant::fromValue(37.498571)),
-                              Q_ARG(QVariant, QVariant::fromValue(126.985085))
-                              );*/
-    //QMetaObject::invokeMethod(object, "calcRoute", Qt::QueuedConnection);
-    //QMetaObject::invokeMethod(object, "mapcenter", Qt::QueuedConnection);
-
     using namespace std;
     if (!m_player->isPlaying()) {
         m_player->play();
@@ -76,8 +64,12 @@ void PlayerWindow::playPause()
     m_player->pause(!m_player->isPaused());
     m_player2->pause(!m_player2->isPaused());
     QMetaObject::invokeMethod(object, "calcRoute2", Qt::QueuedConnection);
-    //cout << m_player->subtitleStreamCount() << mpSubtitle->isEnabled() <<"| azaza" <<endl;
-    //cout << mpSubtitle->m_s->getText().toStdString() << endl;
+    if (m_player->isPaused()){
+        m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/play_normal.png);}");
+    }else {
+        m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/pause_hover_and_active.png);}");
+    }
+
 
 
 }

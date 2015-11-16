@@ -27,7 +27,7 @@ void PlayerWindow::parseSub(){
 
     sub = mpSubtitle->m_s->getText();
     if (sub.length() > 0 ){
-        //cout << sub.toStdString() << " subtitles origin" << endl;
+        cout << sub.toStdString() << " subtitles origin" << endl;
         QStringList lst = QString(sub).split(" ", QString::SkipEmptyParts);
         cout << lst[0].toStdString() << " " << lst[1].toStdString() << " LOADED" << endl;
 
@@ -86,8 +86,8 @@ void PlayerWindow::parseSub(){
 
         }
         //Steering angle:
-        wheel_angle->setText(lst[22].remove(0, 2));
-        cout << lst[22].toStdString() << endl;
+        wheel_angle->setText("  "+lst[22].remove(0, 2)+"°");
+
     }
     else
         cout << "NOT LOADED" << endl;

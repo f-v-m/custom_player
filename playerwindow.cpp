@@ -1,22 +1,3 @@
-/******************************************************************************
-    Simple Player:  this file is part of QtAV examples
-    Copyright (C) 2012-2015 Wang Bin <wbsecg1@gmail.com>
-
-*   This file is part of QtAV
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-******************************************************************************/
 
 #include "playerwindow.h"
 #include <QPushButton>
@@ -92,7 +73,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QPalette palette;
     QColor oldBackColor = palette.color( QPalette::Background );
-    palette.setColor(QPalette::Background, Qt::gray);
+    palette.setColor(QPalette::Background, QColor::fromRgb(18,18,18));
     this->setPalette(palette);
 
     setWindowTitle(QString::fromLatin1("Viewer"));
@@ -113,6 +94,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     widg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     widg->setMaximumHeight(35);
     QHBoxLayout *hb = new QHBoxLayout();
+    widg->setMinimumHeight(20);
     widg->setMaximumWidth(1000);
     widg->setLayout(hb);
     m_vo = new VideoOutput(this);
@@ -189,7 +171,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
-    //m_slider->setStyleSheet("QSlider { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
+    //m_slider->setStyleSheet("QSlider { background-color: rgb(18, 18, 18); }");
     connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int)));
     connect(mpPlayList, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
 
@@ -207,6 +189,17 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     vertLeft->addWidget(m_slider);
     vertLeft->addWidget(widg);
+
+//LINE WITH SPEED
+    QWidget *lineWithSpeedWidg = new QWidget();
+    lineWithSpeedWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    lineWithSpeedWidg->setMaximumHeight(35);
+    QHBoxLayout *layerWithSpeed = new QHBoxLayout();
+    //lineWithSpeedWidg->setMinimumHeight(20);
+    //lineWithSpeedWidg->setMaximumWidth(1000);
+    lineWithSpeedWidg->setLayout(layerWithSpeed);
+
+    vertLeft->addWidget(lineWithSpeedWidg);
 
 
 
@@ -308,7 +301,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
-
+    //mpPlayList->set
 }
 
 
@@ -335,14 +328,8 @@ void PlayerWindow::onPlayListClick(const QString &key, const QString &value)
 void PlayerWindow::play(const QString &name)
 {
 
-    cout << name.toStdString() << " from play func" << endl;
     mFile = name;
-    cout << mFile.toStdString() << " from play func" << endl;
-    /*
-    if (!mIsReady) {
-        mHasPendingPlay = true;
-        return;
-    }*/
+
     mTitle = mFile;
     cout << 1;
     if (!mFile.contains(QLatin1String("://")) || mFile.startsWith(QLatin1String("file://"))) {
@@ -365,6 +352,7 @@ void PlayerWindow::play(const QString &name)
 
 
 
+    m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/pause_hover_and_active.png);}");
 
     //m_player2->play(name);
 }

@@ -165,10 +165,7 @@ Makefile: simpleplayer.pro ../../.qmake.conf ../../.qmake.cache C:/Qt/5.4/mingw4
 		C:/Qt/5.4/mingw491_32/mkspecs/win32-g++/qmake.conf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/spec_post.prf \
 		../../.qmake.conf \
-		../../tools/install_sdk/mkspecs/modules/qt_lib_av.pri \
-		../../tools/install_sdk/mkspecs/modules/qt_lib_av_private.pri \
-		../../tools/install_sdk/mkspecs/modules/qt_lib_avwidgets.pri \
-		../../tools/install_sdk/mkspecs/modules/qt_lib_avwidgets_private.pri \
+		../../.qmake.cache \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/default_pre.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/win32/default_pre.prf \
@@ -315,10 +312,7 @@ C:\Qt\5.4\mingw491_32\mkspecs\features\win32\qt_config.prf:
 C:\Qt\5.4\mingw491_32\mkspecs\win32-g++\qmake.conf:
 C:\Qt\5.4\mingw491_32\mkspecs\features\spec_post.prf:
 ..\..\.qmake.conf:
-..\..\tools\install_sdk\mkspecs\modules\qt_lib_av.pri:
-..\..\tools\install_sdk\mkspecs\modules\qt_lib_av_private.pri:
-..\..\tools\install_sdk\mkspecs\modules\qt_lib_avwidgets.pri:
-..\..\tools\install_sdk\mkspecs\modules\qt_lib_avwidgets_private.pri:
+..\..\.qmake.cache:
 C:\Qt\5.4\mingw491_32\mkspecs\features\exclusive_builds.prf:
 C:\Qt\5.4\mingw491_32\mkspecs\features\default_pre.prf:
 C:\Qt\5.4\mingw491_32\mkspecs\features\win32\default_pre.prf:

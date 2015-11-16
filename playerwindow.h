@@ -92,6 +92,7 @@ private:
     QPushButton *voltage;
     QPushButton *right_signal;
     QPushButton *patrol;
+    QPushButton *speedButton;
 
     QTextItem *txt1;
     QtAV::SubtitleFilter *mpSubtitle;

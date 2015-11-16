@@ -57,7 +57,8 @@ void PlayListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if (option.state & QStyle::State_Selected) {
         detail = true;
         mSelectedRows.append(index.row());
-        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(0, 100, 200, 100));
+        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(66,66, 66));
+        painter->setBrush(QBrush( Qt::white, Qt::BDiagPattern));
         //style->drawControl(QStyle::CE_ItemViewItem, &option, painter, widget);
     } else {
         mSelectedRows.removeAll(index.row());
@@ -70,12 +71,15 @@ void PlayListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             mHighlightRow = index.row();
             m->updateLayout();
         }
-        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(0, 100, 200, 30));
+        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(19, 19, 19));
     }
     QFont ft;
+
     ft.setBold(detail);
     ft.setPixelSize(12);//kHeightMin - 2*kMarginTop);
     painter->setFont(ft);
+
+
     painter->translate(kMarginLeft, kMarginTop);
     painter->drawText(QRect(0, 0, kWidth - 2*kMarginLeft, kHeightMin - 2*kMarginTop), pli.title());
     painter->translate(0, kHeightMin + kMarginTop);

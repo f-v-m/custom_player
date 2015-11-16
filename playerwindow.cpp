@@ -85,16 +85,17 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     setLayout (mainLayout);
-
+    mainLayout->setContentsMargins(2, 2, 2, 2);
 
     QVBoxLayout *vertLeft = new QVBoxLayout();
     QVBoxLayout *vertRight = new QVBoxLayout();
 
     QWidget *widg = new QWidget();
     widg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    widg->setMaximumHeight(35);
+
     QHBoxLayout *hb = new QHBoxLayout();
-    widg->setMinimumHeight(20);
+    hb->setContentsMargins(0,0,0,0);
+    widg->setMaximumHeight(20);
     widg->setMaximumWidth(1000);
     widg->setLayout(hb);
     m_vo = new VideoOutput(this);
@@ -106,7 +107,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     }
     m_player->setRenderer(m_vo);
     m_player2->setRenderer(m_vo2);
-    mpSubtitle->installTo(m_vo);
+    //mpSubtitle->installTo(m_vo);
 
     //_______MAP
 
@@ -171,6 +172,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
+    m_slider->setContentsMargins(0,0,0,0);
     //m_slider->setStyleSheet("QSlider { background-color: rgb(18, 18, 18); }");
     connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int)));
     connect(mpPlayList, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
@@ -179,7 +181,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(m_player, SIGNAL(started()), SLOT(updateSlider()));
 
 
-    m_slider->setMinimumHeight(32);
+    m_slider->setMinimumHeight(15);
     m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/small_player_handle.png);"
                             "width: 30px; "
                             "margin: -8px,0 ;"
@@ -198,8 +200,10 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     //lineWithSpeedWidg->setMinimumHeight(20);
     //lineWithSpeedWidg->setMaximumWidth(1000);
     lineWithSpeedWidg->setLayout(layerWithSpeed);
-
+    lineWithSpeedWidg->setMinimumHeight(55);
     vertLeft->addWidget(lineWithSpeedWidg);
+    layerWithSpeed->setAlignment(Qt::AlignLeft);
+
 
 
 
@@ -207,7 +211,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     initButtons();
     setButtonsStyle();
 
-
+    layerWithSpeed->addWidget(speedButton);
 
     hb->addWidget(prev_button);
     hb->addWidget(back_button);
@@ -228,8 +232,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();
     bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/buttons_bg.png); }");
-    bot_buttons->setMaximumHeight(150);
+    bot_buttons->setMaximumHeight(140);
     QHBoxLayout *bottom_buttons = new QHBoxLayout();
+    bottom_buttons->setContentsMargins(0,0,0,0);
     bot_buttons->setLayout(bottom_buttons);
     bot_buttons->setMaximumWidth(1000);
 
@@ -243,6 +248,11 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QVBoxLayout *bot3 = new QVBoxLayout();
     QVBoxLayout *bot4 = new QVBoxLayout();
     QVBoxLayout *bot5 = new QVBoxLayout();
+    bot1->setContentsMargins(0,0,0,0);
+    bot2->setContentsMargins(0,0,0,0);
+    bot3->setContentsMargins(0,0,0,0);
+    bot4->setContentsMargins(0,0,0,0);
+    bot5->setContentsMargins(0,0,0,0);
 
     QWidget *botW1 = new QWidget();
     botW1->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");

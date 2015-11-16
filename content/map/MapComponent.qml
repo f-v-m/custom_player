@@ -120,20 +120,8 @@ Map {
         }
     }
 
-    Button {
-        id: languageButton
-        text: "en"
-        width: 30
-        height: 30
-        z: map.z + 2
-        anchors.bottom: zoomSlider.top
-        anchors.bottomMargin: 8
-        anchors.right: zoomSlider.right
-        onClicked: {
-            map.state = "LanguageMenu"
-        }
-    }
 
+/*
     Menu {
         id:languageMenu
         horizontalOrientation: false
@@ -161,7 +149,7 @@ Map {
             addItem("Other")
         }
     }
-
+*/
 //! [routemodel0]
     property RouteQuery routeQuery: RouteQuery {}
 

@@ -37,6 +37,7 @@ PlayList::PlayList(QWidget *parent) :
     mpModel = new PlayListModel(this);
     mpDelegate = new PlayListDelegate(this);
     mpListView = new QListView;
+
     //mpListView->setResizeMode(QListView::Adjust);
     mpListView->setModel(mpModel);
     mpListView->setItemDelegate(mpDelegate);
@@ -67,6 +68,7 @@ PlayList::PlayList(QWidget *parent) :
 
 
     //hbl->addWidget(mpClear);
+    hbl->setAlignment(Qt::AlignRight);
     hbl->addSpacing(width());
     hbl->addWidget(mpRemove);
     hbl->addWidget(mpAdd);
@@ -132,6 +134,7 @@ PlayListItem PlayList::itemAt(int row)
 
 void PlayList::insertItemAt(const PlayListItem &item, int row)
 {
+
     if (mMaxRows > 0 && mpModel->rowCount() >= mMaxRows) {
         // +1 because new row is to be inserted
         mpModel->removeRows(mMaxRows, mpModel->rowCount() - mMaxRows + 1);

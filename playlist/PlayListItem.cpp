@@ -30,6 +30,7 @@ QDataStream& operator>> (QDataStream& s, PlayListItem& p)
     QString url, title;
     s >> url >> title >> duration >> last_time >> stars;
     p.setTitle(title);
+
     p.setUrl(url);
     p.setStars(stars);
     p.setDuration(duration);

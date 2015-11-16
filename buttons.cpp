@@ -68,6 +68,7 @@ void PlayerWindow::setButtonsStyle(){
     changeButtonSize(voltage, 111, 51);
     changeButtonSize(right_signal, 111, 51);
     changeButtonSize(patrol, 111, 51);
+    changeButtonSize(speedButton, 100, 50);
 
 
 
@@ -134,13 +135,22 @@ void PlayerWindow::setButtonsStyle(){
                                 "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/accelerate_hover.png)}");
     //VOLTAGE
     voltage->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_normal.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_hover.png)}");
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/voltage_hover.png);}"
+                           "QPushButton {color: white;}"
+                           "QPushButton { text-align: center }");
     //RIGHT SIGNAL
     right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_normal.png);} "
                                 "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_hover.png)}");
     //PETROL
     patrol->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_normal.png);} "
-                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_hover.png)}");
+                                "QPushButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/petrol_hover.png);}"
+                          "QPushButton {color: white;}"
+                          "QPushButton { text-align: center }");
+    //SPEED
+    speedButton->setStyleSheet("QPushButton { background-color: rgb(18, 18, 18); }"
+                               "QPushButton {color: white;}"
+                               "QPushButton {font-weight: bold;}"
+                               "QPushButton {font-size: 10pt;}");
 }
 
 
@@ -182,6 +192,7 @@ void PlayerWindow::initButtons(){
     right_signal = new QPushButton(tr(""));
     patrol = new QPushButton(tr(""));
 
+    speedButton = new QPushButton("km/h");
 
 }
 

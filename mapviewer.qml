@@ -20,20 +20,20 @@ Item {
     Rectangle {
         id: backgroundRect
         anchors.fill: parent
-        color: "lightgrey"
-        z:2
+        color: "transparent"
+        z:0
     }
 
     //=====================Menu=====================
     Menu {
         id:mainMenu
         anchors.bottom: parent.bottom
-        z: backgroundRect.z + 3
+        z: backgroundRect.z + 0
 
         Component.onCompleted: {
-            addItem("Tools")
-            addItem("Map Type")
-            addItem("Provider")
+            //addItem("Tools")
+            //addItem("Map Type")
+            //addItem("Provider")
             //createMap()
 
 

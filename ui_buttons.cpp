@@ -86,8 +86,15 @@ void PlayerWindow::parseSub(){
 
         }
         //Steering angle:
-        wheel_angle->setText("  "+lst[22].remove(0, 2)+"°");
+        wheel_angle->setText("   "+lst[22].remove(0, 2)+"°");
 
+        //CURRENT SPEED:
+        speedButton->setText(lst[26].remove(0, 2)+" km/h");
+
+        //battery:
+        voltage->setText("   "+lst[40]+" V");
+        //fuel:
+        patrol->setText("   "+lst[41]+" %");
     }
     else
         cout << "NOT LOADED" << endl;

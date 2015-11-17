@@ -68,7 +68,7 @@ void PlayerWindow::setButtonsStyle(){
     changeButtonSize(voltage, 111, 51);
     changeButtonSize(right_signal, 111, 51);
     changeButtonSize(patrol, 111, 51);
-    changeButtonSize(speedButton, 100, 50);
+    changeButtonSize(speedButton, 150, 50);
 
 
 
@@ -151,6 +151,15 @@ void PlayerWindow::setButtonsStyle(){
                                "QPushButton {color: white;}"
                                "QPushButton {font-weight: bold;}"
                                "QPushButton {font-size: 10pt;}");
+    //SLIDER TEXT:
+
+    //PROGRESS BAR:
+    speedProgress->setStyleSheet("QProgressBar:horizontal {border: 0px solid gray;}"
+                                 "QProgressBar:horizontal {background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/speed_metter_dot_normal2.png);}"
+                                 "QProgressBar::chunk:horizontal {background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/speed_metter_dot_active2.png);}");
+    speedProgress->setMaximumWidth(150);
+    speedProgress->setMaximumHeight(20);
+    speedProgress->setTextVisible(false);
 }
 
 
@@ -193,6 +202,9 @@ void PlayerWindow::initButtons(){
     patrol = new QPushButton(tr(""));
 
     speedButton = new QPushButton("km/h");
+
+    speedProgress = new QProgressBar();
+
 
 }
 

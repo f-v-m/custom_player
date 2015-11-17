@@ -7,6 +7,8 @@
 #include <QUrl>
 #include <QComboBox>
 #include <QtQuick/QQuickItem>
+#include <QLabel>
+#include <QProgressBar>
 
 namespace QtAV {
 class SubtitleFilter;
@@ -93,6 +95,10 @@ private:
     QPushButton *right_signal;
     QPushButton *patrol;
     QPushButton *speedButton;
+    QLabel *currentTime;
+    QLabel *totalTime;
+
+    QProgressBar *speedProgress;
 
     QTextItem *txt1;
     QtAV::SubtitleFilter *mpSubtitle;

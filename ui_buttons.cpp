@@ -37,8 +37,8 @@ void PlayerWindow::parseSub(){
             isFirstSubt = false;
             cout << "FIRST" << endl;
         }else{
-            cout << tmpX.toStdString() << " " << tmpY.toStdString() << " temp" <<endl;
-            cout << lst[0].toStdString() << " " << lst[1].toStdString() << " novi dani" << endl;
+           // cout << tmpX.toStdString() << " " << tmpY.toStdString() << " temp" <<endl;
+            //cout << lst[0].toStdString() << " " << lst[1].toStdString() << " novi dani" << endl;
 
             if (counter == 4){
 
@@ -95,6 +95,9 @@ void PlayerWindow::parseSub(){
         voltage->setText("   "+lst[40]+" V");
         //fuel:
         patrol->setText("   "+lst[41]+" %");
+
+        //speed progress:
+        speedProgress->setValue(lst[26].toInt());
     }
     else
         cout << "NOT LOADED" << endl;

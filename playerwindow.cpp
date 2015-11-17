@@ -21,6 +21,7 @@
 
 #include "playlist/PlayList.h"
 #include <QWidgetAction>
+#include <QLabel>
 
 
 
@@ -189,7 +190,29 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     m_slider->setMaximumWidth(1000);
 
 
-    vertLeft->addWidget(m_slider);
+    QWidget *sliderWidg = new QWidget();
+    sliderWidg->setContentsMargins(0,0,0,0);
+    sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    sliderWidg->setMaximumHeight(15);
+    QHBoxLayout *sliderLayout = new QHBoxLayout();
+    sliderLayout->setContentsMargins(0,0,0,0);
+    sliderWidg->setLayout(sliderLayout);
+
+    currentTime = new QLabel();
+    totalTime = new QLabel();
+    currentTime->setText("00:00:00");
+    totalTime->setText("00:00:00");
+    currentTime->setContentsMargins(0,0,0,0);
+    totalTime->setContentsMargins(0,0,0,0);
+    currentTime->setStyleSheet("QLabel {color: white;}");
+    totalTime->setStyleSheet("QLabel {color: white;}");
+
+    sliderLayout->addWidget(currentTime);
+    sliderLayout->addWidget(m_slider);
+    sliderLayout->addWidget(totalTime);
+
+
+    vertLeft->addWidget(sliderWidg);
     vertLeft->addWidget(widg);
 
 //LINE WITH SPEED
@@ -197,13 +220,12 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     lineWithSpeedWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     lineWithSpeedWidg->setMaximumHeight(35);
     QHBoxLayout *layerWithSpeed = new QHBoxLayout();
-    //lineWithSpeedWidg->setMinimumHeight(20);
-    //lineWithSpeedWidg->setMaximumWidth(1000);
+
     lineWithSpeedWidg->setLayout(layerWithSpeed);
     lineWithSpeedWidg->setMinimumHeight(55);
     vertLeft->addWidget(lineWithSpeedWidg);
     layerWithSpeed->setAlignment(Qt::AlignLeft);
-
+    layerWithSpeed->setContentsMargins(0,0,0,0);
 
 
 
@@ -212,6 +234,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     setButtonsStyle();
 
     layerWithSpeed->addWidget(speedButton);
+    layerWithSpeed->addWidget(speedProgress);
 
     hb->addWidget(prev_button);
     hb->addWidget(back_button);
@@ -361,10 +384,12 @@ void PlayerWindow::play(const QString &name)
     m_player2->setVideoStream(1);
 
 
-
+    //totalTime->setText(QString::number(m_player->duration()));
     m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/pause_hover_and_active.png);}");
 
-    //m_player2->play(name);
+    currentTime->setText("00:00:00");
+    totalTime->setText("00:00:00");
+
 }
 
 

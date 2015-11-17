@@ -29,8 +29,25 @@ void PlayerWindow::updateSlider()
 {
 
     m_slider->setRange(0, int(m_player->duration()/1000LL));
+    cout << int(m_player->duration()) << " pl duration" << endl;
     m_slider->setValue(int(m_player->position()/1000LL));
-   // m_slider->setValue(int(m_player2->position()/1000LL));
+    cout << int(m_player->position()/1000LL) << " pl position" << endl;
+
+    if (totalTime->text() == "00:00:00"){
+        int seconds, minutes, hours;
+        seconds = int(m_player->duration())/1000LL;
+        hours = seconds / 3600;
+        minutes = (seconds - hours*3600) / 60;
+        seconds = (seconds - hours*3600 - minutes*60);
+        totalTime->setText(QString("%1").arg(hours, 2, 10, QChar('0')) +":"+QString("%1").arg(minutes, 2, 10, QChar('0'))+":"+QString("%1").arg(seconds, 2, 10, QChar('0')));
+    }
+
+    int seconds, minutes, hours;
+    seconds = int(m_player->position())/1000LL;
+    hours = seconds / 3600;
+    minutes = (seconds - hours*3600) / 60;
+    seconds = (seconds - hours*3600 - minutes*60);
+    currentTime->setText(QString("%1").arg(hours, 2, 10, QChar('0')) +":"+QString("%1").arg(minutes, 2, 10, QChar('0'))+":"+QString("%1").arg(seconds, 2, 10, QChar('0')));
 
 
 }
@@ -45,7 +62,7 @@ void PlayerWindow::rearCamera(){
         }else {
 
             m_player2->setStartPosition(m_player->position());
-            cout << "KURKA " << m_player->position() << endl;
+
             m_player2->play();
             //m_player2->seek(m_player->position());
             rearCamIsEnabled = !rearCamIsEnabled;

@@ -39,114 +39,13 @@ Item {
 
         }
 
-        onClicked: {
-            switch (button) {
-            case "Tools": {
-                page.state = "Tools"
-                break;
-            }
-            case "Map Type": {
-                page.state = "MapType"
-                break;
-            }
-            case "Provider": {
-                page.state = "Provider"
-                break;
-            }
-            }
-        }
-    }
+     }
 
-    Menu {
-        id: toolsMenu
-        z: backgroundRect.z + 2
-        y: page.height
-        horizontalOrientation: false
 
-        onClicked: {
-            switch (button) {
-            case "Reverse geocode": {
-                page.state = "RevGeocode"
-                break;
-            }
-            case "Geocode": {
-                page.state = "Geocode"
-                break;
-            }
-            case "Route": {
-                page.state = "Route"
-                break;
-            }
-            case "Follow me": {
-                map.followme =true
-                page.state = ""
-                break;
-            }
-            case "Stop following": {
-                map.followme =false
-                page.state = ""
-                break;
-            }
-            case "Minimap": {
-                minimap = Qt.createQmlObject ('import "content/map"; MiniMap{ z: map.z + 2 }', map)
-                page.state = ""
-                break;
-            }
-            case "Hide minimap": {
-                if (minimap) minimap.destroy()
-                minimap = null
-                page.state = ""
-                break;
-            }
-            }
-        }
-        function update(){
-            clear()
-            addItem("Reverse geocode")
-            addItem("Geocode")
-            addItem("Route")
-            var item = addItem("Follow me")
-            item.text = Qt.binding(function() { return map.followme ? "Stop following" : "Follow me" });
-            item = addItem("Minimap")
-            item.text = Qt.binding(function() { return minimap ? "Hide minimap" : "Minimap" });
-        }
-    }
-
-    Menu {
-        id: mapTypeMenu
-        z: backgroundRect.z + 2
-        y: page.height
-        horizontalOrientation: false
-        exclusive: true
-
-        onClicked: {
-            page.state = ""
-        }
-
-        onExclusiveButtonChanged: {
-            for (var i = 0; i<map.supportedMapTypes.length; i++){
-                if (exclusiveButton == map.supportedMapTypes[i].name){
-                    map.activeMapType = map.supportedMapTypes[i]
-                    break;
-                }
-            }
-        }
-
-        function update(){
-            clear()
-            for (var i = 0; i<map.supportedMapTypes.length; i++)
-                addItem(map.supportedMapTypes[i].name)
-
-            if (map.supportedMapTypes.length > 0)
-                exclusiveButton = map.activeMapType.name
-        }
-    }
 
     Menu {
         id: providerMenu
-        z: backgroundRect.z + 2
-        y: page.height
-        horizontalOrientation: false
+
         exclusive: true
 
         Component.onCompleted: {
@@ -404,8 +303,7 @@ Item {
     //Get new coordinates for marker
     InputDialog {
         id: coordinatesDialog
-        title: "New coordinates"
-        z: backgroundRect.z + 2
+
 
         Component.onCompleted: {
             var obj = [["Latitude", ""],["Longitude", ""]]
@@ -432,60 +330,8 @@ Item {
         }
     }
 
-    //Get new locale
-    InputDialog {
-        id: localeDialog
-        title: "New Locale"
-        z: backgroundRect.z + 2
-
-        Component.onCompleted: {
-            var obj = [["Language", ""]]
-            setModel(obj)
-        }
-
-        onGoButtonClicked: {
-            page.state = ""
-            messageDialog.state = ""
-            map.setLanguage(dialogModel.get(0).inputText.split(Qt.locale().groupSeparator));
-        }
-
-        onCancelButtonClicked: {
-            page.state = ""
-        }
-    }
 
 
-    /*    GeocodeModel {
-        id: geocodeModel
-        plugin : Plugin { name : "nokia"}
-        onLocationsChanged: {
-            if (geocodeModel.count > 0) {
-                console.log('setting the coordinate as locations changed in model.')
-                map.center = geocodeModel.get(0).coordinate
-            }
-        }
-    }*/
-
-    //=====================Map=====================
-
-    /*        MapObjectView {
-            model: geocodeModel
-            delegate: Component {
-                MapCircle {
-                    radius: 10000
-                    color: "red"
-                    center: location.coordinate
-                }
-            }
-        }
-
-
-    */
-
-/*
-
-    }
-*/
     function geocodeMessage(){
         var street, district, city, county, state, countryCode, country, postalCode, latitude, longitude, text
         latitude = Math.round(map.geocodeModel.get(0).coordinate.latitude * 10000) / 10000
@@ -737,44 +583,6 @@ Item {
     }
 
     //=====================States of page=====================
-    states: [
-        State {
-            name: "RevGeocode"
-            PropertyChanges { target: reverseGeocodeDialog; opacity: 1 }
-        },
-        State {
-            name: "Route"
-            PropertyChanges { target: routeDialog; opacity: 1 }
-        },
-        State {
-            name: "Geocode"
-            PropertyChanges { target: geocodeDialog; opacity: 1 }
-        },
-        State {
-            name: "Coordinates"
-            PropertyChanges { target: coordinatesDialog; opacity: 1 }
-        },
-        State {
-            name: "Message"
-            PropertyChanges { target: messageDialog; opacity: 1 }
-        },
-        State {
-            name : "Tools"
-            PropertyChanges { target: toolsMenu; y: page.height - toolsMenu.height - mainMenu.height }
-        },
-        State {
-            name : "Provider"
-            PropertyChanges { target: providerMenu; y: page.height - providerMenu.height - mainMenu.height }
-        },
-        State {
-            name : "MapType"
-            PropertyChanges { target: mapTypeMenu; y: page.height - mapTypeMenu.height - mainMenu.height }
-        },
-        State {
-            name : "Locale"
-            PropertyChanges { target: localeDialog;  opacity: 1 }
-        }
-    ]
 
 
 }

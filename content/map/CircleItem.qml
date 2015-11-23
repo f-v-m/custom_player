@@ -46,7 +46,7 @@ MapCircle {
 
     color: "yellow"
     border.color: "red"
-    border.width: 5
+    border.width: 1
     smooth: true
     opacity: 0.5
 

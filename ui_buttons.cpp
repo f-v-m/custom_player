@@ -35,6 +35,11 @@ void PlayerWindow::parseSub(){
             tmpX = lst[0];
             tmpY = lst[1];
             isFirstSubt = false;
+
+            QMetaObject::invokeMethod(object, "mapcenter",
+                                                      Q_ARG(QVariant, QVariant::fromValue(lst[0])),
+                                                      Q_ARG(QVariant, QVariant::fromValue(lst[1]))
+                                                      );
             cout << "FIRST" << endl;
         }else{
            // cout << tmpX.toStdString() << " " << tmpY.toStdString() << " temp" <<endl;
@@ -44,6 +49,7 @@ void PlayerWindow::parseSub(){
 
                 if (tmpX!=lst[0] && tmpY!=lst[1]){
                     if (isLoadRoute){
+                        /*
                         QMetaObject::invokeMethod(object, "changeCoorinates",
                                                                   Q_ARG(QVariant, QVariant::fromValue(tmpX)),
                                                                   Q_ARG(QVariant, QVariant::fromValue(tmpY)),
@@ -51,6 +57,11 @@ void PlayerWindow::parseSub(){
                                                                   Q_ARG(QVariant, QVariant::fromValue(lst[1]))
                                                                   );
                         QMetaObject::invokeMethod(object, "calcRoute", Qt::QueuedConnection);
+                        */
+                        QMetaObject::invokeMethod(object, "createTag",
+                                                                  Q_ARG(QVariant, QVariant::fromValue(lst[0])),
+                                                                  Q_ARG(QVariant, QVariant::fromValue(lst[1]))
+                                                                  );
                         cout << "gotovo" << endl;
                     }
                     isLoadRoute = !isLoadRoute;
@@ -67,22 +78,22 @@ void PlayerWindow::parseSub(){
 
 //LEFT RIGHT
         if (lst[15].toInt() == 0){
-            left_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_normal.png);} ");
-            right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_normal.png);} ");
+            left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
+            right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
         }else if (lst[15].toInt() == 1){
-            right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_active.png);} ");
-            left_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_normal.png);} ");
+            right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_active.png);} ");
+            left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
         }else if (lst[15].toInt() == 2){
-            left_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/left_signal_active.png);} ");
-            right_signal->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/right_signal_normal.png);} ");
+            left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_active.png);} ");
+            right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
         }
 
         //BREAK
         if (lst[16].toInt() == 0){
-            brake->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_normal.png);} ");
+            brake->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_normal.png);} ");
 
         }else if (lst[16].toInt() == 1){
-            brake->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bottom_buttons/brake_active.png);} ");
+            brake->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_active.png);} ");
 
         }
         //Steering angle:

@@ -274,7 +274,7 @@ Map {
         id: pointDelegate
 
         MapCircle {
-            radius: 1000
+            radius: 5
             color: circleMouseArea.containsMouse ? "lime" : "red"
             opacity: 0.6
             center: locationData.coordinate

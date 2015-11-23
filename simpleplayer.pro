@@ -21,10 +21,14 @@ genRC($$TARGET)
 include(src.pri)
 
 
+
+
 #RC_FILE += file.rc
 #OTHER_FILES += file.rc
 
 #RESOURCES += res/player.qrc
 
 target.path = $$[QT_INSTALL_BINS]
+
 include($$PROJECTROOT/deploy.pri)
+

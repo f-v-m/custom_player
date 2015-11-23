@@ -47,7 +47,7 @@ PlayList::PlayList(QWidget *parent) :
     QVBoxLayout *vbl = new QVBoxLayout;
     setLayout(vbl);
 
-    mpListView->setStyleSheet("QListView { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/file_list_bg.png);}");
+    mpListView->setStyleSheet("QListView { border-image: url(:/images/images/file_list/file_list_bg.png);}");
 
 
     vbl->addWidget(mpListView);
@@ -60,11 +60,11 @@ PlayList::PlayList(QWidget *parent) :
     mpRemove->setToolTip(tr("Remove selected items"));
     mpAdd = new QToolButton(0);
     //mpAdd->setText(QString::fromLatin1("+"));
-    mpAdd->setStyleSheet("QToolButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/folder_btn_hover_active.png);} "
-                         "QToolButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/folder_btn_normal.png)}");
+    mpAdd->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/folder_btn_hover_active.png);} "
+                         "QToolButton:hover { border-image: url(:/images/images/file_list/folder_btn_normal.png)}");
 
-    mpRemove->setStyleSheet("QToolButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/del_btn_hover_active.png);} "
-                            "QToolButton:hover { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/file_list/del_btn_normal.png)}");
+    mpRemove->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/del_btn_hover_active.png);} "
+                            "QToolButton:hover { border-image: url(:/images/images/file_list/del_btn_normal.png)}");
 
 
     //hbl->addWidget(mpClear);

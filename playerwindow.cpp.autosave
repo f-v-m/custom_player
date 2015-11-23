@@ -1,22 +1,3 @@
-/******************************************************************************
-    Simple Player:  this file is part of QtAV examples
-    Copyright (C) 2012-2015 Wang Bin <wbsecg1@gmail.com>
-
-*   This file is part of QtAV
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-******************************************************************************/
 
 #include "playerwindow.h"
 #include <QPushButton>
@@ -25,6 +6,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <iostream>
+#include <sstream>
 #include <QWidget>
 
 //#include <QtGui>
@@ -39,6 +21,7 @@
 
 #include "playlist/PlayList.h"
 #include <QWidgetAction>
+#include <QLabel>
 
 
 
@@ -91,11 +74,12 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QPalette palette;
     QColor oldBackColor = palette.color( QPalette::Background );
-    palette.setColor(QPalette::Background, Qt::black);
+    palette.setColor(QPalette::Background, QColor::fromRgb(18,18,18));
     this->setPalette(palette);
 
-    setWindowTitle(QString::fromLatin1("Player"));
-    setWindowIcon(QIcon("E:/workspace/QtAV/examples/simpleplayerimages/top/logo.png"));
+    setWindowTitle(QString::fromLatin1("Viewer"));
+    setWindowIcon(QIcon(":/images/images/top/logo.png"));
+
     initMyPlayer();
     initMySubtitles();
 
@@ -103,13 +87,18 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     setLayout (mainLayout);
+    mainLayout->setContentsMargins(2, 2, 2, 2);
+
     QVBoxLayout *vertLeft = new QVBoxLayout();
     QVBoxLayout *vertRight = new QVBoxLayout();
 
     QWidget *widg = new QWidget();
-    widg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
-    widg->setMaximumHeight(35);
+    widg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+
     QHBoxLayout *hb = new QHBoxLayout();
+    hb->setContentsMargins(0,0,0,0);
+    widg->setMaximumHeight(20);
+    widg->setMaximumWidth(1000);
     widg->setLayout(hb);
     m_vo = new VideoOutput(this);
     m_vo2 = new VideoOutput(this);
@@ -120,7 +109,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     }
     m_player->setRenderer(m_vo);
     m_player2->setRenderer(m_vo2);
-    mpSubtitle->installTo(m_vo);
+    //mpSubtitle->installTo(m_vo);
 
     //_______MAP
 
@@ -150,6 +139,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     view->setGeometry(QRect(100, 100, 400, 300));
     container = QWidget::createWindowContainer(view, this);
 
+    connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(parseSub()));
     //______
 
     //_______PLAYLIST_____
@@ -164,9 +154,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QWidget *leftVertWidg = new QWidget();
     QWidget *rightVertWidg = new QWidget();
 
-    leftVertWidg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bg/sep.png); }");
-    rightVertWidg->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/bg/sep.png); }");
-
+    leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    rightVertWidg->setMaximumWidth(425);
     leftVertWidg->setLayout(vertLeft);
     rightVertWidg->setLayout(vertRight);
     mainLayout->addWidget(leftVertWidg);
@@ -184,29 +174,79 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
-    m_slider->setStyleSheet("QSlider { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/player_background.png); }");
+    m_slider->setContentsMargins(0,0,0,0);
+    //m_slider->setStyleSheet("QSlider { background-color: rgb(18, 18, 18); }");
     connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int)));
     connect(mpPlayList, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
 
     connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(updateSlider()));
     connect(m_player, SIGNAL(started()), SLOT(updateSlider()));
-    m_slider->setMinimumHeight(32);
-    m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/small_player_handle.png);"
+
+
+    m_slider->setMinimumHeight(15);
+    m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
                             "width: 30px; "
                             "margin: -8px,0 ;"
                             "height: 30px; }");
+    m_slider->setMaximumWidth(1000);
 
 
-    vertLeft->addWidget(m_slider);
+    QWidget *sliderWidg = new QWidget();
+    sliderWidg->setContentsMargins(0,0,0,0);
+    sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    sliderWidg->setMaximumHeight(15);
+    QHBoxLayout *sliderLayout = new QHBoxLayout();
+    sliderLayout->setContentsMargins(0,0,0,0);
+    sliderWidg->setLayout(sliderLayout);
+
+    currentTime = new QLabel();
+    totalTime = new QLabel();
+    currentTime->setText("00:00:00");
+    totalTime->setText("00:00:00");
+    currentTime->setContentsMargins(0,0,0,0);
+    totalTime->setContentsMargins(0,0,0,0);
+    currentTime->setStyleSheet("QLabel {color: white;}");
+    totalTime->setStyleSheet("QLabel {color: white;}");
+
+    sliderLayout->addWidget(currentTime);
+    sliderLayout->addWidget(m_slider);
+    sliderLayout->addWidget(totalTime);
+
+
+    vertLeft->addWidget(sliderWidg);
     vertLeft->addWidget(widg);
 
+    //speed/sliders/coords:
+    QWidget *hor3 = new QWidget();
+    hor3->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    QHBoxLayout *hor3Layer = new QHBoxLayout();
+    hor3->setLayout(hor3Layer);
+    vertLeft->addWidget(hor3);
 
+//LINE WITH SPEED
+    QWidget *lineWithSpeedWidg = new QWidget();
+    lineWithSpeedWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    lineWithSpeedWidg->setMaximumHeight(35);
+    QVBoxLayout *layerWithSpeed = new QVBoxLayout();
+    layerWithSpeed->setAlignment(Qt::AlignLeft);
+    lineWithSpeedWidg->setLayout(layerWithSpeed);
+    lineWithSpeedWidg->setMinimumHeight(55);
+    hor3Layer->addWidget(lineWithSpeedWidg);
+    layerWithSpeed->setContentsMargins(0,0,0,0);
 
+//bottom sliders
+    QHBoxLayout *speedLayout = new QHBoxLayout();
+    QHBoxLayout *brightnessLayout = new QHBoxLayout();
+    QHBoxLayout *soundLayout = new QHBoxLayout();
 
+    
+    
+    
     initButtons();
     setButtonsStyle();
 
-
+    layerWithSpeed->addWidget(speedButton);
+    layerWithSpeed->addWidget(speedProgress);
 
     hb->addWidget(prev_button);
     hb->addWidget(back_button);
@@ -223,12 +263,16 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     hb->addWidget(b7);
 
 
+
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
-    bot_buttons->setMaximumHeight(150);
+    bot_buttons->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
+    bot_buttons->setMaximumHeight(140);
     QHBoxLayout *bottom_buttons = new QHBoxLayout();
+    bottom_buttons->setContentsMargins(0,0,0,0);
     bot_buttons->setLayout(bottom_buttons);
+    bot_buttons->setMaximumWidth(1000);
+
 
 
 
@@ -239,27 +283,32 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QVBoxLayout *bot3 = new QVBoxLayout();
     QVBoxLayout *bot4 = new QVBoxLayout();
     QVBoxLayout *bot5 = new QVBoxLayout();
+    bot1->setContentsMargins(0,0,0,0);
+    bot2->setContentsMargins(0,0,0,0);
+    bot3->setContentsMargins(0,0,0,0);
+    bot4->setContentsMargins(0,0,0,0);
+    bot5->setContentsMargins(0,0,0,0);
 
     QWidget *botW1 = new QWidget();
-    botW1->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW1->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW1->setMaximumHeight(130);
     botW1->setLayout(bot1);
 
     QWidget *botW2 = new QWidget();
-    botW2->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW2->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW2->setMaximumHeight(130);
     botW2->setLayout(bot2);
 
     QWidget *botW3 = new QWidget();
-    botW3->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW3->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW3->setMaximumHeight(130);
     botW3->setLayout(bot3);
     QWidget *botW4 = new QWidget();
-    botW4->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW4->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW4->setMaximumHeight(130);
     botW4->setLayout(bot4);
     QWidget *botW5 = new QWidget();
-    botW5->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW5->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW5->setMaximumHeight(130);
     botW5->setLayout(bot5);
 
@@ -286,18 +335,18 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
-    vertRight->addWidget(m_openBtn);
 
-
-
-    connect(m_openBtn, SIGNAL(clicked()), SLOT(openMedia()));
     connect(m_playBtn, SIGNAL(clicked()), SLOT(playPause()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player2, SLOT(stop()));
+    connect(b2, SIGNAL(clicked()), SLOT(rearCamera()));
+    connect(forward_button, SIGNAL(clicked()), SLOT(forwardSeek()));
+    connect(back_button, SIGNAL(clicked()), SLOT(backSeek()));
     //connect(new_button, SIGNAL(clicked()), SLOT(azaza()));
 
 
 
+    //mpPlayList->set
 }
 
 
@@ -323,38 +372,36 @@ void PlayerWindow::onPlayListClick(const QString &key, const QString &value)
 
 void PlayerWindow::play(const QString &name)
 {
-    cout << name.toStdString() << " from play func" << endl;
+
     mFile = name;
-    cout << mFile.toStdString() << " from play func" << endl;
-    /*
-    if (!mIsReady) {
-        mHasPendingPlay = true;
-        return;
-    }*/
+
     mTitle = mFile;
-    cout << 1;
+
     if (!mFile.contains(QLatin1String("://")) || mFile.startsWith(QLatin1String("file://"))) {
         mTitle = QFileInfo(mFile).fileName();
     }
-    cout << 2;
+
     setWindowTitle(mTitle);
-    cout << 3;
+
     PlayListItem item;
     item.setUrl(mFile);
     item.setTitle(mTitle);
     item.setLastTime(0);
-    cout << 4;
-    //mpHistory->remove(mFile);
-    //mpHistory->insertItemAt(item, 0);
-    cout << name.toStdString() << " from play func" << endl;
+
+    m_vo->setOrientation(180);
+
     m_player->play(name);
     m_player2->play(name);
     m_player2->setVideoStream(1);
 
-    QString sub = mpSubtitle->m_s->getText().toStdString();
-    
-    QMetaObject::invokeMethod(object, "mapcenter",
-                              Q_ARG(QVariant, QVariant::fromValue(37.495959)),
-                              Q_ARG(QVariant, QVariant::fromValue(126.985670)));
-    //m_player2->play(name);
+
+    //totalTime->setText(QString::number(m_player->duration()));
+    m_playBtn->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/pause_hover_and_active.png);}");
+
+    currentTime->setText("00:00:00");
+    totalTime->setText("00:00:00");
+
 }
+
+
+

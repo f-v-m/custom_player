@@ -80,3 +80,5 @@ void PlayerWindow::backSeek(){
     m_player2->seekBackward();
 }
 
+
+

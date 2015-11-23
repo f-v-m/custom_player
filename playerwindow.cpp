@@ -78,7 +78,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     this->setPalette(palette);
 
     setWindowTitle(QString::fromLatin1("Viewer"));
-    setWindowIcon(QIcon("E:/workspace/QtAV/examples/simpleplayerimages/top/logo.png"));
+    setWindowIcon(QIcon(":/images/images/top/logo.png"));
+
     initMyPlayer();
     initMySubtitles();
 
@@ -155,7 +156,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-
+    rightVertWidg->setMaximumWidth(425);
     leftVertWidg->setLayout(vertLeft);
     rightVertWidg->setLayout(vertRight);
     mainLayout->addWidget(leftVertWidg);
@@ -183,7 +184,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
     m_slider->setMinimumHeight(15);
-    m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(E:/workspace/QtAV/examples/simpleplayer/images/graph_section/small_player_handle.png);"
+    m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
                             "width: 30px; "
                             "margin: -8px,0 ;"
                             "height: 30px; }");
@@ -215,19 +216,26 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     vertLeft->addWidget(sliderWidg);
     vertLeft->addWidget(widg);
 
+    //speed/sliders/coords:
+    QWidget *hor3 = new QWidget();
+    hor3->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    QHBoxLayout *hor3Layer = new QHBoxLayout();
+    hor3->setLayout(hor3Layer);
+    vertLeft->addWidget(hor3);
+
 //LINE WITH SPEED
     QWidget *lineWithSpeedWidg = new QWidget();
     lineWithSpeedWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     lineWithSpeedWidg->setMaximumHeight(35);
-    QHBoxLayout *layerWithSpeed = new QHBoxLayout();
-
+    QVBoxLayout *layerWithSpeed = new QVBoxLayout();
+    layerWithSpeed->setAlignment(Qt::AlignLeft);
     lineWithSpeedWidg->setLayout(layerWithSpeed);
     lineWithSpeedWidg->setMinimumHeight(55);
-    vertLeft->addWidget(lineWithSpeedWidg);
-    layerWithSpeed->setAlignment(Qt::AlignLeft);
+    hor3Layer->addWidget(lineWithSpeedWidg);
     layerWithSpeed->setContentsMargins(0,0,0,0);
 
-
+//bottom sliders
+    QHBoxLayout *speedLayout = new QHBoxLayout();
 
 
     initButtons();
@@ -254,7 +262,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/buttons_bg.png); }");
+    bot_buttons->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
     bot_buttons->setMaximumHeight(140);
     QHBoxLayout *bottom_buttons = new QHBoxLayout();
     bottom_buttons->setContentsMargins(0,0,0,0);
@@ -278,25 +286,25 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     bot5->setContentsMargins(0,0,0,0);
 
     QWidget *botW1 = new QWidget();
-    botW1->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW1->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW1->setMaximumHeight(130);
     botW1->setLayout(bot1);
 
     QWidget *botW2 = new QWidget();
-    botW2->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW2->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW2->setMaximumHeight(130);
     botW2->setLayout(bot2);
 
     QWidget *botW3 = new QWidget();
-    botW3->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW3->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW3->setMaximumHeight(130);
     botW3->setLayout(bot3);
     QWidget *botW4 = new QWidget();
-    botW4->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW4->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW4->setMaximumHeight(130);
     botW4->setLayout(bot4);
     QWidget *botW5 = new QWidget();
-    botW5->setStyleSheet("QWidget { background-image: url(E:/workspace/QtAV/examples/simpleplayer/images/graf_section/graph_gray_bg.png); }");
+    botW5->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
     botW5->setMaximumHeight(130);
     botW5->setLayout(bot5);
 
@@ -364,28 +372,27 @@ void PlayerWindow::play(const QString &name)
     mFile = name;
 
     mTitle = mFile;
-    cout << 1;
+
     if (!mFile.contains(QLatin1String("://")) || mFile.startsWith(QLatin1String("file://"))) {
         mTitle = QFileInfo(mFile).fileName();
     }
-    cout << 2;
+
     setWindowTitle(mTitle);
-    cout << 3;
+
     PlayListItem item;
     item.setUrl(mFile);
     item.setTitle(mTitle);
     item.setLastTime(0);
-    cout << 4;
-    //mpHistory->remove(mFile);
-    //mpHistory->insertItemAt(item, 0);
-    cout << name.toStdString() << " from play func" << endl;
+
+    m_vo->setOrientation(180);
+
     m_player->play(name);
     m_player2->play(name);
     m_player2->setVideoStream(1);
 
 
     //totalTime->setText(QString::number(m_player->duration()));
-    m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/pause_hover_and_active.png);}");
+    m_playBtn->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/pause_hover_and_active.png);}");
 
     currentTime->setText("00:00:00");
     totalTime->setText("00:00:00");

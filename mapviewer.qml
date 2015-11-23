@@ -359,6 +359,13 @@ Item {
     }
 
 
+    function createTag(x1, y1){
+        map.geocodeModel.reset();
+        map.geocodeModel.query = QtPositioning.coordinate(parseFloat(x1),
+                                                       parseFloat(y1));
+
+        map.geocodeModel.update();
+    }
 
     function calcRoute() {
         // clear away any old data in the query

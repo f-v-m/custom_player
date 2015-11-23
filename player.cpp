@@ -65,9 +65,9 @@ void PlayerWindow::playPause()
     m_player2->pause(!m_player2->isPaused());
     QMetaObject::invokeMethod(object, "calcRoute2", Qt::QueuedConnection);
     if (m_player->isPaused()){
-        m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/play_normal.png);}");
+        m_playBtn->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/play_normal.png);}");
     }else {
-        m_playBtn->setStyleSheet("QPushButton { border-image: url(E:/workspace/QtAV/examples/simpleplayer/images/music_player/pause_hover_and_active.png);}");
+        m_playBtn->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/pause_hover_and_active.png);}");
     }
 
 

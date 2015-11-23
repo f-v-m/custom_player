@@ -74,7 +74,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     QPalette palette;
     QColor oldBackColor = palette.color( QPalette::Background );
-    palette.setColor(QPalette::Background, QColor::fromRgb(18,18,18));
+    palette.setColor(QPalette::Background, QColor::fromRgb(8,8,8));
     this->setPalette(palette);
 
     setWindowTitle(QString::fromLatin1("Viewer"));
@@ -89,15 +89,16 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     setLayout (mainLayout);
     mainLayout->setContentsMargins(2, 2, 2, 2);
 
-    QVBoxLayout *vertLeft = new QVBoxLayout();
-    QVBoxLayout *vertRight = new QVBoxLayout();
+
+    initMainVertWidgets();
 
     QWidget *widg = new QWidget();
-    widg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
 
     QHBoxLayout *hb = new QHBoxLayout();
+    //widg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
     hb->setContentsMargins(0,0,0,0);
-    widg->setMaximumHeight(20);
+    widg->setContentsMargins(0,0,0,0);
+    widg->setFixedHeight(55);
     widg->setMaximumWidth(1000);
     widg->setLayout(hb);
     m_vo = new VideoOutput(this);
@@ -151,14 +152,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
-    QWidget *leftVertWidg = new QWidget();
-    QWidget *rightVertWidg = new QWidget();
 
-    leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    rightVertWidg->setMaximumWidth(425);
-    leftVertWidg->setLayout(vertLeft);
-    rightVertWidg->setLayout(vertRight);
     mainLayout->addWidget(leftVertWidg);
     mainLayout->addWidget(rightVertWidg);
     vertLeft->addWidget(m_vo->widget());
@@ -184,16 +178,18 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
     m_slider->setMinimumHeight(15);
-    m_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
+    //m_slider->setStyleSheet("QSlider::groove { background: blue; border-left: 10px; border-right: 12px; }");
+    m_slider->setStyleSheet("QSlider::handle:horizontal {background-image: url(:/images/images/graph_section/small_player_handle.png);"
                             "width: 30px; "
-                            "margin: -8px,0 ;"
-                            "height: 30px; }");
+                            "margin-left: -10px;"
+                            "margin: 0 -5px}");
+
     m_slider->setMaximumWidth(1000);
 
 
     QWidget *sliderWidg = new QWidget();
     sliderWidg->setContentsMargins(0,0,0,0);
-    sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    //sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     sliderWidg->setMaximumHeight(15);
     QHBoxLayout *sliderLayout = new QHBoxLayout();
     sliderLayout->setContentsMargins(0,0,0,0);
@@ -212,37 +208,115 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     sliderLayout->addWidget(m_slider);
     sliderLayout->addWidget(totalTime);
 
+//merge slider and buttons:
+    QWidget *sliderButtonsWidg = new QWidget();
+    QVBoxLayout *sliderButtonsLayout = new QVBoxLayout();
+    sliderButtonsWidg->setLayout(sliderButtonsLayout);
+    sliderButtonsWidg->setStyleSheet("QWidget { background-color: rgb(8, 8, 8); }");
+    sliderButtonsWidg->setContentsMargins(0,0,0,0);
+    vertLeft->addWidget(sliderButtonsWidg);
+    sliderButtonsLayout->addWidget(sliderWidg);
+    sliderButtonsLayout->addWidget(widg);
 
-    vertLeft->addWidget(sliderWidg);
-    vertLeft->addWidget(widg);
-
+    initButtons();
+    setButtonsStyle();
     //speed/sliders/coords:
+
     QWidget *hor3 = new QWidget();
-    hor3->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    hor3->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_section_bg.png); }");
     QHBoxLayout *hor3Layer = new QHBoxLayout();
     hor3->setLayout(hor3Layer);
     vertLeft->addWidget(hor3);
+    hor3Layer->setContentsMargins(0,0,0,0);
 
 //LINE WITH SPEED
     QWidget *lineWithSpeedWidg = new QWidget();
-    lineWithSpeedWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    lineWithSpeedWidg->setMaximumHeight(35);
+    lineWithSpeedWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/speed_metter_bg.png); }");
+    //lineWithSpeedWidg->setMaximumHeight(35);
     QVBoxLayout *layerWithSpeed = new QVBoxLayout();
-    layerWithSpeed->setAlignment(Qt::AlignLeft);
+    layerWithSpeed->setAlignment(Qt::AlignCenter);
     lineWithSpeedWidg->setLayout(layerWithSpeed);
     lineWithSpeedWidg->setMinimumHeight(55);
     hor3Layer->addWidget(lineWithSpeedWidg);
     layerWithSpeed->setContentsMargins(0,0,0,0);
+    lineWithSpeedWidg->setContentsMargins(0,0,0,0);
+    layerWithSpeed->addWidget(speedButton);
+    speedButton->setAlignment(Qt::AlignCenter);
+    layerWithSpeed->addWidget(speedProgress);
+    lineWithSpeedWidg->setMaximumWidth(160);
+    QHBoxLayout *prndm = new QHBoxLayout();
+    QWidget *prndmWidg = new QWidget();
+    prndmWidg->setLayout(prndm);
+    prndmWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/gear_bg.png); }");
+    prndm->setContentsMargins(0,0,0,0);
+    prndmWidg->setContentsMargins(0,0,0,0);
+    prndm->addWidget(pLabel);
+    prndm->addWidget(rLabel);
+    prndm->addWidget(nLabel);
+    prndm->addWidget(dLabel);
+    prndm->addWidget(mLabel);
+    layerWithSpeed->addWidget(prndmWidg);
 
 //bottom sliders
+
+    QVBoxLayout *smallSlidersLayout = new QVBoxLayout();
+
     QHBoxLayout *speedLayout = new QHBoxLayout();
+    QHBoxLayout *brightnessLayout = new QHBoxLayout();
+    QHBoxLayout *soundLayout = new QHBoxLayout();
+
+    play_speed_slider = new QSlider();
+    play_speed_slider->setOrientation(Qt::Horizontal);
+    play_speed_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
+                                "margin: -8px,0 ;}");
+    brightness_slider = new QSlider();
+    brightness_slider->setOrientation(Qt::Horizontal);
+    brightness_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
+                                "margin: -8px,0 ;}");
+    volume_slider = new QSlider();
+    volume_slider->setOrientation(Qt::Horizontal);
+    volume_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
+                                "margin: -8px,0 ;}");
+
+    speedLayout->addWidget(speedSliderLabel);
+    speedLayout->addWidget(play_speed_slider);
+
+    brightnessLayout->addWidget(brightnessSliderLabel);
+    brightnessLayout->addWidget(brightness_slider);
+
+    soundLayout->addWidget(volumeSliderLabel);
+    soundLayout->addWidget(volume_slider);
+
+    hor3Layer->addLayout(smallSlidersLayout);
+    smallSlidersLayout->addLayout(speedLayout);
+    smallSlidersLayout->addLayout(brightnessLayout);
+    smallSlidersLayout->addLayout(soundLayout);
+
+//G-SENSOR VALUE:
+    QHBoxLayout *gSensorsAllLayout = new QHBoxLayout;
+    QWidget *gSensorsWidg = new QWidget();
+    gSensorsWidg->setLayout(gSensorsAllLayout);
+    gSensorsWidg->setContentsMargins(2,2,2,2);
+    gSensorsAllLayout->setContentsMargins(2,2,2,2);
+    gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
+    gSensorsWidg->setMinimumWidth(300);
+    hor3Layer->addWidget(gSensorsWidg);
 
 
-    initButtons();
-    setButtonsStyle();
+    QVBoxLayout *gSensorsLabels = new QVBoxLayout();
+    gSensorsAllLayout->setAlignment(Qt::AlignLeft);
+    gSensorsAllLayout->addLayout(gSensorsLabels);
+    gSensorsLabels->setAlignment(Qt::AlignLeft);
+    gSensorsLabels->addWidget(gSensorX);
+    gSensorsLabels->addWidget(gSensorY);
+    gSensorsLabels->addWidget(gSensorZ);
 
-    layerWithSpeed->addWidget(speedButton);
-    layerWithSpeed->addWidget(speedProgress);
+
+
+
+
+
+
 
     hb->addWidget(prev_button);
     hb->addWidget(back_button);
@@ -250,13 +324,24 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     hb->addWidget(forward_button);
     hb->addWidget(next_button);
     hb->addWidget(m_stopBtn);
-    hb->addWidget(b1);
-    hb->addWidget(b2);
-    hb->addWidget(b3);
-    hb->addWidget(b4);
-    hb->addWidget(b5);
-    hb->addWidget(b6);
-    hb->addWidget(b7);
+
+    QHBoxLayout *strangeButtons = new QHBoxLayout();
+    QWidget *strangeButtonsWidg = new QWidget();
+    strangeButtonsWidg->setLayout(strangeButtons);
+
+    hb->addWidget(strangeButtonsWidg);
+    strangeButtonsWidg->setMinimumHeight(55);
+    strangeButtonsWidg->setMaximumWidth(355);
+    strangeButtons->setContentsMargins(0,0,0,0);
+    strangeButtonsWidg->setContentsMargins(0,0,0,0);
+    strangeButtons->setAlignment(Qt::AlignRight);
+    strangeButtons->addWidget(b1);
+    strangeButtons->addWidget(b2);
+    strangeButtons->addWidget(b3);
+    strangeButtons->addWidget(b4);
+    strangeButtons->addWidget(b5);
+    strangeButtons->addWidget(b6);
+    strangeButtons->addWidget(b7);
 
 
 

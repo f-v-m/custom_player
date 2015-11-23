@@ -34,4 +34,23 @@ void PlayerWindow::setWidgetsSize(){
     m_vo2->widget()->setMinimumSize(320, 180);
 }
 
+void PlayerWindow::initMainVertWidgets(){
+    vertLeft = new QVBoxLayout();
+    vertLeft->setContentsMargins(0,0,0,0);
+    vertRight = new QVBoxLayout();
+    vertRight->setContentsMargins(0,0,0,0);
+    leftVertWidg = new QWidget();
+    rightVertWidg = new QWidget();
+
+    leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
+    rightVertWidg->setMaximumWidth(425);
+    leftVertWidg->setLayout(vertLeft);
+    rightVertWidg->setLayout(vertRight);
+}
+
+void PlayerWindow::initSliderButtonsWidgets(){
+
+}
+
 

@@ -9,6 +9,7 @@
 #include <QtQuick/QQuickItem>
 #include <QLabel>
 #include <QProgressBar>
+#include <QLayout>
 
 namespace QtAV {
 class SubtitleFilter;
@@ -53,6 +54,13 @@ private slots:
     void forwardSeek();
     void backSeek();
 
+    //WIDGETS:
+    void initMainVertWidgets();
+    void initSliderButtonsWidgets();
+ /*   void initGraphSectionWidgets();
+    void initBottomButtonsWidget();
+    void initPlaylistWidget();
+*/
 
 
 
@@ -99,11 +107,20 @@ private:
     QPushButton *voltage;
     QPushButton *right_signal;
     QPushButton *patrol;
-    QPushButton *speedButton;
-    QLabel *speedSliderLabel;
-    QLabel *brightnessSliderLabel;
-    QLabel *volumeSliderLabel;
+    QLabel *speedButton;
+    QPushButton *speedSliderLabel;
+    QPushButton *brightnessSliderLabel;
+    QPushButton *volumeSliderLabel;
 
+    QLabel *gSensorX;
+    QLabel *gSensorY;
+    QLabel *gSensorZ;
+
+    QLabel *pLabel;
+    QLabel *rLabel;
+    QLabel *nLabel;
+    QLabel *dLabel;
+    QLabel *mLabel;
 
     QLabel *currentTime;
     QLabel *totalTime;
@@ -131,7 +148,11 @@ private:
     QString sub;
     bool rearCamIsEnabled = true;
 
-
+    //WIDGETS:
+    QVBoxLayout *vertLeft;
+    QVBoxLayout *vertRight;
+    QWidget *leftVertWidg;
+    QWidget *rightVertWidg;
 };
 
 #endif // PLAYERWINDOW_H

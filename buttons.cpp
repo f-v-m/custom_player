@@ -51,13 +51,13 @@ void PlayerWindow::setButtonsStyle(){
 
     changeButtonSize(back_button);
     changeButtonSize(forward_button);
-    changeButtonSize(b1, 25, 25);
-    changeButtonSize(b2, 25, 25);
-    changeButtonSize(b3, 25, 25);
-    changeButtonSize(b4, 25, 25);
-    changeButtonSize(b5, 25, 25);
-    changeButtonSize(b6, 25, 25);
-    changeButtonSize(b7, 25, 25);
+    changeButtonSize(b1, 49, 46);
+    changeButtonSize(b2, 49, 46);
+    changeButtonSize(b3, 49, 46);
+    changeButtonSize(b4, 49, 46);
+    changeButtonSize(b5, 49, 46);
+    changeButtonSize(b6, 49, 46);
+    changeButtonSize(b7, 49, 46);
 
     changeButtonSize(obdi, 123, 115);
     changeButtonSize(left_signal, 111, 51);
@@ -68,9 +68,15 @@ void PlayerWindow::setButtonsStyle(){
     changeButtonSize(voltage, 111, 51);
     changeButtonSize(right_signal, 111, 51);
     changeButtonSize(patrol, 111, 51);
-    changeButtonSize(speedButton, 150, 50);
+    //changeButtonSize(speedButton, 150, 50);
 
-
+    b1->setContentsMargins(0,0,0,0);
+    b2->setContentsMargins(0,0,0,0);
+    b3->setContentsMargins(0,0,0,0);
+    b4->setContentsMargins(0,0,0,0);
+    b5->setContentsMargins(0,0,0,0);
+    b6->setContentsMargins(0,0,0,0);
+    b7->setContentsMargins(0,0,0,0);
 
 
     //PLAYBUTTON
@@ -91,26 +97,40 @@ void PlayerWindow::setButtonsStyle(){
     //STOP BUTTON
 
     //1 BUTTON
-    b1->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/front_camera_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/front_camera_normal.png)}");
+    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/front_camera_normal.png);"
+                      "border: none;}");
     //2 BUTTON
-    b2->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/rear_view_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/rear_view_normal.png)}");
+    b2->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/rear_view_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/rear_view_normal.png);"
+                      "border: none;}");
     //3 BUTTON
-    b3->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/both_camera_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/both_camera_normal.png)}");
+    b3->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/both_camera_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/both_camera_normal.png);"
+                      "border: none;}");
     //4 BUTTON
-    b4->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/invert_upside_down_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/invert_upside_down_normal.png)}");
+    b4->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_upside_down_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/invert_upside_down_normal.png);"
+                      "border: none;}");
     //5 BUTTON
-    b5->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/invert_left_To_right_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/invert_left_To_right_normal.png)}");
+    b5->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_left_To_right_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/invert_left_To_right_normal.png);"
+                      "border: none;}");
     //6 BUTTON
-    b6->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/crop_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/crop_normal.png)}");
+    b6->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/crop_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/crop_normal.png);"
+                      "border: none;}");
     //7 BUTTON
-    b7->setStyleSheet("QPushButton { border-image: url(:/images/images/music_player/fullscreen_hover.png);} "
-                             "QPushButton:hover { border-image: url(:/images/images/music_player/fullscreen_normal.png)}");
+    b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_hover.png);"
+                      "border: none;} "
+                             "QPushButton:hover { background-image: url(:/images/images/music_player/fullscreen_normal.png);"
+                      "border: none;}");
 
     //OBDI
     obdi->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/OBDI_normal.png);} "
@@ -147,19 +167,65 @@ void PlayerWindow::setButtonsStyle(){
                           "QPushButton {color: white;}"
                           "QPushButton { text-align: center }");
     //SPEED
-    speedButton->setStyleSheet("QPushButton { background-color: rgb(18, 18, 18); }"
-                               "QPushButton {color: white;}"
-                               "QPushButton {font-weight: bold;}"
-                               "QPushButton {font-size: 10pt;}");
+    speedButton->setStyleSheet("QLabel { background-image: url(:/images/images/graph_section/speed_metter_bg.png); }"
+                               "QLabel {color: white;}"
+                               "QLabel {font-weight: bold;}"
+                               "QLabel {font-size: 10pt;}");
+    speedButton->setFixedSize(150, 50);
+
     //SLIDER TEXT:
 
     //PROGRESS BAR:
     speedProgress->setStyleSheet("QProgressBar:horizontal {border: 0px solid gray;}"
                                  "QProgressBar:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_normal2.png);}"
                                  "QProgressBar::chunk:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_active2.png);}");
-    speedProgress->setMaximumWidth(150);
+    speedProgress->setMaximumWidth(160);
     speedProgress->setMaximumHeight(20);
     speedProgress->setTextVisible(false);
+
+    speedSliderLabel->setFixedSize(12, 12);
+    speedSliderLabel->setStyleSheet("QPushButton { border-image: url(:/images/images/graph_section/small_forwarding_icon.png);}");
+
+    brightnessSliderLabel->setFixedSize(12, 12);
+    brightnessSliderLabel->setStyleSheet("QPushButton { border-image: url(:/images/images/graph_section/small_brightness-icon.png);}");
+
+    volumeSliderLabel->setFixedSize(12, 12);
+    volumeSliderLabel->setStyleSheet("QPushButton { border-image: url(:/images/images/graph_section/smal_volume_icon.png);}");
+
+
+    gSensorX->setStyleSheet("QLabel {color: green;"
+                            "font-size: 15px}");
+    gSensorY->setStyleSheet("QLabel {color: red;"
+                            "font-size: 15px}");
+    gSensorZ->setStyleSheet("QLabel {color: blue;"
+                            "font-size: 15px}");
+    pLabel->setFixedSize(29, 29);
+    rLabel->setFixedSize(29, 29);
+    nLabel->setFixedSize(29, 29);
+    dLabel->setFixedSize(29, 29);
+    mLabel->setFixedSize(29, 29);
+
+    pLabel->setContentsMargins(0,0,0,0);
+    rLabel->setContentsMargins(0,0,0,0);
+    nLabel->setContentsMargins(0,0,0,0);
+    dLabel->setContentsMargins(0,0,0,0);
+    mLabel->setContentsMargins(0,0,0,0);
+
+    pLabel->setStyleSheet("QLabel {color: white;"
+                            "font-size: 14px}");
+    rLabel->setStyleSheet("QLabel {color: white;"
+                            "font-size: 14px}");
+    nLabel->setStyleSheet("QLabel {color: white;"
+                            "font-size: 14px}");
+    dLabel->setStyleSheet("QLabel {color: white;"
+                            "font-size: 14px}");
+    mLabel->setStyleSheet("QLabel {color: white;"
+                            "font-size: 14px}");
+    pLabel->setAlignment(Qt::AlignCenter);
+    rLabel->setAlignment(Qt::AlignCenter);
+    nLabel->setAlignment(Qt::AlignCenter);
+    dLabel->setAlignment(Qt::AlignCenter);
+    mLabel->setAlignment(Qt::AlignCenter);
 }
 
 
@@ -183,13 +249,13 @@ void PlayerWindow::initButtons(){
     prev_button = new QPushButton(tr(""));
     back_button = new QPushButton(tr(""));
     forward_button = new QPushButton(tr(""));
-    b1 = new QPushButton(tr(""));
-    b2 = new QPushButton(tr(""));
-    b3 = new QPushButton(tr(""));
-    b4 = new QPushButton(tr(""));
-    b5 = new QPushButton(tr(""));
-    b6 = new QPushButton(tr(""));
-    b7 = new QPushButton(tr(""));
+    b1 = new QPushButton();
+    b2 = new QPushButton();
+    b3 = new QPushButton();
+    b4 = new QPushButton();
+    b5 = new QPushButton();
+    b6 = new QPushButton();
+    b7 = new QPushButton();
 
     obdi = new QPushButton(tr(""));
     left_signal = new QPushButton(tr(""));
@@ -201,14 +267,23 @@ void PlayerWindow::initButtons(){
     right_signal = new QPushButton(tr(""));
     patrol = new QPushButton(tr(""));
 
-    speedButton = new QPushButton("Current Speed");
+    speedButton = new QLabel("Current Speed");
 
     speedProgress = new QProgressBar();
 
-    speedSliderLabel = new QLabel();
-    brightnessSliderLabel = new QLabel();
-    volumeSliderLabel = new QLabel();
+    speedSliderLabel = new QPushButton();
+    brightnessSliderLabel = new QPushButton();
+    volumeSliderLabel = new QPushButton();
 
+    gSensorX = new QLabel("X: 0000");
+    gSensorY = new QLabel("Y: 0000");
+    gSensorZ = new QLabel("Z: 0000");
+
+    pLabel = new QLabel("P");
+    rLabel = new QLabel("R");
+    nLabel = new QLabel("N");
+    dLabel = new QLabel("D");
+    mLabel = new QLabel("M");
 
 }
 

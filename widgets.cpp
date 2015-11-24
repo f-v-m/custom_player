@@ -144,15 +144,19 @@ void PlayerWindow::setSliderStyleSheet(){
                             "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
                                 "width: 20px; "
                                 "margin-left: -5px; "
-                                "margin-top: -5px}");
+                                "margin-top: -4px; "
+                                "margin-right: -5px; "
+                                "margin-bottom: -5px; }");
 }
-/*
+
 void PlayerWindow::initGraphSectionWidgets(){
     graphSectionWidg = new QWidget();
     graphSectionWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_section_bg.png); }");
     graphSectionLayer = new QHBoxLayout();
     graphSectionWidg->setLayout(graphSectionLayer);
     graphSectionLayer->setContentsMargins(0,0,0,0);
+
+    //graphSectionLayer->setSpacing(0);
 
     //LINE WITH SPEED
         lineWithSpeedWidg = new QWidget();
@@ -163,12 +167,17 @@ void PlayerWindow::initGraphSectionWidgets(){
         lineWithSpeedWidg->setLayout(layerWithSpeed);
         lineWithSpeedWidg->setMinimumHeight(55);
         graphSectionLayer->addWidget(lineWithSpeedWidg);
-        layerWithSpeed->setContentsMargins(0,0,0,0);
-        lineWithSpeedWidg->setContentsMargins(0,0,0,0);
+        layerWithSpeed->setContentsMargins(2,0,0,0);
+        lineWithSpeedWidg->setContentsMargins(2,0,0,0);
         layerWithSpeed->addWidget(speedButton);
+
         speedButton->setAlignment(Qt::AlignCenter);
+
+
         layerWithSpeed->addWidget(speedProgress);
-        lineWithSpeedWidg->setMaximumWidth(160);
+        speedProgress->setContentsMargins(50, 0, 0, 0);
+        speedProgress->setAlignment(Qt::AlignCenter);
+        lineWithSpeedWidg->setFixedWidth(160);
         prndm = new QHBoxLayout();
         prndmWidg = new QWidget();
         prndmWidg->setLayout(prndm);
@@ -189,18 +198,16 @@ void PlayerWindow::initGraphSectionWidgets(){
             brightnessLayout = new QHBoxLayout();
             soundLayout = new QHBoxLayout();
 
+            smallSlidersLayout->setSpacing(0);
+
+
             play_speed_slider = new QSlider();
             play_speed_slider->setOrientation(Qt::Horizontal);
-            play_speed_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                        "margin: -8px,0 ;}");
             brightness_slider = new QSlider();
             brightness_slider->setOrientation(Qt::Horizontal);
-            brightness_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                        "margin: -8px,0 ;}");
             volume_slider = new QSlider();
             volume_slider->setOrientation(Qt::Horizontal);
-            volume_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                        "margin: -8px,0 ;}");
+            setSmallSliders();
 
             speedLayout->addWidget(speedSliderLabel);
             speedLayout->addWidget(play_speed_slider);
@@ -220,10 +227,10 @@ void PlayerWindow::initGraphSectionWidgets(){
                 gSensorsAllLayout = new QHBoxLayout;
                 gSensorsWidg = new QWidget();
                 gSensorsWidg->setLayout(gSensorsAllLayout);
-                gSensorsWidg->setContentsMargins(2,2,2,2);
-                gSensorsAllLayout->setContentsMargins(2,2,2,2);
+                gSensorsWidg->setContentsMargins(0,5,0,0);
+                gSensorsAllLayout->setContentsMargins(0,5,0,0);
                 gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
-                gSensorsWidg->setMinimumWidth(300);
+                gSensorsWidg->setMinimumWidth(340);
                 graphSectionLayer->addWidget(gSensorsWidg);
 
                 gSensorsLabels = new QVBoxLayout();
@@ -235,6 +242,48 @@ void PlayerWindow::initGraphSectionWidgets(){
                 gSensorsLabels->addWidget(gSensorZ);
 }
 
+void PlayerWindow::setSmallSliders(){
+    play_speed_slider->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #000000; "
+                                "background-image: url(:/images/images/graph_section/small_unfilled_line.png); "
+                                "height: 9px; border-radius: 4px; } "
+                            "QSlider::sub-page:horizontal { background: #ff9666; "
+                                "border: 1px solid #777; "
+                                "height: 9px; "
+                                "border-radius: 4px; } "
+                            "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
+                                "width: 20px; "
+                                "margin-left: -5px; "
+                                "margin-top: -4px; "
+                                "margin-right: -5px; "
+                                "margin-bottom: -5px; }");
+    volume_slider->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #000000; "
+                                 "background-image: url(:/images/images/graph_section/small_unfilled_line.png); "
+                                 "height: 9px; border-radius: 4px; } "
+                             "QSlider::sub-page:horizontal { background: #ff9666; "
+                                 "border: 1px solid #777; "
+                                 "height: 9px; "
+                                 "border-radius: 4px; } "
+                             "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
+                                 "width: 20px; "
+                                 "margin-left: -5px; "
+                                 "margin-top: -4px; "
+                                 "margin-right: -5px; "
+                                 "margin-bottom: -5px; }");
+    brightness_slider->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #000000; "
+                                     "background-image: url(:/images/images/graph_section/small_unfilled_line.png); "
+                                     "height: 9px; border-radius: 4px; } "
+                                 "QSlider::sub-page:horizontal { background: #ff9666; "
+                                     "border: 1px solid #777; "
+                                     "height: 9px; "
+                                     "border-radius: 4px; } "
+                                 "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
+                                     "width: 20px; "
+                                     "margin-left: -5px; "
+                                     "margin-top: -4px; "
+                                     "margin-right: -5px; "
+                                     "margin-bottom: -5px; }");
+}
+/*
 void PlayerWindow::initBottomButtonsWidget(){
     //DESIGN OF BOTTOM BUTTONS:
     bot_buttons = new QWidget();

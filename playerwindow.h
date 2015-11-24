@@ -57,11 +57,12 @@ private slots:
     //WIDGETS:
     void initMainVertWidgets();
     void initSliderButtonsWidgets();
-/*    void initGraphSectionWidgets();
-    void initBottomButtonsWidget();
+    void initGraphSectionWidgets();
+/*    void initBottomButtonsWidget();
     void initPlaylistWidget();
 */
     void setSliderStyleSheet();
+    void setSmallSliders();
 
 
 

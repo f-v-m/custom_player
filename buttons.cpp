@@ -170,7 +170,7 @@ void PlayerWindow::setButtonsStyle(){
     speedButton->setStyleSheet("QLabel { background-image: url(:/images/images/graph_section/speed_metter_bg.png); }"
                                "QLabel {color: white;}"
                                "QLabel {font-weight: bold;}"
-                               "QLabel {font-size: 10pt;}");
+                               "QLabel {font-size: 15pt;}");
     speedButton->setFixedSize(150, 50);
 
     //SLIDER TEXT:
@@ -180,7 +180,7 @@ void PlayerWindow::setButtonsStyle(){
                                  "QProgressBar:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_normal2.png);}"
                                  "QProgressBar::chunk:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_active2.png);}");
     speedProgress->setMaximumWidth(160);
-    speedProgress->setMaximumHeight(20);
+    speedProgress->setFixedHeight(13);
     speedProgress->setTextVisible(false);
 
     speedSliderLabel->setFixedSize(12, 12);
@@ -231,7 +231,7 @@ void PlayerWindow::setButtonsStyle(){
 
 
 void PlayerWindow::changeButtonSize(QPushButton *button){
-    button->setFixedSize(25, 25);
+    button->setFixedSize(15, 18);
 }
 
 void PlayerWindow::changeButtonSize(QPushButton *button, int w, int h){

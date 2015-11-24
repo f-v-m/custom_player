@@ -176,96 +176,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     //speed/sliders/coords:
 
-    QWidget *hor3 = new QWidget();
-    hor3->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_section_bg.png); }");
-    QHBoxLayout *hor3Layer = new QHBoxLayout();
-    hor3->setLayout(hor3Layer);
-    vertLeft->addWidget(hor3);
-    hor3Layer->setContentsMargins(0,0,0,0);
 
-//LINE WITH SPEED
-    QWidget *lineWithSpeedWidg = new QWidget();
-    lineWithSpeedWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/speed_metter_bg.png); }");
-    //lineWithSpeedWidg->setMaximumHeight(35);
-    QVBoxLayout *layerWithSpeed = new QVBoxLayout();
-    layerWithSpeed->setAlignment(Qt::AlignCenter);
-    lineWithSpeedWidg->setLayout(layerWithSpeed);
-    lineWithSpeedWidg->setMinimumHeight(55);
-    hor3Layer->addWidget(lineWithSpeedWidg);
-    layerWithSpeed->setContentsMargins(0,0,0,0);
-    lineWithSpeedWidg->setContentsMargins(0,0,0,0);
-    layerWithSpeed->addWidget(speedButton);
-    speedButton->setAlignment(Qt::AlignCenter);
-    layerWithSpeed->addWidget(speedProgress);
-    lineWithSpeedWidg->setMaximumWidth(160);
-    QHBoxLayout *prndm = new QHBoxLayout();
-    QWidget *prndmWidg = new QWidget();
-    prndmWidg->setLayout(prndm);
-    prndmWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/gear_bg.png); }");
-    prndm->setContentsMargins(0,0,0,0);
-    prndmWidg->setContentsMargins(0,0,0,0);
-    prndm->addWidget(pLabel);
-    prndm->addWidget(rLabel);
-    prndm->addWidget(nLabel);
-    prndm->addWidget(dLabel);
-    prndm->addWidget(mLabel);
-    layerWithSpeed->addWidget(prndmWidg);
-
-//bottom sliders
-
-    QVBoxLayout *smallSlidersLayout = new QVBoxLayout();
-
-    QHBoxLayout *speedLayout = new QHBoxLayout();
-    QHBoxLayout *brightnessLayout = new QHBoxLayout();
-    QHBoxLayout *soundLayout = new QHBoxLayout();
-
-    play_speed_slider = new QSlider();
-    play_speed_slider->setOrientation(Qt::Horizontal);
-    play_speed_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                "margin: -8px,0 ;}");
-    brightness_slider = new QSlider();
-    brightness_slider->setOrientation(Qt::Horizontal);
-    brightness_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                "margin: -8px,0 ;}");
-    volume_slider = new QSlider();
-    volume_slider->setOrientation(Qt::Horizontal);
-    volume_slider->setStyleSheet("QSlider::handle:horizontal {image: url(:/images/images/graph_section/small_player_handle.png);"
-                                "margin: -8px,0 ;}");
-
-    speedLayout->addWidget(speedSliderLabel);
-    speedLayout->addWidget(play_speed_slider);
-
-    brightnessLayout->addWidget(brightnessSliderLabel);
-    brightnessLayout->addWidget(brightness_slider);
-
-    soundLayout->addWidget(volumeSliderLabel);
-    soundLayout->addWidget(volume_slider);
-
-    hor3Layer->addLayout(smallSlidersLayout);
-    smallSlidersLayout->addLayout(speedLayout);
-    smallSlidersLayout->addLayout(brightnessLayout);
-    smallSlidersLayout->addLayout(soundLayout);
-
-//G-SENSOR VALUE:
-    QHBoxLayout *gSensorsAllLayout = new QHBoxLayout;
-    QWidget *gSensorsWidg = new QWidget();
-    gSensorsWidg->setLayout(gSensorsAllLayout);
-    gSensorsWidg->setContentsMargins(2,2,2,2);
-    gSensorsAllLayout->setContentsMargins(2,2,2,2);
-    gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
-    gSensorsWidg->setMinimumWidth(300);
-    hor3Layer->addWidget(gSensorsWidg);
-
-
-    QVBoxLayout *gSensorsLabels = new QVBoxLayout();
-    gSensorsAllLayout->setAlignment(Qt::AlignLeft);
-    gSensorsAllLayout->addLayout(gSensorsLabels);
-    gSensorsLabels->setAlignment(Qt::AlignLeft);
-    gSensorsLabels->addWidget(gSensorX);
-    gSensorsLabels->addWidget(gSensorY);
-    gSensorsLabels->addWidget(gSensorZ);
-
-
+    initGraphSectionWidgets();
+    vertLeft->addWidget(graphSectionWidg);
 
     //DESIGN OF BOTTOM BUTTONS:
     QWidget *bot_buttons = new QWidget();

@@ -231,8 +231,7 @@ void PlayerWindow::setButtonsStyle(){
 
 
 void PlayerWindow::changeButtonSize(QPushButton *button){
-    button->setFixedSize(20, 20);
-
+    button->setFixedSize(25, 25);
 }
 
 void PlayerWindow::changeButtonSize(QPushButton *button, int w, int h){
@@ -241,7 +240,8 @@ void PlayerWindow::changeButtonSize(QPushButton *button, int w, int h){
 
 
 void PlayerWindow::initButtons(){
-
+    currentTime = new QLabel();
+    totalTime = new QLabel();
     m_playBtn = new QPushButton(tr(""));
     m_stopBtn = new QPushButton(tr(""));
     //new_button = new QPushButton(tr("azaza"));

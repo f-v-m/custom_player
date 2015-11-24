@@ -1,4 +1,3 @@
-
 #include "playerwindow.h"
 #include <QPushButton>
 #include <QSlider>
@@ -77,30 +76,28 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     palette.setColor(QPalette::Background, QColor::fromRgb(8,8,8));
     this->setPalette(palette);
 
+    //this->layout()->setMargin(0);
+
     setWindowTitle(QString::fromLatin1("Viewer"));
     setWindowIcon(QIcon(":/images/images/top/logo.png"));
 
     initMyPlayer();
     initMySubtitles();
-
+    initButtons();
+    setButtonsStyle();
 
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     setLayout (mainLayout);
-    mainLayout->setContentsMargins(2, 2, 2, 2);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+
 
 
     initMainVertWidgets();
 
-    QWidget *widg = new QWidget();
-
-    QHBoxLayout *hb = new QHBoxLayout();
-    //widg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
-    hb->setContentsMargins(0,0,0,0);
-    widg->setContentsMargins(0,0,0,0);
-    widg->setFixedHeight(55);
-    widg->setMaximumWidth(1000);
-    widg->setLayout(hb);
+    initSliderButtonsWidgets();
     m_vo = new VideoOutput(this);
     m_vo2 = new VideoOutput(this);
 
@@ -110,7 +107,6 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     }
     m_player->setRenderer(m_vo);
     m_player2->setRenderer(m_vo2);
-    //mpSubtitle->installTo(m_vo);
 
     //_______MAP
 
@@ -127,9 +123,6 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     view->rootContext()->setContextProperty("appDirPath", QCoreApplication::applicationDirPath());
     view->setSource(QUrl(mainQmlApp));
 
-
-
-
     view->setResizeMode(QQuickView::SizeRootObjectToView);
 
     object = view->rootObject();
@@ -139,6 +132,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QObject::connect(view->engine(), SIGNAL(quit()), qApp, SLOT(quit()));
     view->setGeometry(QRect(100, 100, 400, 300));
     container = QWidget::createWindowContainer(view, this);
+
 
     connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(parseSub()));
     //______
@@ -157,18 +151,19 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(rightVertWidg);
     vertLeft->addWidget(m_vo->widget());
     vertRight->addWidget(m_vo2->widget());
+    //m_vo->widget()->setStyleSheet("QWidget {background: transparent}");
+    m_vo->widget()->setContentsMargins(0,0,0,0);
+    m_vo->widget()->setStyleSheet("QWidget { background-image: url(:/images/images/main_camera/main_camera_box.png); }");
     //hor->addWidget(container);
 
     setWidgetsSize();
-
+    vertLeft->addWidget(sliderButtonsWidg);
 
     vertRight->addWidget(container);
 
     vertRight->addWidget(mpPlayList);
 
-    m_slider = new QSlider();
-    m_slider->setOrientation(Qt::Horizontal);
-    m_slider->setContentsMargins(0,0,0,0);
+
     //m_slider->setStyleSheet("QSlider { background-color: rgb(18, 18, 18); }");
     connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int)));
     connect(mpPlayList, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
@@ -177,49 +172,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(m_player, SIGNAL(started()), SLOT(updateSlider()));
 
 
-    m_slider->setMinimumHeight(15);
-    //m_slider->setStyleSheet("QSlider::groove { background: blue; border-left: 10px; border-right: 12px; }");
-    m_slider->setStyleSheet("QSlider::handle:horizontal {background-image: url(:/images/images/graph_section/small_player_handle.png);"
-                            "width: 30px; "
-                            "margin-left: -10px;"
-                            "margin: 0 -5px}");
-
-    m_slider->setMaximumWidth(1000);
 
 
-    QWidget *sliderWidg = new QWidget();
-    sliderWidg->setContentsMargins(0,0,0,0);
-    //sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    sliderWidg->setMaximumHeight(15);
-    QHBoxLayout *sliderLayout = new QHBoxLayout();
-    sliderLayout->setContentsMargins(0,0,0,0);
-    sliderWidg->setLayout(sliderLayout);
-
-    currentTime = new QLabel();
-    totalTime = new QLabel();
-    currentTime->setText("00:00:00");
-    totalTime->setText("00:00:00");
-    currentTime->setContentsMargins(0,0,0,0);
-    totalTime->setContentsMargins(0,0,0,0);
-    currentTime->setStyleSheet("QLabel {color: white;}");
-    totalTime->setStyleSheet("QLabel {color: white;}");
-
-    sliderLayout->addWidget(currentTime);
-    sliderLayout->addWidget(m_slider);
-    sliderLayout->addWidget(totalTime);
-
-//merge slider and buttons:
-    QWidget *sliderButtonsWidg = new QWidget();
-    QVBoxLayout *sliderButtonsLayout = new QVBoxLayout();
-    sliderButtonsWidg->setLayout(sliderButtonsLayout);
-    sliderButtonsWidg->setStyleSheet("QWidget { background-color: rgb(8, 8, 8); }");
-    sliderButtonsWidg->setContentsMargins(0,0,0,0);
-    vertLeft->addWidget(sliderButtonsWidg);
-    sliderButtonsLayout->addWidget(sliderWidg);
-    sliderButtonsLayout->addWidget(widg);
-
-    initButtons();
-    setButtonsStyle();
     //speed/sliders/coords:
 
     QWidget *hor3 = new QWidget();
@@ -310,38 +264,6 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     gSensorsLabels->addWidget(gSensorX);
     gSensorsLabels->addWidget(gSensorY);
     gSensorsLabels->addWidget(gSensorZ);
-
-
-
-
-
-
-
-
-    hb->addWidget(prev_button);
-    hb->addWidget(back_button);
-    hb->addWidget(m_playBtn);
-    hb->addWidget(forward_button);
-    hb->addWidget(next_button);
-    hb->addWidget(m_stopBtn);
-
-    QHBoxLayout *strangeButtons = new QHBoxLayout();
-    QWidget *strangeButtonsWidg = new QWidget();
-    strangeButtonsWidg->setLayout(strangeButtons);
-
-    hb->addWidget(strangeButtonsWidg);
-    strangeButtonsWidg->setMinimumHeight(55);
-    strangeButtonsWidg->setMaximumWidth(355);
-    strangeButtons->setContentsMargins(0,0,0,0);
-    strangeButtonsWidg->setContentsMargins(0,0,0,0);
-    strangeButtons->setAlignment(Qt::AlignRight);
-    strangeButtons->addWidget(b1);
-    strangeButtons->addWidget(b2);
-    strangeButtons->addWidget(b3);
-    strangeButtons->addWidget(b4);
-    strangeButtons->addWidget(b5);
-    strangeButtons->addWidget(b6);
-    strangeButtons->addWidget(b7);
 
 
 
@@ -483,6 +405,3 @@ void PlayerWindow::play(const QString &name)
     totalTime->setText("00:00:00");
 
 }
-
-
-

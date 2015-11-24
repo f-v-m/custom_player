@@ -57,10 +57,11 @@ private slots:
     //WIDGETS:
     void initMainVertWidgets();
     void initSliderButtonsWidgets();
- /*   void initGraphSectionWidgets();
+/*    void initGraphSectionWidgets();
     void initBottomButtonsWidget();
     void initPlaylistWidget();
 */
+    void setSliderStyleSheet();
 
 
 
@@ -153,6 +154,40 @@ private:
     QVBoxLayout *vertRight;
     QWidget *leftVertWidg;
     QWidget *rightVertWidg;
+    QWidget *widg;
+    QHBoxLayout *hb;
+    QWidget *sliderWidg;
+    QHBoxLayout *sliderLayout;
+    QWidget *sliderButtonsWidg;
+    QVBoxLayout *sliderButtonsLayout;
+    QWidget *graphSectionWidg;
+    QHBoxLayout *graphSectionLayer;
+    QWidget *lineWithSpeedWidg;
+    QVBoxLayout *layerWithSpeed;
+    QHBoxLayout *prndm;
+    QWidget *prndmWidg;
+    QVBoxLayout *smallSlidersLayout;
+    QHBoxLayout *speedLayout;
+    QHBoxLayout *brightnessLayout;
+    QHBoxLayout *soundLayout;
+    QHBoxLayout *gSensorsAllLayout;
+    QWidget *gSensorsWidg;
+    QVBoxLayout *gSensorsLabels;
+    QHBoxLayout *strangeButtons;
+    QWidget *strangeButtonsWidg;
+    QWidget *bot_buttons;
+    QHBoxLayout *bottom_buttons;
+    QVBoxLayout *bot1;
+    QVBoxLayout *bot2;
+    QVBoxLayout *bot3;
+    QVBoxLayout *bot4;
+    QVBoxLayout *bot5;
+    QWidget *botW1;
+    QWidget *botW2;
+    QWidget *botW3;
+    QWidget *botW4;
+    QWidget *botW5;
+
 };
 
 #endif // PLAYERWINDOW_H

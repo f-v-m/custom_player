@@ -138,9 +138,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     //______
 
     //_______PLAYLIST_____
-    mpPlayList = new PlayList(this);
-    //mpPlayList->setSaveFile(Config::instance().defaultDir() + QString::fromLatin1("/playlist.qds"));
-    mpPlayList->load();
+    initPlaylistWidget();
 
     connect(mpPlayList, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
 
@@ -181,75 +179,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     vertLeft->addWidget(graphSectionWidg);
 
     //DESIGN OF BOTTOM BUTTONS:
-    QWidget *bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
-    bot_buttons->setMaximumHeight(140);
-    QHBoxLayout *bottom_buttons = new QHBoxLayout();
-    bottom_buttons->setContentsMargins(0,0,0,0);
-    bot_buttons->setLayout(bottom_buttons);
-    bot_buttons->setMaximumWidth(1000);
-
-
-
+    initBottomButtonsWidget();
 
     vertLeft->addWidget(bot_buttons);
-
-    QVBoxLayout *bot1 = new QVBoxLayout();
-    QVBoxLayout *bot2 = new QVBoxLayout();
-    QVBoxLayout *bot3 = new QVBoxLayout();
-    QVBoxLayout *bot4 = new QVBoxLayout();
-    QVBoxLayout *bot5 = new QVBoxLayout();
-    bot1->setContentsMargins(0,0,0,0);
-    bot2->setContentsMargins(0,0,0,0);
-    bot3->setContentsMargins(0,0,0,0);
-    bot4->setContentsMargins(0,0,0,0);
-    bot5->setContentsMargins(0,0,0,0);
-
-    QWidget *botW1 = new QWidget();
-    botW1->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW1->setMaximumHeight(130);
-    botW1->setLayout(bot1);
-
-    QWidget *botW2 = new QWidget();
-    botW2->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW2->setMaximumHeight(130);
-    botW2->setLayout(bot2);
-
-    QWidget *botW3 = new QWidget();
-    botW3->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW3->setMaximumHeight(130);
-    botW3->setLayout(bot3);
-    QWidget *botW4 = new QWidget();
-    botW4->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW4->setMaximumHeight(130);
-    botW4->setLayout(bot4);
-    QWidget *botW5 = new QWidget();
-    botW5->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW5->setMaximumHeight(130);
-    botW5->setLayout(bot5);
-
-    bottom_buttons->addWidget(botW1);
-    bottom_buttons->addWidget(botW2);
-    bottom_buttons->addWidget(botW3);
-    bottom_buttons->addWidget(botW4);
-    bottom_buttons->addWidget(botW5);
-
-    bot1->addWidget(obdi);
-
-    bot2->addWidget(left_signal);
-    bot2->addWidget(wheel_angle);
-
-    bot3->addWidget(brake);
-    bot3->addWidget(temperature);
-
-    bot4->addWidget(accelerate);
-    bot4->addWidget(voltage);
-
-    bot5->addWidget(right_signal);
-    bot5->addWidget(patrol);
-
-
-
 
 
     connect(m_playBtn, SIGNAL(clicked()), SLOT(playPause()));

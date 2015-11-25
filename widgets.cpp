@@ -112,7 +112,7 @@ void PlayerWindow::initSliderButtonsWidgets(){
     strangeButtons = new QHBoxLayout();
     strangeButtonsWidg = new QWidget();
     strangeButtonsWidg->setLayout(strangeButtons);
-
+    hb->addSpacing(40);
     hb->addWidget(strangeButtonsWidg);
     //strangeButtonsWidg->setMinimumHeight(55);
     strangeButtonsWidg->setMaximumWidth(350);
@@ -194,6 +194,9 @@ void PlayerWindow::initGraphSectionWidgets(){
 
         //bottom sliders
             smallSlidersLayout = new QVBoxLayout();
+            QWidget *smallSlidersWidget = new QWidget();
+            smallSlidersWidget->setLayout(smallSlidersLayout);
+            smallSlidersWidget->setStyleSheet("QWidget {background: transparent; }");
             speedLayout = new QHBoxLayout();
             brightnessLayout = new QHBoxLayout();
             soundLayout = new QHBoxLayout();
@@ -210,15 +213,18 @@ void PlayerWindow::initGraphSectionWidgets(){
             setSmallSliders();
 
             speedLayout->addWidget(speedSliderLabel);
+            speedLayout->addSpacing(10);
             speedLayout->addWidget(play_speed_slider);
 
             brightnessLayout->addWidget(brightnessSliderLabel);
+            brightnessLayout->addSpacing(10);
             brightnessLayout->addWidget(brightness_slider);
 
             soundLayout->addWidget(volumeSliderLabel);
+            soundLayout->addSpacing(10);
             soundLayout->addWidget(volume_slider);
 
-            graphSectionLayer->addLayout(smallSlidersLayout);
+            graphSectionLayer->addWidget(smallSlidersWidget);
             smallSlidersLayout->addLayout(speedLayout);
             smallSlidersLayout->addLayout(brightnessLayout);
             smallSlidersLayout->addLayout(soundLayout);
@@ -227,8 +233,8 @@ void PlayerWindow::initGraphSectionWidgets(){
                 gSensorsAllLayout = new QHBoxLayout;
                 gSensorsWidg = new QWidget();
                 gSensorsWidg->setLayout(gSensorsAllLayout);
-                gSensorsWidg->setContentsMargins(0,5,0,0);
-                gSensorsAllLayout->setContentsMargins(0,5,0,0);
+                //gSensorsWidg->setContentsMargins(10,10,10,10);
+                //gSensorsAllLayout->setContentsMargins(10,10,10,10);
                 gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
                 gSensorsWidg->setMinimumWidth(340);
                 graphSectionLayer->addWidget(gSensorsWidg);
@@ -248,7 +254,7 @@ void PlayerWindow::setSmallSliders(){
                                 "height: 9px; border-radius: 4px; } "
                             "QSlider::sub-page:horizontal { background: #ff9666; "
                                 "border: 1px solid #777; "
-                                "height: 9px; "
+                                "height: 8px; "
                                 "border-radius: 4px; } "
                             "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
                                 "width: 20px; "
@@ -261,7 +267,7 @@ void PlayerWindow::setSmallSliders(){
                                  "height: 9px; border-radius: 4px; } "
                              "QSlider::sub-page:horizontal { background: #ff9666; "
                                  "border: 1px solid #777; "
-                                 "height: 9px; "
+                                 "height: 8px; "
                                  "border-radius: 4px; } "
                              "QSlider::handle:horizontal { background-image: url(:/images/images/graph_section/small_player_handle.png); "
                                  "width: 20px; "
@@ -271,7 +277,7 @@ void PlayerWindow::setSmallSliders(){
                                  "margin-bottom: -5px; }");
     brightness_slider->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #000000; "
                                      "background-image: url(:/images/images/graph_section/small_unfilled_line.png); "
-                                     "height: 9px; border-radius: 4px; } "
+                                     "height: 8px; border-radius: 4px; } "
                                  "QSlider::sub-page:horizontal { background: #ff9666; "
                                      "border: 1px solid #777; "
                                      "height: 9px; "
@@ -283,7 +289,7 @@ void PlayerWindow::setSmallSliders(){
                                      "margin-right: -5px; "
                                      "margin-bottom: -5px; }");
 }
-/*
+
 void PlayerWindow::initBottomButtonsWidget(){
     //DESIGN OF BOTTOM BUTTONS:
     bot_buttons = new QWidget();
@@ -293,6 +299,8 @@ void PlayerWindow::initBottomButtonsWidget(){
     bottom_buttons->setContentsMargins(0,0,0,0);
     bot_buttons->setLayout(bottom_buttons);
     bot_buttons->setMaximumWidth(1000);
+    bottom_buttons->setAlignment(Qt::AlignHCenter);
+    bottom_buttons->setSpacing(12);
 
 
 
@@ -352,12 +360,12 @@ void PlayerWindow::initBottomButtonsWidget(){
 
 }
 
+
+
 void PlayerWindow::initPlaylistWidget(){
     //_______PLAYLIST_____
     mpPlayList = new PlayList(this);
     mpPlayList->load();
     connect(mpPlayList, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
-
-
 }
-*/
+

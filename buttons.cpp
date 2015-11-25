@@ -275,9 +275,9 @@ void PlayerWindow::initButtons(){
     brightnessSliderLabel = new QPushButton();
     volumeSliderLabel = new QPushButton();
 
-    gSensorX = new QLabel("X: 0000");
-    gSensorY = new QLabel("Y: 0000");
-    gSensorZ = new QLabel("Z: 0000");
+    gSensorX = new QLabel(" X: 0000");
+    gSensorY = new QLabel(" Y: 0000");
+    gSensorZ = new QLabel(" Z: 0000");
 
     pLabel = new QLabel("P");
     rLabel = new QLabel("R");

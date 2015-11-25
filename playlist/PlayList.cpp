@@ -17,6 +17,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+#include "playerwindow.h"
+#include <QPushButton>
+#include <QLayout>
+#include <QMessageBox>
+#include <iostream>
+#include <sstream>
+#include <QWidget>
+
+//#include <QtGui>
+#include <QtCore/QStringList>
+#include <QtCore/QTextStream>
+#include <QtGui/QGuiApplication>
+#include <QtQuick/QQuickView>
+#include <QtQuick/QQuickItem>
+#include <QPalette>
+#include <QWidgetAction>
+
 
 #include "PlayList.h"
 #include "PlayListModel.h"
@@ -28,6 +45,7 @@
 #include <QToolButton>
 #include <QtCore/QFile>
 #include <QtCore/QDataStream>
+#include <QLabel>
 
 PlayList::PlayList(QWidget *parent) :
     QWidget(parent)
@@ -49,30 +67,50 @@ PlayList::PlayList(QWidget *parent) :
 
     mpListView->setStyleSheet("QListView { border-image: url(:/images/images/file_list/file_list_bg.png);}");
 
-
-    vbl->addWidget(mpListView);
     QHBoxLayout *hbl = new QHBoxLayout;
+    vbl->addLayout(hbl);
+    vbl->addWidget(mpListView);
 
-    mpClear = new QToolButton(0);
-    mpClear->setText(tr("Clear"));
+    QLabel *nameLabel = new QLabel("File List");
+    nameLabel->setStyleSheet("QLabel {color: white;}"
+                            "QLabel {font-size: 15pt;}");
+
+
+    QToolButton *flipButton = new QToolButton(0);
+    flipButton->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/flip_btn_normal.png);} "
+                          "QToolButton:hover { border-image: url(:/images/images/file_list/flip_btn_hover_active.png)}");
+    flipButton->setFixedSize(26, 17);
+
+    QToolButton *downloadButton = new QToolButton(0);
+    downloadButton->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/download_btn_normal.png);} "
+                          "QToolButton:hover { border-image: url(:/images/images/file_list/download_btnhover_active.png)}");
+    downloadButton->setFixedSize(20, 17);
+
     mpRemove = new QToolButton(0);
     //mpRemove->setText(QString::fromLatin1("-"));
     mpRemove->setToolTip(tr("Remove selected items"));
+    mpRemove->setFixedSize(13, 17);
     mpAdd = new QToolButton(0);
-    //mpAdd->setText(QString::fromLatin1("+"));
-    mpAdd->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/folder_btn_hover_active.png);} "
-                         "QToolButton:hover { border-image: url(:/images/images/file_list/folder_btn_normal.png)}");
+    mpAdd->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/folder_btn_normal.png);} "
+                         "QToolButton:hover { border-image: url(:/images/images/file_list/folder_btn_hover_active.png)}");
+    mpAdd->setFixedSize(18, 15);
+    mpRemove->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/del_btn_normal.png);} "
+                            "QToolButton:hover { border-image: url(:/images/images/file_list/del_btn_hover_active.png)}");
 
-    mpRemove->setStyleSheet("QToolButton { border-image: url(:/images/images/file_list/del_btn_hover_active.png);} "
-                            "QToolButton:hover { border-image: url(:/images/images/file_list/del_btn_normal.png)}");
 
 
-    //hbl->addWidget(mpClear);
-    hbl->setAlignment(Qt::AlignRight);
-    hbl->addSpacing(width());
+    hbl->setAlignment(Qt::AlignLeft);
+    //hbl->addSpacing(width());
+    hbl->addWidget(nameLabel);
+    hbl->addSpacing(40);
+    hbl->addWidget(flipButton);
+    hbl->addSpacing(35);
+    hbl->addWidget(downloadButton);
+    hbl->addSpacing(35);
     hbl->addWidget(mpRemove);
+    hbl->addSpacing(35);
     hbl->addWidget(mpAdd);
-    vbl->addLayout(hbl);
+
     connect(mpClear, SIGNAL(clicked()), SLOT(clearItems()));
     connect(mpRemove, SIGNAL(clicked()), SLOT(removeSelectedItems()));
     connect(mpAdd, SIGNAL(clicked()), SLOT(addItems()));

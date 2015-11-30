@@ -20,18 +20,34 @@
 
 #include "playlist/PlayList.h"
 #include <QWidgetAction>
+#include <qwt_plot.h>
+#include <qwt_plot_grid.h>
+
+#include <qwt_legend.h>
+
+#include <qwt_plot_curve.h>
+#include <qwt_symbol.h>
+
+#include <qwt_plot_magnifier.h>
+
+#include <qwt_plot_panner.h>
+
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
 
 void PlayerWindow::setWidgetsSize(){
     mpPlayList->setMaximumHeight(200);
     mpPlayList->setMinimumWidth(340);
-    m_vo->widget()->setMinimumSize(640, 250);
-    m_vo->widget()->setMaximumSize(1120, 630);
-    m_vo2->widget()->setMinimumSize(320, 180);
-    container->setMinimumSize(320, 180);
+    m_vo->widget()->setFixedSize(674, 397);
+    m_vo->widget()->setStyleSheet("QWidget {background-image: url(:/images/images/main_camera/main_camera_box.png);}");
+    m_vo2->widget()->setFixedHeight(196);
+    m_vo2->widget()->setStyleSheet("QWidget {background-image: url(:/images/images/rear_camera/rear_camera_box.png);}");
+    //m_vo2->widget()->setContentsMargins(5,0,0,0);
+    container->setFixedHeight(196);
     //container->setMaximumSize(400, 200);
     container->setFocusPolicy(Qt::TabFocus);
-
-    m_vo2->widget()->setMinimumSize(320, 180);
+    container->setStyleSheet("QWidget {background-image: url(:/images/images/google_map/map_border_box.png);}");
+    container->setContentsMargins(0,0,0,0);
 }
 
 void PlayerWindow::initMainVertWidgets(){
@@ -39,12 +55,13 @@ void PlayerWindow::initMainVertWidgets(){
     vertLeft->setContentsMargins(0,0,0,0);
     vertRight = new QVBoxLayout();
     vertRight->setContentsMargins(0,0,0,0);
+    vertRight->setAlignment(Qt::AlignTop);
     leftVertWidg = new QWidget();
     rightVertWidg = new QWidget();
 
     leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    rightVertWidg->setMaximumWidth(425);
+    //rightVertWidg->setMaximumWidth(425);
     leftVertWidg->setLayout(vertLeft);
     rightVertWidg->setLayout(vertRight);
     vertLeft->setMargin(0);
@@ -66,6 +83,7 @@ void PlayerWindow::initSliderButtonsWidgets(){
     //widg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
     hb->setContentsMargins(0,0,0,0);
     widg->setContentsMargins(0,0,0,0);
+
     //widg->setFixedHeight(55);
     widg->setMaximumWidth(1000);
     widg->setLayout(hb);
@@ -87,7 +105,9 @@ void PlayerWindow::initSliderButtonsWidgets(){
     totalTime->setStyleSheet("QLabel {color: white;}");
 
     sliderLayout->addWidget(currentTime);
+    sliderLayout->addSpacing(20);
     sliderLayout->addWidget(m_slider);
+    sliderLayout->addSpacing(20);
     sliderLayout->addWidget(totalTime);
 
 //merge slider and buttons:
@@ -96,6 +116,7 @@ void PlayerWindow::initSliderButtonsWidgets(){
     sliderButtonsWidg->setLayout(sliderButtonsLayout);
     sliderButtonsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
     sliderButtonsWidg->setContentsMargins(0,0,0,0);
+    sliderButtonsWidg->setFixedSize(674, 98);
 
     widg->setStyleSheet("QWidget {background: transparent}");
     sliderWidg->setStyleSheet("QWidget {background: transparent}");
@@ -155,6 +176,7 @@ void PlayerWindow::initGraphSectionWidgets(){
     graphSectionLayer = new QHBoxLayout();
     graphSectionWidg->setLayout(graphSectionLayer);
     graphSectionLayer->setContentsMargins(0,0,0,0);
+    graphSectionWidg->setFixedSize(674, 126);
 
     //graphSectionLayer->setSpacing(0);
 
@@ -205,10 +227,34 @@ void PlayerWindow::initGraphSectionWidgets(){
 
 
             play_speed_slider = new QSlider();
+            play_speed_slider->setMinimum(-2);
+            play_speed_slider->setMaximum(2);
+
+
+            play_speed_slider->setSingleStep(1);
+            play_speed_slider->setValue(0);
+
             play_speed_slider->setOrientation(Qt::Horizontal);
+
+            //Brightness slider:
             brightness_slider = new QSlider();
+            brightness_slider->setMinimum(-10);
+            brightness_slider->setMaximum(10);
+
+
+            brightness_slider->setSingleStep(1);
+            brightness_slider->setValue(0);
             brightness_slider->setOrientation(Qt::Horizontal);
+
+            //VOLUME SLIDER
             volume_slider = new QSlider();
+            volume_slider = new QSlider();
+            volume_slider->setMinimum(0);
+            volume_slider->setMaximum(100);
+
+
+            volume_slider->setSingleStep(1);
+            volume_slider->setValue(50);
             volume_slider->setOrientation(Qt::Horizontal);
             setSmallSliders();
 
@@ -230,19 +276,26 @@ void PlayerWindow::initGraphSectionWidgets(){
             smallSlidersLayout->addLayout(soundLayout);
 
             //G-SENSOR VALUE:
+                initGraph();
                 gSensorsAllLayout = new QHBoxLayout;
                 gSensorsWidg = new QWidget();
                 gSensorsWidg->setLayout(gSensorsAllLayout);
                 //gSensorsWidg->setContentsMargins(10,10,10,10);
                 //gSensorsAllLayout->setContentsMargins(10,10,10,10);
                 gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
-                gSensorsWidg->setMinimumWidth(340);
+                gSensorsWidg->setFixedWidth(355);
                 graphSectionLayer->addWidget(gSensorsWidg);
 
                 gSensorsLabels = new QVBoxLayout();
                 gSensorsAllLayout->setAlignment(Qt::AlignLeft);
+
                 gSensorsAllLayout->addLayout(gSensorsLabels);
+                gSensorsAllLayout->addWidget(plot);
+
                 gSensorsLabels->setAlignment(Qt::AlignLeft);
+                gSensorX->setFixedWidth(70);
+                gSensorY->setFixedWidth(70);
+                gSensorZ->setFixedWidth(70);
                 gSensorsLabels->addWidget(gSensorX);
                 gSensorsLabels->addWidget(gSensorY);
                 gSensorsLabels->addWidget(gSensorZ);
@@ -293,14 +346,16 @@ void PlayerWindow::setSmallSliders(){
 void PlayerWindow::initBottomButtonsWidget(){
     //DESIGN OF BOTTOM BUTTONS:
     bot_buttons = new QWidget();
-    bot_buttons->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
-    bot_buttons->setMaximumHeight(140);
+    //bot_buttons->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
+    //bot_buttons->setMaximumHeight(140);
     bottom_buttons = new QHBoxLayout();
     bottom_buttons->setContentsMargins(0,0,0,0);
     bot_buttons->setLayout(bottom_buttons);
-    bot_buttons->setMaximumWidth(1000);
+    //bot_buttons->setMaximumWidth(1000);
     bottom_buttons->setAlignment(Qt::AlignHCenter);
     bottom_buttons->setSpacing(12);
+    bot_buttons->setFixedSize(674, 125);
+
 
 
 
@@ -339,9 +394,13 @@ void PlayerWindow::initBottomButtonsWidget(){
     botW5->setLayout(bot5);
 
     bottom_buttons->addWidget(botW1);
+    bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW2);
+    bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW3);
+    bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW4);
+    bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW5);
 
     bot1->addWidget(obdi);
@@ -366,6 +425,7 @@ void PlayerWindow::initPlaylistWidget(){
     //_______PLAYLIST_____
     mpPlayList = new PlayList(this);
     mpPlayList->load();
+    mpPlayList->setFixedWidth(323);
     connect(mpPlayList, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
 }
 

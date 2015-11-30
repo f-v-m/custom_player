@@ -47,6 +47,8 @@
 #include <QtCore/QDataStream>
 #include <QLabel>
 
+using namespace std;
+
 PlayList::PlayList(QWidget *parent) :
     QWidget(parent)
 {
@@ -64,15 +66,70 @@ PlayList::PlayList(QWidget *parent) :
     mpListView->setToolTip(QString::fromLatin1("Ctrl/Shift + ") + tr("Click to select multiple"));
     QVBoxLayout *vbl = new QVBoxLayout;
     setLayout(vbl);
+    vbl->setSpacing(0);
+    vbl->setContentsMargins(0,0,0,0);
 
     mpListView->setStyleSheet("QListView { border-image: url(:/images/images/file_list/file_list_bg.png);}");
 
-    QHBoxLayout *hbl = new QHBoxLayout;
-    vbl->addLayout(hbl);
+    QHBoxLayout *hbl = new QHBoxLayout();
+    QWidget *hw1 = new QWidget();
+    hw1->setLayout(hbl);
+    hw1->setStyleSheet("QWidget { border-image: url(:/images/images/google_map/google_bottom_bar_bg.png);}");
+    vbl->addWidget(hw1);
+
+    QHBoxLayout *hb2 = new QHBoxLayout();
+    hb2->setSpacing(0);
+    QWidget *hw2 = new QWidget();
+    hw2->setLayout(hb2);
+
+
+    QPushButton *all = new QPushButton("All");
+    all->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
+    QPushButton *event = new QPushButton("Event");
+    event->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+    QPushButton *parking = new QPushButton("Parking");
+    parking->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+    QPushButton *normal = new QPushButton("Normal");
+    normal->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+    QPushButton *manual = new QPushButton("Manual");
+    manual->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+    all->setFixedSize(64, 25);
+    event->setFixedSize(64, 25);
+    parking->setFixedSize(64, 25);
+    normal->setFixedSize(64, 25);
+    manual->setFixedSize(64, 25);
+    hb2->setContentsMargins(0,0,0,0);
+    hw2->setContentsMargins(0,0,0,0);
+    hb2->addWidget(all);
+    hb2->addWidget(event);
+    hb2->addWidget(parking);
+    hb2->addWidget(normal);
+    hb2->addWidget(manual);
+
+    vbl->addWidget(hw2);
+    mpListView->setContentsMargins(0,0,0,0);
+    mpListView->setMaximumWidth(500);
     vbl->addWidget(mpListView);
 
+
     QLabel *nameLabel = new QLabel("File List");
-    nameLabel->setStyleSheet("QLabel {color: white;}"
+    nameLabel->setStyleSheet("QLabel {background: transparent; "
+                             "color: white;}"
                             "QLabel {font-size: 15pt;}");
 
 
@@ -102,16 +159,16 @@ PlayList::PlayList(QWidget *parent) :
     hbl->setAlignment(Qt::AlignLeft);
     //hbl->addSpacing(width());
     hbl->addWidget(nameLabel);
-    hbl->addSpacing(40);
+    hbl->addSpacing(55);
     hbl->addWidget(flipButton);
-    hbl->addSpacing(35);
+    hbl->addSpacing(30);
     hbl->addWidget(downloadButton);
-    hbl->addSpacing(35);
+    hbl->addSpacing(30);
     hbl->addWidget(mpRemove);
-    hbl->addSpacing(35);
+    hbl->addSpacing(30);
     hbl->addWidget(mpAdd);
 
-    connect(mpClear, SIGNAL(clicked()), SLOT(clearItems()));
+    //connect(mpClear, SIGNAL(clicked()), SLOT(clearItems()));
     connect(mpRemove, SIGNAL(clicked()), SLOT(removeSelectedItems()));
     connect(mpAdd, SIGNAL(clicked()), SLOT(addItems()));
     connect(mpListView, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
@@ -258,6 +315,7 @@ void PlayList::addItems()
         if (!QFileInfo(file).isFile())
             continue;
         insert(file, i);
+
     }
 }
 

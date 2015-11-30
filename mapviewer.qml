@@ -8,7 +8,7 @@ import "content/dialogs"
 Item {
     id: page
     width: parent ? parent.width : 360
-    height: parent ? parent.height : 640
+    height: parent ? parent.height : 240
     property variant map
     property variant minimap
     property variant parameters
@@ -17,18 +17,13 @@ Item {
     property variant routePoint
     property variant routePoint2
 
-    Rectangle {
-        id: backgroundRect
-        anchors.fill: parent
-        color: "transparent"
-        z:0
-    }
+
 
     //=====================Menu=====================
     Menu {
         id:mainMenu
         anchors.bottom: parent.bottom
-        z: backgroundRect.z + 0
+        z: 0
 
         Component.onCompleted: {
             //addItem("Tools")
@@ -64,7 +59,7 @@ Item {
     //=====================Dialogs=====================
     Message {
         id: messageDialog
-        z: backgroundRect.z + 2
+        z: 0
         onOkButtonClicked: {
             page.state = ""
         }
@@ -121,7 +116,7 @@ Item {
          Address { id: startAddress }
          Address { id: endAddress }
 
-         z: backgroundRect.z + 2
+         z: 0
 
 
          GeocodeModel {
@@ -238,7 +233,7 @@ Item {
         id: geocodeDialog
 //! [geocode0]
         title: "Geocode"
-        z: backgroundRect.z + 2
+        z: 0
 
         Component.onCompleted: {
             var obj = [["Street", "Brandl St"],["City", "Eight Mile Plains"],["State", ""],["Country","Australia"], ["Postal code", ""]]
@@ -280,7 +275,7 @@ Item {
     InputDialog {
         id: reverseGeocodeDialog
         title: "Reverse Geocode"
-        z: backgroundRect.z + 2
+        z: 0
 
         Component.onCompleted: {
             var obj = [["Latitude","-27.575"],["Longitude", "153.088"]]
@@ -488,9 +483,9 @@ Item {
             map = Qt.createQmlObject ('import QtLocation 5.3;\
                                        import "content/map";\
                                        MapComponent{\
-                                           z : backgroundRect.z + 1;\
+                                           z : 0 + 1;\
                                            width: page.width;\
-                                           height: page.height - mainMenu.height;\
+                                           height: 240;\
                                            onFollowmeChanged: {toolsMenu.update()}\
                                            onSupportedMapTypesChanged: {mapTypeMenu.update()}\
                                            onCoordinatesCaptured: {\

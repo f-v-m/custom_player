@@ -22,6 +22,20 @@
 #include <QWidgetAction>
 #include <QLabel>
 
+#include <qwt_plot.h>
+#include <qwt_plot_grid.h>
+
+#include <qwt_legend.h>
+
+#include <qwt_plot_curve.h>
+#include <qwt_symbol.h>
+
+#include <qwt_plot_magnifier.h>
+
+#include <qwt_plot_panner.h>
+
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
 
 
 using namespace QtAV;
@@ -70,15 +84,16 @@ static bool parseArgs(QStringList& args, QVariantMap& parameters)
 PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
   , mpSubtitle(0)
 {
-
+/*
     QPalette palette;
     QColor oldBackColor = palette.color( QPalette::Background );
     palette.setColor(QPalette::Background, QColor::fromRgb(8,8,8));
     this->setPalette(palette);
-
+*/
+    this->setStyleSheet("QWidget {background-image: url(:/images/images/bg/bg.png))}");
     //this->layout()->setMargin(0);
 
-    setWindowTitle(QString::fromLatin1("Viewer"));
+    setWindowTitle(QString::fromLatin1("ADAS ONE Viewer"));
     setWindowIcon(QIcon(":/images/images/top/logo.png"));
 
     initMyPlayer();
@@ -172,6 +187,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
+
     //speed/sliders/coords:
 
 
@@ -190,6 +206,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(b2, SIGNAL(clicked()), SLOT(rearCamera()));
     connect(forward_button, SIGNAL(clicked()), SLOT(forwardSeek()));
     connect(back_button, SIGNAL(clicked()), SLOT(backSeek()));
+    connect(play_speed_slider, SIGNAL(sliderMoved(int)), SLOT(changeSpeed(int)));
+    connect(brightness_slider, SIGNAL(sliderMoved(int)), SLOT(changeBrightness(int)));
+    connect(volume_slider, SIGNAL(sliderMoved(int)), SLOT(changeVolume(int)));
     //connect(new_button, SIGNAL(clicked()), SLOT(azaza()));
 
 
@@ -236,11 +255,13 @@ void PlayerWindow::play(const QString &name)
     item.setTitle(mTitle);
     item.setLastTime(0);
 
-    m_vo->setOrientation(180);
+    //m_vo->setOrientation(180);
 
     m_player->play(name);
     m_player2->play(name);
     m_player2->setVideoStream(1);
+    m_player2->audio()->isMute();
+
 
 
     //totalTime->setText(QString::number(m_player->duration()));
@@ -248,5 +269,7 @@ void PlayerWindow::play(const QString &name)
 
     currentTime->setText("00:00:00");
     totalTime->setText("00:00:00");
+
+
 
 }

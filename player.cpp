@@ -29,13 +29,8 @@ void PlayerWindow::openMedia()
     QString file = QFileDialog::getOpenFileName(0, tr("Open a video"));
     if (file.isEmpty())
         return;
-    cout << file.toStdString() << " from open func" << endl;
-    /*
-    m_player->play(file);
 
-    m_player2->play(file);
-    m_player2->setVideoStream(1);
-    */
+
     play(file);
 
 
@@ -71,6 +66,23 @@ void PlayerWindow::playPause()
     }
 
 
-
 }
 
+void PlayerWindow::changeBrightness(int br){
+    double playerBr = double(br)/10;
+    cout << playerBr << "brightness" << endl;
+    m_vo->setBrightness(playerBr);
+    m_vo2->setBrightness(playerBr);
+}
+
+void PlayerWindow::changeSpeed(int sp){
+    double playSp = 2^sp;
+
+    m_player->setSpeed(playSp);
+    m_player2->setSpeed(playSp);
+}
+
+void PlayerWindow::changeVolume(int vol){
+    double playerVol = vol;
+    m_player->audio()->setVolume(playerVol);
+}

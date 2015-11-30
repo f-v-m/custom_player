@@ -61,8 +61,8 @@ Item {
         id: dialogRectangle
 
         color: "#ECECEC"
-        width: parent.width - gap;
-        height: titleBar.height + message.height + okButton.height + gap*3
+        width: 0;
+        height: 0
         anchors {
             verticalCenter: parent.verticalCenter
             left: parent.left

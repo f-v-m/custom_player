@@ -109,7 +109,61 @@ void PlayerWindow::parseSub(){
 
         //speed progress:
         speedProgress->setValue(lst[26].toInt());
+
+        //graph:
+
+        //*pointsX << QPointF( 1 , lst[3].toInt() );
+        const double v = double (x);
+        *pointsX << QPointF( v , lst[3].toInt() );
+        curveX->setSamples(*pointsX);
+
+        const double v2 = double (y);
+        *pointsY << QPointF( v2 , lst[4].toInt() );
+        curveY->setSamples(*pointsY);
+
+        const double v3 = double (z);
+        *pointsZ << QPointF( v3 , lst[5].toInt() );
+        curveZ->setSamples(*pointsZ);
+
+        plot->replot();
+        plot->setAxisScale(plot->xBottom, x-10, x, 0);
+
+        x += 1;
+        y += 1;
+        z += 1;
+        gSensorX->setText(" X: "+lst[3]);
+        gSensorY->setText(" Y: "+lst[4]);
+        gSensorZ->setText(" Z: "+lst[5]);
+
+
+        //gear position:
+
+        if (lst[20] == "0"){
+            pLabel->setStyleSheet("QLabel {color: green;}");
+            rLabel->setStyleSheet("QLabel {color: white;}");
+            nLabel->setStyleSheet("QLabel {color: white;}");
+            dLabel->setStyleSheet("QLabel {color: white;}");
+        }else if (lst[20] == "1"){
+            rLabel->setStyleSheet("QLabel {color: green;}");
+            pLabel->setStyleSheet("QLabel {color: white;}");
+            nLabel->setStyleSheet("QLabel {color: white;}");
+            dLabel->setStyleSheet("QLabel {color: white;}");
+        }else if (lst[20] == "2"){
+            nLabel->setStyleSheet("QLabel {color: green;}");
+            pLabel->setStyleSheet("QLabel {color: white;}");
+            rLabel->setStyleSheet("QLabel {color: white;}");
+            dLabel->setStyleSheet("QLabel {color: white;}");
+        }else if (lst[20] == "3"){
+            dLabel->setStyleSheet("QLabel {color: green;}");
+            pLabel->setStyleSheet("QLabel {color: white;}");
+            rLabel->setStyleSheet("QLabel {color: white;}");
+            nLabel->setStyleSheet("QLabel {color: white;}");
+        }
+
+
     }
-    else
+    else{
         cout << "NOT LOADED" << endl;
+
+    }
 }

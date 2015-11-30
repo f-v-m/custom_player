@@ -457,7 +457,7 @@ Map {
             id: infoRect
             width: parent.width - catchImage.sourceSize.width
             height: parent.height
-            color: "#ECECEC"
+            color: "red"
             opacity: 1
             radius: 5
             MouseArea {

@@ -272,6 +272,7 @@ void PlayerWindow::initButtons(){
     speedProgress = new QProgressBar();
 
     speedSliderLabel = new QPushButton();
+
     brightnessSliderLabel = new QPushButton();
     volumeSliderLabel = new QPushButton();
 

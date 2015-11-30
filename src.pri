@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     $$PWD/subtitles.cpp \
     $$PWD/player.cpp \
     $$PWD/controls.cpp \
-    $$PWD/ui_buttons.cpp
+    $$PWD/ui_buttons.cpp \
+    $$PWD/gsensorsgraph.cpp
 
 HEADERS += \
     playerwindow.h \
@@ -20,7 +21,7 @@ HEADERS += \
     playlist/PlayListModel.h \
     playlist/PlayListItem.h \
     playlist/PlayListDelegate.h \
-    playlist/PlayList.h \
+    playlist/PlayList.h
 
 RESOURCES += \
     mapviewerwrapper.qrc \

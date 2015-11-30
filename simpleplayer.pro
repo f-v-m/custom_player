@@ -2,6 +2,7 @@
 TEMPLATE = app
 CONFIG -= app_bundle
 CONFIG += ordered
+CONFIG += qwt
 
 
 QT += opengl qml network quick widgets

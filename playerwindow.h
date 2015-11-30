@@ -10,6 +10,20 @@
 #include <QLabel>
 #include <QProgressBar>
 #include <QLayout>
+#include <qwt_plot.h>
+#include <qwt_plot_grid.h>
+
+#include <qwt_legend.h>
+
+#include <qwt_plot_curve.h>
+#include <qwt_symbol.h>
+
+#include <qwt_plot_magnifier.h>
+
+#include <qwt_plot_panner.h>
+
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
 
 namespace QtAV {
 class SubtitleFilter;
@@ -63,6 +77,10 @@ private slots:
 
     void setSliderStyleSheet();
     void setSmallSliders();
+    void initGraph();
+    void changeBrightness(int br);
+    void changeSpeed(int sp);
+    void changeVolume(int vol);
 
 
 
@@ -188,6 +206,13 @@ private:
     QWidget *botW3;
     QWidget *botW4;
     QWidget *botW5;
+
+    QWidget *graph;
+    QwtPlot *plot;
+    QwtPlotCurve *curveX, *curveY, *curveZ;
+    QPolygonF *pointsX, *pointsY, *pointsZ;
+    int x,y,z;
+
 
 };
 

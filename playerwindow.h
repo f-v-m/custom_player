@@ -64,6 +64,8 @@ private slots:
 
     void parseSub();
     void rearCamera();
+    void frontCamera();
+    void bothCamera();
 
     void forwardSeek();
     void backSeek();
@@ -81,6 +83,8 @@ private slots:
     void changeBrightness(int br);
     void changeSpeed(int sp);
     void changeVolume(int vol);
+    void fulscreen();
+    void exitFullScreen();
 
 
 
@@ -212,6 +216,7 @@ private:
     QwtPlotCurve *curveX, *curveY, *curveZ;
     QPolygonF *pointsX, *pointsY, *pointsZ;
     int x,y,z;
+    bool front, rear, both, isFullscreen;
 
 
 };

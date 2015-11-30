@@ -54,20 +54,48 @@ void PlayerWindow::updateSlider()
 
 
 void PlayerWindow::rearCamera(){
-    if (m_player->isPlaying()){
-        if (rearCamIsEnabled){
-            m_player2->stop();
+    front = false;
+    rear = true;
+    both = false;
+    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_hover.png);"
+                      "border: none;} ");
+    b2->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/rear_view_active.png);"
+                      "border: none;} ");
+    b3->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/both_camera_hover.png);"
+                      "border: none;} ");
+    m_player->setRenderer(m_vo2);
 
-            rearCamIsEnabled = !rearCamIsEnabled;
-        }else {
+    m_player2->setRenderer(m_vo);
+}
 
-            m_player2->setStartPosition(m_player->position());
+void PlayerWindow::frontCamera(){
+    front = true;
+    rear = false;
+    both = false;
+    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_active.png);"
+                      "border: none;} ");
+    b2->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/rear_view_hover.png);"
+                      "border: none;} ");
+    b3->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/both_camera_hover.png);"
+                      "border: none;} ");
+    m_player->setRenderer(m_vo);
 
-            m_player2->play();
-            //m_player2->seek(m_player->position());
-            rearCamIsEnabled = !rearCamIsEnabled;
-        }
-    }
+    m_player2->setRenderer(m_vo2);
+}
+
+void PlayerWindow::bothCamera(){
+    front = false;
+    rear = false;
+    both = true;
+    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_hover.png);"
+                      "border: none;} ");
+    b2->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/rear_view_hover.png);"
+                      "border: none;} ");
+    b3->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/both_camera_active.png);"
+                      "border: none;} ");
+    m_player->setRenderer(m_vo);
+
+    m_player2->setRenderer(m_vo2);
 }
 
 void PlayerWindow::forwardSeek(){

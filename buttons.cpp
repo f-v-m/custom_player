@@ -97,7 +97,7 @@ void PlayerWindow::setButtonsStyle(){
     //STOP BUTTON
 
     //1 BUTTON
-    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_hover.png);"
+    b1->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/front_camera_active.png);"
                       "border: none;} "
                              "QPushButton:hover { background-image: url(:/images/images/music_player/front_camera_normal.png);"
                       "border: none;}");

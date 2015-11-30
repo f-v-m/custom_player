@@ -121,6 +121,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
         return;
     }
     m_player->setRenderer(m_vo);
+
     m_player2->setRenderer(m_vo2);
 
     //_______MAP
@@ -204,14 +205,21 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(m_stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player2, SLOT(stop()));
     connect(b2, SIGNAL(clicked()), SLOT(rearCamera()));
+    connect(b1, SIGNAL(clicked()), SLOT(frontCamera()));
+    connect(b3, SIGNAL(clicked()), SLOT(bothCamera()));
     connect(forward_button, SIGNAL(clicked()), SLOT(forwardSeek()));
     connect(back_button, SIGNAL(clicked()), SLOT(backSeek()));
     connect(play_speed_slider, SIGNAL(sliderMoved(int)), SLOT(changeSpeed(int)));
     connect(brightness_slider, SIGNAL(sliderMoved(int)), SLOT(changeBrightness(int)));
     connect(volume_slider, SIGNAL(sliderMoved(int)), SLOT(changeVolume(int)));
+    connect(b7, SIGNAL(clicked()), SLOT(fulscreen()));
+    connect(m_vo->widget(), SIGNAL(clicked()), SLOT(exitFullScreen()));
     //connect(new_button, SIGNAL(clicked()), SLOT(azaza()));
 
-
+    front = true;
+    rear = false;
+    both = false;
+    isFullscreen = false;
 
     //mpPlayList->set
 }
@@ -257,10 +265,18 @@ void PlayerWindow::play(const QString &name)
 
     //m_vo->setOrientation(180);
 
+
     m_player->play(name);
     m_player2->play(name);
     m_player2->setVideoStream(1);
-    m_player2->audio()->isMute();
+    m_player2->audio()->setMute(true);
+
+    //QTransform t;
+    //t.scale(-1.,1.);
+    //t.translate(-674.,0.);
+    //m_vo->videoRect().translate();
+    //m_vo->widget()->rect().translate(-674.,0.);
+
 
 
 
@@ -269,6 +285,9 @@ void PlayerWindow::play(const QString &name)
 
     currentTime->setText("00:00:00");
     totalTime->setText("00:00:00");
+
+
+
 
 
 

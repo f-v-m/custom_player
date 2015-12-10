@@ -5,10 +5,14 @@
 #include <QtCore/QModelIndex>
 #include "PlayListItem.h"
 #include <QLabel>
+#include <windows.h>
+
+
 
 class QListView;
 class QToolButton;
 class PlayListDelegate;
+class PlayerWindow;
 
 class PlayListModel;
 class PlayList : public QWidget
@@ -31,6 +35,12 @@ public:
     void setMaxRows(int r);
     int maxRows() const;
 
+    int rowIndex;
+    int rowsQuantity = 0;
+    bool isClicked = false;
+    WIN32_FIND_DATAA findData;
+    std::map<std::string, FILETIME> report;
+
 signals:
     void aboutToPlay(const QString& url);
 
@@ -51,6 +61,7 @@ private:
     int mMaxRows;
     QString mFile;
     bool mFirstShow;
+
 };
 
 #endif // PLAYLIST_H

@@ -26,28 +26,28 @@
 QDataStream& operator>> (QDataStream& s, PlayListItem& p)
 {
     int stars;
-    qint64 duration, last_time;
+    //qint64 duration, last_time;
     QString url, title;
-    s >> url >> title >> duration >> last_time >> stars;
+    s >> url >> title;// >> duration >> last_time >> stars;
     p.setTitle(title);
 
     p.setUrl(url);
-    p.setStars(stars);
-    p.setDuration(duration);
-    p.setLastTime(last_time);
+    //p.setStars(stars);
+    //p.setDuration(duration);
+    //p.setLastTime(last_time);
     return s;
 }
 
 QDataStream& operator<< (QDataStream& s, const PlayListItem& p)
 {
-    s << p.url() << p.title() << p.duration() << p.lastTime() << p.stars();
+    s << p.url() << p.title();// << p.duration() << p.lastTime() << p.stars();
     return s;
 }
 
 PlayListItem::PlayListItem()
     : mStars(0)
-    , mLastTime(0)
-    , mDuration(0)
+    //, mLastTime(0)
+    //, mDuration(0)
 {
 }
 

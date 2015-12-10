@@ -27,7 +27,7 @@
 
 static const int kMarginLeft = 4;
 static const int kMarginTop = 2;
-static const int kWidth = 400;
+static const int kWidth = 700;
 static const int kHeightMax = 30;
 static const int kHeightMin = 20;
 
@@ -48,6 +48,8 @@ void PlayListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     painter->save();
     painter->translate(option.rect.topLeft()); //!!!
     painter->setRenderHint(QPainter::Antialiasing, true);
+    QPen penHText(QColor("#2b2b2b"));
+    painter->setPen(penHText);
     PlayListItem pli = qvariant_cast<PlayListItem>(index.data(Qt::DisplayRole));
     //selected state has different background
     bool detail = false;
@@ -57,7 +59,11 @@ void PlayListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if (option.state & QStyle::State_Selected) {
         detail = true;
         mSelectedRows.append(index.row());
-        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(66,66, 66));
+        painter->fillRect(QRect(0, 0, kWidth, kHeightMin), QColor(13,13, 13));
+        painter->drawLine(30,0,30,kHeightMin);
+        painter->drawLine(130,0,130,kHeightMin);
+        painter->drawLine(215,0,215,kHeightMin);
+        painter->drawLine(0,kHeightMin,kWidth,kHeightMin);
         painter->setBrush(QBrush( Qt::white, Qt::BDiagPattern));
         //style->drawControl(QStyle::CE_ItemViewItem, &option, painter, widget);
     } else {
@@ -71,26 +77,46 @@ void PlayListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             mHighlightRow = index.row();
             m->updateLayout();
         }
-        painter->fillRect(QRect(0, 0, kWidth, kHeightMax), QColor(19, 19, 19));
+        painter->fillRect(QRect(0, 0, kWidth, kHeightMin), QColor(13, 13, 13));
+        painter->drawLine(30,0,30,kHeightMin);
+        painter->drawLine(130,0,130,kHeightMin);
+        painter->drawLine(215,0,215,kHeightMin);
+        painter->drawLine(0,kHeightMin,kWidth,kHeightMin);
     }
     QFont ft;
 
-    ft.setBold(detail);
+    //ft.setBold(detail);
     ft.setPixelSize(12);//kHeightMin - 2*kMarginTop);
     painter->setFont(ft);
 
+    painter->drawLine(30,0,30,kHeightMin);
+    painter->drawLine(130,0,130,kHeightMin);
+    painter->drawLine(215,0,215,kHeightMin);
+    painter->drawLine(0,kHeightMin,kWidth,kHeightMin);
+    if (detail ){
+        QPen penHText(QColor("#e6895e"));
+        painter->setPen(penHText);
+    }else {
+        QPen penHText(QColor("#ffffff"));
+        painter->setPen(penHText);
+    }
+
+
 
     painter->translate(kMarginLeft, kMarginTop);
-    painter->drawText(QRect(0, 0, kWidth - 2*kMarginLeft, kHeightMin - 2*kMarginTop), pli.title());
+    painter->drawText(QRect(0, 0, kWidth - 2*kMarginLeft, kHeightMin - 2*kMarginTop), pli.pliNum);
+    painter->drawText(QRect(30, 0, 130, kHeightMin - 2*kMarginTop), pli.pliDate);
+    painter->drawText(QRect(130, 0, 215, kHeightMin - 2*kMarginTop), pli.pliSize);
+    painter->drawText(QRect(215, 0, kWidth, kHeightMin - 2*kMarginTop), pli.title());
     painter->translate(0, kHeightMin + kMarginTop);
-    if (detail) {
+    /**if (detail) {
         painter->save();
         ft.setBold(false);
         ft.setPixelSize(8);//(kHeightMax - kHeightMin - 2*kMarginTop));
         painter->setFont(ft);
         painter->drawText(0, 0, pli.lastTimeString() + QString::fromLatin1("/") + pli.durationString());
         painter->restore();
-    }
+    }*/
     painter->restore();
 }
 
@@ -104,7 +130,7 @@ QSize PlayListDelegate::sizeHint(const QStyleOptionViewItem &option,
     bool detail = option.state & (QStyle::State_Selected|QStyle::State_MouseOver);
     // TODO: why detail always false?
     if (detail || mHighlightRow == index.row() || mSelectedRows.contains(index.row())) {
-        return QSize(kWidth, kHeightMax);
+        return QSize(kWidth, kHeightMin);
     }
     return QSize(kWidth, kHeightMin);
 }

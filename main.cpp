@@ -31,8 +31,13 @@ int main(int argc, char *argv[])
 {
     QtAV::Widgets::registerRenderers();
     QApplication a(argc, argv);
+    a.setApplicationName("ADAS ONE PC Viewer");
 
     PlayerWindow player;
+    player.setWindowFlags(Qt::FramelessWindowHint);
+    player.move(10,10);
+    player.setFixedSize(1000, 832);
+    //player.setMaximumSize(1920,1080);
     player.show();
     //player.resize(800, 600);
 

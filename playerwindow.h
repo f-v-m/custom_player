@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QProgressBar>
 #include <QLayout>
+#include <QQuickView>
 #include <qwt_plot.h>
 #include <qwt_plot_grid.h>
 
@@ -25,6 +26,7 @@
 #include <qwt_plot_picker.h>
 #include <qwt_picker_machine.h>
 
+#include <QMouseEvent>
 namespace QtAV {
 class SubtitleFilter;
 }
@@ -40,6 +42,28 @@ class PlayerWindow : public QWidget
     Q_OBJECT
 public:
     explicit PlayerWindow(QWidget *parent = 0);
+    void mousePressEvent(QMouseEvent *event)
+        {
+            // Запоминаем позицию при нажатии кнопки мыши
+            mpos = event->pos();
+        }
+
+        void mouseMoveEvent(QMouseEvent *event)
+        {
+            if (mpos.x() >= 0 && event->buttons() && Qt::LeftButton)
+            {
+                QPoint diff = event->pos() - mpos;
+                QPoint newpos = this->pos() + diff;
+
+                this->move(newpos);
+            }
+        }
+
+        void mouseReleaseEvent(QMouseEvent *)
+        {
+            // Очищаем старое значение позиции нажатия мыши
+            mpos = QPoint(-1, -1);
+        }
 public Q_SLOTS:
     void openMedia();
     void seek(int);
@@ -85,14 +109,23 @@ private slots:
     void changeVolume(int vol);
     void fulscreen();
     void exitFullScreen();
+    void nextFile();
+    void prevFile();
 
 
+    void setGridLay();
+    void mirrorVert();
+    void mirrorHor();
+    void zoomVideo();
+
+    void setTopPanel();
 
 
 signals:
     void ready();
 
 private:
+    QPoint mpos;
     bool mIsReady, mHasPendingPlay;
     QtAV::VideoOutput *m_vo;
     QtAV::AVPlayer *m_player;
@@ -146,6 +179,7 @@ private:
     QLabel *dLabel;
     QLabel *mLabel;
 
+    QQuickView *view;
     QLabel *currentTime;
     QLabel *totalTime;
 
@@ -210,6 +244,12 @@ private:
     QWidget *botW3;
     QWidget *botW4;
     QWidget *botW5;
+    QGridLayout *firstLayout;
+    QWidget *firstLaoutWidg;
+    QGridLayout *secondLayout;
+    QWidget *secondLaoutWidg;
+    QGridLayout *thirdLayout;
+    QWidget *thirdLaoutWidg;
 
     QWidget *graph;
     QwtPlot *plot;
@@ -217,6 +257,12 @@ private:
     QPolygonF *pointsX, *pointsY, *pointsZ;
     int x,y,z;
     bool front, rear, both, isFullscreen;
+    int rowForPlay;
+    bool isMirrorVert = false;
+    bool isZoomed = false;
+    bool isMirrorHor = false;
+    QWidget *topPanel;
+
 
 
 };

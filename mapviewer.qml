@@ -7,8 +7,8 @@ import "content/dialogs"
 
 Item {
     id: page
-    width: parent ? parent.width : 360
-    height: parent ? parent.height : 240
+    width: parent ? parent.width : 900
+    height: parent ? parent.height : 550
     property variant map
     property variant minimap
     property variant parameters
@@ -484,8 +484,10 @@ Item {
                                        import "content/map";\
                                        MapComponent{\
                                            z : 0 + 1;\
-                                           width: page.width;\
-                                           height: 240;\
+                                           width: 900;\
+                                           height: 550;\
+                                           anchors.horizontalCenter: parent.horizontalCenter;\
+                                           anchors.verticalCenter: parent.verticalCenter;\
                                            onFollowmeChanged: {toolsMenu.update()}\
                                            onSupportedMapTypesChanged: {mapTypeMenu.update()}\
                                            onCoordinatesCaptured: {\

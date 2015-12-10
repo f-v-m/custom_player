@@ -47,6 +47,9 @@
 #include <QtCore/QDataStream>
 #include <QLabel>
 
+#include <sys/stat.h>
+#include <time.h>
+
 using namespace std;
 
 PlayList::PlayList(QWidget *parent) :
@@ -69,7 +72,7 @@ PlayList::PlayList(QWidget *parent) :
     vbl->setSpacing(0);
     vbl->setContentsMargins(0,0,0,0);
 
-    mpListView->setStyleSheet("QListView { border-image: url(:/images/images/file_list/file_list_bg.png);}");
+    mpListView->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
 
     QHBoxLayout *hbl = new QHBoxLayout();
     QWidget *hw1 = new QWidget();
@@ -81,39 +84,42 @@ PlayList::PlayList(QWidget *parent) :
     hb2->setSpacing(0);
     QWidget *hw2 = new QWidget();
     hw2->setLayout(hb2);
+    hw2->setStyleSheet("QWidget { border-image: url(:/images/images/google_map/google_bottom_bar_bg.png);}");
 
 
     QPushButton *all = new QPushButton("All");
-    all->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
                        "border: 0;"
                        "color: white;}"
                        "QPushButton:hover {color: #ff9666};");
     QPushButton *event = new QPushButton("Event");
-    event->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                          "border: 0;"
                          "color: white;}"
                          "QPushButton:hover {color: #ff9666};");
     QPushButton *parking = new QPushButton("Parking");
-    parking->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                            "border: 0;"
                            "color: white;}"
                            "QPushButton:hover {color: #ff9666};");
     QPushButton *normal = new QPushButton("Normal");
-    normal->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                           "border: 0;"
                           "color: white;}"
                           "QPushButton:hover {color: #ff9666};");
     QPushButton *manual = new QPushButton("Manual");
-    manual->setStyleSheet("QPushButton {background-image: url(:/images/images/file_list/active_heading_bg.png);"
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                           "border: 0;"
                           "color: white;}"
                           "QPushButton:hover {color: #ff9666};");
-    all->setFixedSize(64, 25);
-    event->setFixedSize(64, 25);
-    parking->setFixedSize(64, 25);
-    normal->setFixedSize(64, 25);
-    manual->setFixedSize(64, 25);
+    all->setFixedSize(76, 25);
+    event->setFixedSize(76, 25);
+    parking->setFixedSize(76, 25);
+    normal->setFixedSize(76, 25);
+    manual->setFixedSize(76, 25);
     hb2->setContentsMargins(0,0,0,0);
+    hb2->setSpacing(1);
+    hb2->setAlignment(Qt::AlignLeft);
     hw2->setContentsMargins(0,0,0,0);
     hb2->addWidget(all);
     hb2->addWidget(event);
@@ -122,8 +128,49 @@ PlayList::PlayList(QWidget *parent) :
     hb2->addWidget(manual);
 
     vbl->addWidget(hw2);
+    QPushButton *numb = new QPushButton("№");
+    numb->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_list_bg.png);"
+                          "border: 0;"
+                          "color: white;}");
+    numb->setFixedSize(30,25);
+    QPushButton *date = new QPushButton("Date");
+    date->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_list_bg.png);"
+                          "border: 0;"
+                          "color: white;}");
+    date->setFixedSize(100,25);
+    QPushButton *size = new QPushButton("Size");
+    size->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_list_bg.png);"
+                          "border: 0;"
+                          "color: white;}");
+    size->setFixedSize(86,25);
+    QPushButton *name = new QPushButton("Name");
+    name->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_list_bg.png);"
+                          "border: 0;"
+                          "color: white;}");
+    name->setFixedHeight(25);
+    //name->setMinimumWidth(162);
+    //name->setMaximumWidth(485);
+    name->setFixedWidth(485);
+    QHBoxLayout *hb3 = new QHBoxLayout();
+    hb3->setAlignment(Qt::AlignLeft);
+    hb3->setSpacing(0);
+    QWidget *hw3 = new QWidget();
+    hw3->setLayout(hb3);
+    hw3->setStyleSheet("QWidget { border-image: url(:/images/images/file_list/active_list_bg.png);}");
+    hb3->addWidget(numb);
+    hb3->addSpacing(1);
+    hb3->addWidget(date);
+    hb3->addSpacing(1);
+    hb3->addWidget(size);
+    hb3->addSpacing(1);
+    hb3->addWidget(name);
+
+    hb3->setContentsMargins(0,0,0,0);
+    hw3->setContentsMargins(0,0,0,0);
+    vbl->addWidget(hw3);
+
     mpListView->setContentsMargins(0,0,0,0);
-    mpListView->setMaximumWidth(500);
+    mpListView->setMaximumWidth(700);
     vbl->addWidget(mpListView);
 
 
@@ -263,8 +310,43 @@ void PlayList::insert(const QString &url, int row)
     if (!url.contains(QLatin1String("://")) || url.startsWith(QLatin1String("file://"))) {
         title = QFileInfo(url).fileName();
     }
+
+    QString curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+    struct stat buf;
+    stat(item.url().toStdString().c_str(), &buf);
+    char date[30];
+    //date = asctime(localtime(&buf.st_atime));
+
+    strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+
+    //SIZE:
+    size_t size = buf.st_size;
+    static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+    int div = 0;
+    size_t rem = 0;
+
+    while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+        rem = (size % 1024);
+        div++;
+        size /= 1024;
+    }
+
+    double size_d = (float)size + (float)rem / 1024.0;
+    double d = size_d * 100.0;
+    int i = d + 0.5;
+    d = (int)i / 100.0;
+    QString curSize = " " + QString::number(d)+SIZES[div];
+
+    //----------------------
+
+    QString formatedTitle = title.leftJustified(30, ' ');
+    //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+    item.pliNum = curNum;
+    item.pliDate = date;
+    item.pliSize = curSize;
+
     item.setTitle(title);
-    insertItemAt(item, row);
+    insertItemAt(item, rowsQuantity);
 }
 
 void PlayList::remove(const QString &url)
@@ -295,6 +377,7 @@ void PlayList::removeSelectedItems()
     QModelIndexList s = selection->selectedIndexes();
     for (int i = s.size()-1; i >= 0; --i) {
         mpModel->removeRow(s.at(i).row());
+        rowsQuantity = rowsQuantity - 1;
     }
 }
 
@@ -307,6 +390,7 @@ void PlayList::addItems()
 {
     // TODO: add url;
     QStringList files = QFileDialog::getOpenFileNames(0, tr("Select files"));
+
     if (files.isEmpty())
         return;
     // TODO: check playlist file: m3u, pls... In another thread
@@ -316,12 +400,18 @@ void PlayList::addItems()
             continue;
         insert(file, i);
 
+        rowsQuantity+=1;
     }
 }
 
 void PlayList::onAboutToPlay(const QModelIndex &index)
 {
+    rowIndex = index.row();
+    isClicked = true;
     emit aboutToPlay(index.data(Qt::DisplayRole).value<PlayListItem>().url());
+
+
+    cout << "parasha" << rowIndex << endl;
     save();
 }
 

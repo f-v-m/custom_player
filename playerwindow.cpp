@@ -84,12 +84,7 @@ static bool parseArgs(QStringList& args, QVariantMap& parameters)
 PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
   , mpSubtitle(0)
 {
-/*
-    QPalette palette;
-    QColor oldBackColor = palette.color( QPalette::Background );
-    palette.setColor(QPalette::Background, QColor::fromRgb(8,8,8));
-    this->setPalette(palette);
-*/
+
     this->setStyleSheet("QWidget {background-image: url(:/images/images/bg/bg.png))}");
     //this->layout()->setMargin(0);
 
@@ -100,13 +95,13 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     initMySubtitles();
     initButtons();
     setButtonsStyle();
+    setTopPanel();
 
 
-    QHBoxLayout *mainLayout = new QHBoxLayout();
-    setLayout (mainLayout);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
+    firstLayout = new QGridLayout();
+    firstLayout->setSpacing(0);
+    firstLayout->setContentsMargins(0,0,0,0);
+    setLayout(firstLayout);
 
 
 
@@ -132,7 +127,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     if (parseArgs(args, parameters)) exit(0);
 
     const QString mainQmlApp = QLatin1String("qrc:///mapviewer.qml");
-    QQuickView *view = new QQuickView();
+    view = new QQuickView();
 
     view->engine()->addImportPath(QLatin1String(":/imports"));
 
@@ -150,6 +145,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     container = QWidget::createWindowContainer(view, this);
 
 
+
     connect(m_player, SIGNAL(positionChanged(qint64)), SLOT(parseSub()));
     //______
 
@@ -161,10 +157,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
 
-    mainLayout->addWidget(leftVertWidg);
-    mainLayout->addWidget(rightVertWidg);
-    vertLeft->addWidget(m_vo->widget());
-    vertRight->addWidget(m_vo2->widget());
+
+    //vertLeft->addWidget(m_vo->widget());
+    //vertRight->addWidget(m_vo2->widget());
     //m_vo->widget()->setStyleSheet("QWidget {background: transparent}");
     m_vo->widget()->setContentsMargins(0,0,0,0);
     m_vo->widget()->setStyleSheet("QWidget { background-image: url(:/images/images/main_camera/main_camera_box.png); }");
@@ -173,7 +168,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     setWidgetsSize();
     vertLeft->addWidget(sliderButtonsWidg);
 
-    vertRight->addWidget(container);
+    //vertRight->addWidget(container);
 
     vertRight->addWidget(mpPlayList);
 
@@ -200,6 +195,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     vertLeft->addWidget(bot_buttons);
 
+    setGridLay();
 
     connect(m_playBtn, SIGNAL(clicked()), SLOT(playPause()));
     connect(m_stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
@@ -214,12 +210,21 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(volume_slider, SIGNAL(sliderMoved(int)), SLOT(changeVolume(int)));
     connect(b7, SIGNAL(clicked()), SLOT(fulscreen()));
     connect(m_vo->widget(), SIGNAL(clicked()), SLOT(exitFullScreen()));
-    //connect(new_button, SIGNAL(clicked()), SLOT(azaza()));
+    connect(this, SIGNAL(resizeEvent()), SLOT(rearCamera()));
+    //connect(mpPlayList->mpListView, SIGNAL(doubleClicked()), SLOT(setRowIndex()));
+    connect(next_button, SIGNAL(clicked()), SLOT(nextFile()));
+    connect(prev_button, SIGNAL(clicked()), SLOT(prevFile()));
+    connect(b4, SIGNAL(clicked()), SLOT(mirrorVert()));
+    connect(b6, SIGNAL(clicked()), SLOT(zoomVideo()));
+
 
     front = true;
     rear = false;
     both = false;
     isFullscreen = false;
+
+
+
 
     //mpPlayList->set
 }
@@ -271,13 +276,6 @@ void PlayerWindow::play(const QString &name)
     m_player2->setVideoStream(1);
     m_player2->audio()->setMute(true);
 
-    //QTransform t;
-    //t.scale(-1.,1.);
-    //t.translate(-674.,0.);
-    //m_vo->videoRect().translate();
-    //m_vo->widget()->rect().translate(-674.,0.);
-
-
 
 
     //totalTime->setText(QString::number(m_player->duration()));
@@ -285,10 +283,15 @@ void PlayerWindow::play(const QString &name)
 
     currentTime->setText("00:00:00");
     totalTime->setText("00:00:00");
+    m_vo->setOutAspectRatio(1.42529);
 
-
-
+    if (mpPlayList->isClicked){
+        rowForPlay = mpPlayList->rowIndex;
+    }
 
 
 
 }
+
+
+

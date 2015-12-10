@@ -169,9 +169,10 @@ void PlayerWindow::setButtonsStyle(){
     //SPEED
     speedButton->setStyleSheet("QLabel { background-image: url(:/images/images/graph_section/speed_metter_bg.png); }"
                                "QLabel {color: white;}"
+                               "QLabel {text-align: center; }"
                                "QLabel {font-weight: bold;}"
                                "QLabel {font-size: 15pt;}");
-    speedButton->setFixedSize(150, 50);
+    speedButton->setFixedSize(160, 82);
 
     //SLIDER TEXT:
 

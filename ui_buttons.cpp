@@ -126,7 +126,7 @@ void PlayerWindow::parseSub(){
         curveZ->setSamples(*pointsZ);
 
         plot->replot();
-        plot->setAxisScale(plot->xBottom, x-10, x, 0);
+        plot->setAxisScale(plot->xBottom, x-20, x, 0);
 
         x += 1;
         y += 1;

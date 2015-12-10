@@ -43,9 +43,14 @@ public:
     QString durationString() const;
     //icon
     bool operator ==(const PlayListItem& other) const;
+    QString pliNum;
+    QString pliDate;
+    QString pliSize;
+    QString pliName;
 private:
     QString mTitle;
     QString mUrl;
+
     int mStars;
     qint64 mLastTime, mDuration;
     QString mLastTimeS, mDurationS;

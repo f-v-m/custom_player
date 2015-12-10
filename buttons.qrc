@@ -114,6 +114,8 @@
         <file>images/top/minimize_btn_hover.png</file>
         <file>images/top/minimize_btn_normal.png</file>
         <file>images/top/top_bg.png</file>
+        <file>images/file_list/normal_heading_bg.png</file>
+        <file>images/top/logo1.png</file>
     </qresource>
     <qresource prefix="/">
         <file>logo.png</file>

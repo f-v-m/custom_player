@@ -91,90 +91,72 @@ void PlayerWindow::fulscreen(){
     if (!both){
         if (!isFullscreen){
             isFullscreen = !isFullscreen;
-            this->showFullScreen();
-            //rightVertWidg->hide();
-            //sliderButtonsWidg->hide();
+
+
+
             graphSectionWidg->hide();
             bot_buttons->hide();
             m_vo2->widget()->hide();
             container->hide();
             mpPlayList->hide();
 
-            m_vo->widget()->setFixedSize(this->width(), this->height() - 100);
+            //this->showMaximized();
+
+            this->showFullScreen();
+            m_vo->widget()->setFixedSize(this->width(), this->height()-110);
             sliderButtonsWidg->setFixedWidth(this->width());
-            vertLeft->setAlignment(Qt::AlignTop);
+
 
             b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_active.png);"
                               "border: none;} ");
+
         } else {
             isFullscreen = !isFullscreen;
             this->showNormal();
-            //this->showMinimized();
-            //this->showMaximized();
-
-            m_vo->widget()->setFixedSize(674, 397);
-            sliderButtonsWidg->setFixedWidth(674);
-            //vertRight->setAlignment(Qt::AlignRight);
-            vertRight->setAlignment(Qt::AlignTop);
-            //rightVertWidg->show();
-            sliderButtonsWidg->show();
+            m_vo->widget()->setMinimumSize(620, 435);
+            m_vo->widget()->setMaximumSize(1300, 715);
+            sliderButtonsWidg->setMinimumWidth(620);
+            sliderButtonsWidg->setMaximumWidth(1300);
             graphSectionWidg->show();
             bot_buttons->show();
-
             m_vo2->widget()->show();
             container->show();
             mpPlayList->show();
 
-            b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_hover.png);"
-                              "border: none;} ");
-        }
-    }else{
-        if (!isFullscreen){
-            isFullscreen = !isFullscreen;
-            this->showFullScreen();
-            //rightVertWidg->hide();
-            //sliderButtonsWidg->hide();
-            graphSectionWidg->hide();
-            bot_buttons->hide();
-            container->hide();
-            mpPlayList->hide();
 
-
-
-            m_vo2->widget()->setFixedSize((this->width())/2, this->height() - 200);
-            m_vo2->widget()->move(this->width() /2, 0);
-            //m_vo2->widget()->setFixedHeight(this->height() - 100);
-            //sliderButtonsWidg->setFixedWidth((this->width())/2);
-            vertLeft->setAlignment(Qt::AlignTop);
-            //vertRight->setAlignment(Qt::AlignRight);
-            vertRight->setAlignment(Qt::AlignTop);
-            b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_active.png);"
-                              "border: none;} ");
-        } else {
-            isFullscreen = !isFullscreen;
-
-
-            //m_vo->widget()->setFixedSize(674, 397);
-            //m_vo2->widget()->setFixedHeight(196);
-            //sliderButtonsWidg->setFixedWidth(674);
-            //rightVertWidg->show();
-            //m_vo2->widget()->move(-this->width() /2, 0);
-
-            m_vo2->widget()->setFixedHeight(196);
-            m_vo2->widget()->setMinimumWidth(323);
-            //sliderButtonsWidg->show();
-            graphSectionWidg->show();
-            bot_buttons->show();
-            container->show();
-            mpPlayList->show();
-            this->showMinimized();
-            vertRight->setAlignment(Qt::AlignTop);
 
             b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_hover.png);"
                               "border: none;} ");
         }
     }
+  /*  else{
+        if (!isFullscreen){
+            isFullscreen = !isFullscreen;
 
+            graphSectionWidg->hide();
+            bot_buttons->hide();
+            //m_vo2->widget()->hide();
+            container->hide();
+            mpPlayList->hide();
+            //this->showFullScreen();
+            b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_active.png);"
+                              "border: none;} ");
+
+        } else {
+            isFullscreen = !isFullscreen;
+
+            graphSectionWidg->show();
+            bot_buttons->show();
+            //m_vo2->widget()->hide();
+            container->show();
+            mpPlayList->show();
+
+            b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_hover.png);"
+                              "border: none;} ");
+
+        }
+    }
+*/
 
 
 
@@ -188,3 +170,86 @@ void PlayerWindow::exitFullScreen(){
     graphSectionWidg->show();
     bot_buttons->show();
 }
+
+void PlayerWindow::nextFile(){
+    m_player->stop();
+    m_player2->stop();
+    //play(mpPlayList->itemAt(rowForPlay+1).mUrl);
+    rowForPlay+=1;
+    mpPlayList->isClicked = false;
+    //mpPlayList->rowIndex = rowForPlay;
+    if (rowForPlay >= mpPlayList->rowsQuantity){
+        rowForPlay = 0;
+    }
+    play(mpPlayList->itemAt(rowForPlay).url());
+
+}
+void PlayerWindow::prevFile(){
+    m_player->stop();
+    m_player2->stop();
+    //play(mpPlayList->itemAt(rowForPlay+1).mUrl);
+    rowForPlay-=1;
+    mpPlayList->isClicked = false;
+    //mpPlayList->rowIndex = rowForPlay;
+    if (rowForPlay < 0){
+        rowForPlay = mpPlayList->rowsQuantity -1;
+    }
+    play(mpPlayList->itemAt(rowForPlay).url());
+
+}
+
+void PlayerWindow::mirrorVert(){
+    if (isMirrorVert){
+        m_vo->setOrientation(0);
+        isMirrorVert = !isMirrorVert;
+        b4->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_upside_down_hover.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/invert_upside_down_normal.png);"
+                          "border: none;}");
+    }else{
+        m_vo->setOrientation(-180);
+        isMirrorVert = !isMirrorVert;
+        b4->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_upside_down_active.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/invert_upside_down_normal.png);"
+                          "border: none;}");
+    }
+}
+
+void PlayerWindow::mirrorHor(){
+    if (isMirrorHor){
+        //m_vo->setOrientation(0);
+        isMirrorHor = !isMirrorHor;
+        b5->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_left_To_right_hover.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/invert_left_To_right_normal.png);"
+                          "border: none;}");
+    }else{
+
+        isMirrorHor = !isMirrorHor;
+        b5->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/invert_left_To_right_active.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/invert_left_To_right_normal.png);"
+                          "border: none;}");
+    }
+}
+
+void PlayerWindow::zoomVideo(){
+    if (!isZoomed){
+        m_vo->setRegionOfInterest(480,270,960,540);
+        isZoomed = !isZoomed;
+        b6->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/crop_active.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/crop_normal.png);"
+                          "border: none;}");
+    }else{
+        m_vo->setRegionOfInterest(0,0,1920, 1080);
+        isZoomed = !isZoomed;
+        b6->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/crop_hover.png);"
+                          "border: none;} "
+                                 "QPushButton:hover { background-image: url(:/images/images/music_player/crop_normal.png);"
+                          "border: none;}");
+
+    }
+}
+

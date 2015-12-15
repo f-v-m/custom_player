@@ -25,6 +25,7 @@
 
 #include <qwt_plot_picker.h>
 #include <qwt_picker_machine.h>
+#include <QStackedWidget>
 
 #include <QMouseEvent>
 namespace QtAV {
@@ -95,7 +96,7 @@ private slots:
     void backSeek();
 
     //WIDGETS:
-    void initMainVertWidgets();
+
     void initSliderButtonsWidgets();
     void initGraphSectionWidgets();
     void initBottomButtonsWidget();
@@ -119,6 +120,9 @@ private slots:
     void zoomVideo();
 
     void setTopPanel();
+    void hideMainWindow();
+    void maxNormalView();
+    void initBottomButtons2();
 
 
 signals:
@@ -164,11 +168,21 @@ private:
     QPushButton *voltage;
     QPushButton *right_signal;
     QPushButton *patrol;
+    QPushButton *obdi2;
+    QPushButton *left_signal2;
+    QPushButton *wheel_angle2;
+    QPushButton *brake2;
+    QPushButton *temperature2;
+    QPushButton *accelerate2;
+    QPushButton *voltage2;
+    QPushButton *right_signal2;
+    QPushButton *patrol2;
     QLabel *speedButton;
     QPushButton *speedSliderLabel;
     QPushButton *brightnessSliderLabel;
     QPushButton *volumeSliderLabel;
 
+    QStackedWidget *mapStack;
     QLabel *gSensorX;
     QLabel *gSensorY;
     QLabel *gSensorZ;
@@ -188,7 +202,7 @@ private:
     QTextItem *txt1;
     QtAV::SubtitleFilter *mpSubtitle;
     QComboBox *box = new QComboBox();
-    PlayList *mpPlayList, *mpHistory;
+    PlayList *mpPlayList, *mpHistory, *mpPlayListEvent;
 
     void initMyPlayer();
     void initMySubtitles();
@@ -207,10 +221,8 @@ private:
     bool rearCamIsEnabled = true;
 
     //WIDGETS:
-    QVBoxLayout *vertLeft;
-    QVBoxLayout *vertRight;
-    QWidget *leftVertWidg;
-    QWidget *rightVertWidg;
+
+    QStackedWidget *bottomStack;
     QWidget *widg;
     QHBoxLayout *hb;
     QWidget *sliderWidg;
@@ -262,7 +274,16 @@ private:
     bool isZoomed = false;
     bool isMirrorHor = false;
     QWidget *topPanel;
+    bool isMaxSize = false;
 
+    QWidget *logo;
+    QLabel *title;
+    QPushButton *minimize;
+    QPushButton *maximize;
+    QPushButton *close;
+
+    QWidget *bottomButtonsWidg2;
+    QHBoxLayout *bottomButtonsLayout2;
 
 
 };

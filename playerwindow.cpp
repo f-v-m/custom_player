@@ -91,33 +91,11 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     setWindowTitle(QString::fromLatin1("ADAS ONE Viewer"));
     setWindowIcon(QIcon(":/images/images/top/logo.png"));
 
-    initMyPlayer();
-    initMySubtitles();
-    initButtons();
-    setButtonsStyle();
-    setTopPanel();
 
 
     firstLayout = new QGridLayout();
-    firstLayout->setSpacing(0);
-    firstLayout->setContentsMargins(0,0,0,0);
     setLayout(firstLayout);
 
-
-
-    initMainVertWidgets();
-
-    initSliderButtonsWidgets();
-    m_vo = new VideoOutput(this);
-    m_vo2 = new VideoOutput(this);
-
-    if (!m_vo->widget()) {
-        QMessageBox::warning(0, QString::fromLatin1("QtAV error"), tr("Can not create video renderer"));
-        return;
-    }
-    m_player->setRenderer(m_vo);
-
-    m_player2->setRenderer(m_vo2);
 
     //_______MAP
 
@@ -128,6 +106,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
     const QString mainQmlApp = QLatin1String("qrc:///mapviewer.qml");
     view = new QQuickView();
+
 
     view->engine()->addImportPath(QLatin1String(":/imports"));
 
@@ -141,8 +120,34 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     QMetaObject::invokeMethod(object, "setPluginParameters", Q_ARG(QVariant, QVariant::fromValue(parameters)));
 
     QObject::connect(view->engine(), SIGNAL(quit()), qApp, SLOT(quit()));
-    view->setGeometry(QRect(100, 100, 400, 300));
+    //view->setGeometry(QRect(100, 100, 400, 300));
+    //view->setGeometry(QRect(0,0,380,300));
     container = QWidget::createWindowContainer(view, this);
+    //--------------------
+
+
+    m_vo = new VideoOutput(this);
+    m_vo2 = new VideoOutput(this);
+    m_vo->setOutAspectRatio(1.4091);
+    m_vo2->setOutAspectRatio(1.6889);
+
+    setWidgetsSize();
+    initMyPlayer();
+    initMySubtitles();
+    initButtons();
+    setButtonsStyle();
+    setTopPanel();
+    initBottomButtons2();
+    initSliderButtonsWidgets();
+
+    if (!m_vo->widget()) {
+        QMessageBox::warning(0, QString::fromLatin1("QtAV error"), tr("Can not create video renderer"));
+        return;
+    }
+    m_player->setRenderer(m_vo);
+
+    m_player2->setRenderer(m_vo2);
+
 
 
 
@@ -153,24 +158,12 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     initPlaylistWidget();
 
     connect(mpPlayList, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
+    connect(mpPlayListEvent, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
 
 
 
 
 
-    //vertLeft->addWidget(m_vo->widget());
-    //vertRight->addWidget(m_vo2->widget());
-    //m_vo->widget()->setStyleSheet("QWidget {background: transparent}");
-    m_vo->widget()->setContentsMargins(0,0,0,0);
-    m_vo->widget()->setStyleSheet("QWidget { background-image: url(:/images/images/main_camera/main_camera_box.png); }");
-    //hor->addWidget(container);
-
-    setWidgetsSize();
-    vertLeft->addWidget(sliderButtonsWidg);
-
-    //vertRight->addWidget(container);
-
-    vertRight->addWidget(mpPlayList);
 
 
     //m_slider->setStyleSheet("QSlider { background-color: rgb(18, 18, 18); }");
@@ -188,12 +181,10 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 
 
     initGraphSectionWidgets();
-    vertLeft->addWidget(graphSectionWidg);
+
 
     //DESIGN OF BOTTOM BUTTONS:
     initBottomButtonsWidget();
-
-    vertLeft->addWidget(bot_buttons);
 
     setGridLay();
 
@@ -209,14 +200,14 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
     connect(brightness_slider, SIGNAL(sliderMoved(int)), SLOT(changeBrightness(int)));
     connect(volume_slider, SIGNAL(sliderMoved(int)), SLOT(changeVolume(int)));
     connect(b7, SIGNAL(clicked()), SLOT(fulscreen()));
-    connect(m_vo->widget(), SIGNAL(clicked()), SLOT(exitFullScreen()));
+
     connect(this, SIGNAL(resizeEvent()), SLOT(rearCamera()));
     //connect(mpPlayList->mpListView, SIGNAL(doubleClicked()), SLOT(setRowIndex()));
     connect(next_button, SIGNAL(clicked()), SLOT(nextFile()));
     connect(prev_button, SIGNAL(clicked()), SLOT(prevFile()));
     connect(b4, SIGNAL(clicked()), SLOT(mirrorVert()));
     connect(b6, SIGNAL(clicked()), SLOT(zoomVideo()));
-
+    connect(m_player, SIGNAL(stopped()), container, SLOT(hide()));
 
     front = true;
     rear = false;
@@ -283,13 +274,17 @@ void PlayerWindow::play(const QString &name)
 
     currentTime->setText("00:00:00");
     totalTime->setText("00:00:00");
-    m_vo->setOutAspectRatio(1.42529);
-
+    //m_vo->setOutAspectRatio(1.42529);
+    m_vo->setOutAspectRatio(double(m_vo->widget()->width())/double(m_vo->widget()->height()));
+    m_vo2->setOutAspectRatio(double(m_vo2->widget()->width())/double(m_vo2->widget()->height()));
     if (mpPlayList->isClicked){
         rowForPlay = mpPlayList->rowIndex;
     }
+    if (mpPlayListEvent->isClicked){
+        rowForPlay = mpPlayListEvent->rowIndex;
+    }
 
-
+    container->show();
 
 }
 

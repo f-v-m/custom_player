@@ -92,39 +92,36 @@ void PlayerWindow::fulscreen(){
         if (!isFullscreen){
             isFullscreen = !isFullscreen;
 
-
-
             graphSectionWidg->hide();
-            bot_buttons->hide();
+            bottomStack->hide();
             m_vo2->widget()->hide();
             container->hide();
             mpPlayList->hide();
 
             //this->showMaximized();
 
-            this->showFullScreen();
+            //this->showFullScreen();
             m_vo->widget()->setFixedSize(this->width(), this->height()-110);
             sliderButtonsWidg->setFixedWidth(this->width());
-
+            strangeButtonsWidg->setFixedWidth(m_vo->widget()->width()-270);
 
             b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_active.png);"
                               "border: none;} ");
 
         } else {
             isFullscreen = !isFullscreen;
-            this->showNormal();
+            //this->showNormal();
             m_vo->widget()->setMinimumSize(620, 435);
-            m_vo->widget()->setMaximumSize(1300, 715);
+            m_vo->widget()->setMaximumSize(1300, 900);
             sliderButtonsWidg->setMinimumWidth(620);
             sliderButtonsWidg->setMaximumWidth(1300);
             graphSectionWidg->show();
-            bot_buttons->show();
+            bottomStack->show();
             m_vo2->widget()->show();
             container->show();
             mpPlayList->show();
 
-
-
+            strangeButtonsWidg->setFixedWidth(m_vo->widget()->width()-270);
             b7->setStyleSheet("QPushButton { background-image: url(:/images/images/music_player/fullscreen_hover.png);"
                               "border: none;} ");
         }
@@ -165,7 +162,7 @@ void PlayerWindow::fulscreen(){
 void PlayerWindow::exitFullScreen(){
     this->showNormal();
     m_vo->widget()->setFixedSize(674, 397);
-    rightVertWidg->show();
+
     sliderButtonsWidg->show();
     graphSectionWidg->show();
     bot_buttons->show();

@@ -34,7 +34,7 @@
 #include <QPalette>
 #include <QWidgetAction>
 
-
+#include <QStackedWidget>
 #include "PlayList.h"
 #include "PlayListModel.h"
 #include "PlayListDelegate.h"
@@ -56,22 +56,60 @@ PlayList::PlayList(QWidget *parent) :
     QWidget(parent)
 {
     mFirstShow = true;
-    mMaxRows = -1;
+    mMaxRows = mMaxRowsEvent = mMaxRowsParking = mMaxRowsNormal = mMaxRowsManual = -1;
     mpModel = new PlayListModel(this);
+    mpModelEvent = new PlayListModel(this);
+    mpModelParking = new PlayListModel(this);
+    mpModelNormal = new PlayListModel(this);
+    mpModelManual = new PlayListModel(this);
+
     mpDelegate = new PlayListDelegate(this);
+    mpDelegateEvent = new PlayListDelegate(this);
+    mpDelegateParking = new PlayListDelegate(this);
+    mpDelegateNormal = new PlayListDelegate(this);
+    mpDelegateManual = new PlayListDelegate(this);
     mpListView = new QListView;
+    mpListViewEvent = new QListView;
+    mpListViewParking = new QListView;
+    mpListViewNormal = new QListView;
+    mpListViewManual = new QListView;
 
     //mpListView->setResizeMode(QListView::Adjust);
     mpListView->setModel(mpModel);
     mpListView->setItemDelegate(mpDelegate);
     mpListView->setSelectionMode(QAbstractItemView::ExtendedSelection); //ctrl,shift
     mpListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mpListViewEvent->setModel(mpModelEvent);
+    mpListViewEvent->setItemDelegate(mpDelegateEvent);
+    mpListViewEvent->setSelectionMode(QAbstractItemView::ExtendedSelection); //ctrl,shift
+    mpListViewEvent->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mpListViewParking->setModel(mpModelParking);
+    mpListViewParking->setItemDelegate(mpDelegateParking);
+    mpListViewParking->setSelectionMode(QAbstractItemView::ExtendedSelection); //ctrl,shift
+    mpListViewParking->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mpListViewNormal->setModel(mpModelNormal);
+    mpListViewNormal->setItemDelegate(mpDelegateNormal);
+    mpListViewNormal->setSelectionMode(QAbstractItemView::ExtendedSelection); //ctrl,shift
+    mpListViewNormal->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mpListViewManual->setModel(mpModelManual);
+    mpListViewManual->setItemDelegate(mpDelegateManual);
+    mpListViewManual->setSelectionMode(QAbstractItemView::ExtendedSelection); //ctrl,shift
+    mpListViewManual->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mpListView->setToolTip(QString::fromLatin1("Ctrl/Shift + ") + tr("Click to select multiple"));
     QVBoxLayout *vbl = new QVBoxLayout;
     setLayout(vbl);
     vbl->setSpacing(0);
     vbl->setContentsMargins(0,0,0,0);
+    playlistMode = 1;
 
+    mpListViewEvent->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
+    mpListViewParking->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
+    mpListViewNormal->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
+    mpListViewManual->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
     mpListView->setStyleSheet("QListView { background-image: url(:/images/images/file_list/file_list_bg.png);}");
 
     QHBoxLayout *hbl = new QHBoxLayout();
@@ -87,27 +125,27 @@ PlayList::PlayList(QWidget *parent) :
     hw2->setStyleSheet("QWidget { border-image: url(:/images/images/google_map/google_bottom_bar_bg.png);}");
 
 
-    QPushButton *all = new QPushButton("All");
+    all = new QPushButton("All");
     all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
                        "border: 0;"
                        "color: white;}"
                        "QPushButton:hover {color: #ff9666};");
-    QPushButton *event = new QPushButton("Event");
+    event = new QPushButton("Event");
     event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                          "border: 0;"
                          "color: white;}"
                          "QPushButton:hover {color: #ff9666};");
-    QPushButton *parking = new QPushButton("Parking");
+    parking = new QPushButton("Parking");
     parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                            "border: 0;"
                            "color: white;}"
                            "QPushButton:hover {color: #ff9666};");
-    QPushButton *normal = new QPushButton("Normal");
+    normal = new QPushButton("Normal");
     normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                           "border: 0;"
                           "color: white;}"
                           "QPushButton:hover {color: #ff9666};");
-    QPushButton *manual = new QPushButton("Manual");
+    manual = new QPushButton("Manual");
     manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
                           "border: 0;"
                           "color: white;}"
@@ -144,6 +182,7 @@ PlayList::PlayList(QWidget *parent) :
                           "color: white;}");
     size->setFixedSize(86,25);
     QPushButton *name = new QPushButton("Name");
+
     name->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_list_bg.png);"
                           "border: 0;"
                           "color: white;}");
@@ -171,7 +210,26 @@ PlayList::PlayList(QWidget *parent) :
 
     mpListView->setContentsMargins(0,0,0,0);
     mpListView->setMaximumWidth(700);
-    vbl->addWidget(mpListView);
+    mpListViewEvent->setContentsMargins(0,0,0,0);
+    mpListViewEvent->setMaximumWidth(700);
+    mpListViewParking->setContentsMargins(0,0,0,0);
+    mpListViewParking->setMaximumWidth(700);
+    mpListViewNormal->setContentsMargins(0,0,0,0);
+    mpListViewNormal->setMaximumWidth(700);
+    mpListViewManual->setContentsMargins(0,0,0,0);
+    mpListViewManual->setMaximumWidth(700);
+
+    plStack = new QStackedWidget();
+    plStack->setContentsMargins(0,0,0,0);
+    plStack->setMaximumWidth(700);
+
+    plStack->addWidget(mpListView);
+    plStack->addWidget(mpListViewEvent);
+    plStack->addWidget(mpListViewParking);
+    plStack->addWidget(mpListViewNormal);
+    plStack->addWidget(mpListViewManual);
+    plStack->setCurrentIndex(0);
+    vbl->addWidget(plStack);
 
 
     QLabel *nameLabel = new QLabel("File List");
@@ -219,8 +277,16 @@ PlayList::PlayList(QWidget *parent) :
     connect(mpRemove, SIGNAL(clicked()), SLOT(removeSelectedItems()));
     connect(mpAdd, SIGNAL(clicked()), SLOT(addItems()));
     connect(mpListView, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
-    // enter to highight
-    //connect(mpListView, SIGNAL(entered(QModelIndex)), SLOT(highlight(QModelIndex)));
+    connect(mpListViewEvent, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
+    connect(mpListViewParking, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
+    connect(mpListViewNormal, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
+    connect(mpListViewManual, SIGNAL(doubleClicked(QModelIndex)), SLOT(onAboutToPlay(QModelIndex)));
+
+    connect(all, SIGNAL(clicked()), SLOT(changePlaylistMode1()));
+    connect(event, SIGNAL(clicked()), SLOT(changePlaylistMode2()));
+    connect(parking, SIGNAL(clicked()), SLOT(changePlaylistMode3()));
+    connect(normal, SIGNAL(clicked()), SLOT(changePlaylistMode4()));
+    connect(manual, SIGNAL(clicked()), SLOT(changePlaylistMode5()));
 }
 
 PlayList::~PlayList()
@@ -262,42 +328,160 @@ void PlayList::save()
         return;
     }
     QDataStream ds(&f);
+    if (playlistMode == 2){
+        ds << mpModelEvent->items();
+    }else if (playlistMode ==3 ){
+        ds << mpModelParking->items();
+    }else if (playlistMode == 4){
+        ds << mpModelNormal->items();
+    }else if (playlistMode == 5){
+        ds << mpModelManual->items();
+    }
     ds << mpModel->items();
 }
 
 PlayListItem PlayList::itemAt(int row)
 {
-    if (mpModel->rowCount() < 0) {
-        qWarning("Invalid rowCount");
-        return PlayListItem();
+    if (playlistMode == 1){
+        if (mpModel->rowCount() < 0) {
+            qWarning("Invalid rowCount");
+            return PlayListItem();
+        }
+        return mpModel->data(mpModel->index(row), Qt::DisplayRole).value<PlayListItem>();
+    }else if (playlistMode == 2){
+        if (mpModelEvent->rowCount() < 0) {
+            qWarning("Invalid rowCount");
+            return PlayListItem();
+        }
+        return mpModelEvent->data(mpModelEvent->index(row), Qt::DisplayRole).value<PlayListItem>();
+    }else if (playlistMode ==3 ){
+        if (mpModelParking->rowCount() < 0) {
+            qWarning("Invalid rowCount");
+            return PlayListItem();
+        }
+        return mpModelParking->data(mpModelParking->index(row), Qt::DisplayRole).value<PlayListItem>();
+    }else if (playlistMode == 4){
+        if (mpModelNormal->rowCount() < 0) {
+            qWarning("Invalid rowCount");
+            return PlayListItem();
+        }
+        return mpModelNormal->data(mpModelNormal->index(row), Qt::DisplayRole).value<PlayListItem>();
+    }else if (playlistMode == 5){
+        if (mpModelManual->rowCount() < 0) {
+            qWarning("Invalid rowCount");
+            return PlayListItem();
+        }
+        return mpModelManual->data(mpModelManual->index(row), Qt::DisplayRole).value<PlayListItem>();
     }
-    return mpModel->data(mpModel->index(row), Qt::DisplayRole).value<PlayListItem>();
+
 }
 
 void PlayList::insertItemAt(const PlayListItem &item, int row)
 {
+    if (playlistMode == 2){
+        if (mMaxRowsEvent > 0 && mpModelEvent->rowCount() >= mMaxRowsEvent) {
+            // +1 because new row is to be inserted
+            mpModelEvent->removeRows(mMaxRowsEvent, mpModelEvent->rowCount() - mMaxRowsEvent + 1);
+        }
+        int i = mpModelEvent->items().indexOf(item, row+1);
+        if (i > 0) {
+            mpModelEvent->removeRow(i);
+        }
+        if (!mpModelEvent->insertRow(row))
+            return;
+        if (row > 0) {
+            i = mpModelEvent->items().lastIndexOf(item, row - 1);
+            if (i >= 0)
+                mpModelEvent->removeRow(i);
+        }
+        setItemAt(item, row);
+    }else if (playlistMode ==3 ){
 
-    if (mMaxRows > 0 && mpModel->rowCount() >= mMaxRows) {
-        // +1 because new row is to be inserted
-        mpModel->removeRows(mMaxRows, mpModel->rowCount() - mMaxRows + 1);
-    }
-    int i = mpModel->items().indexOf(item, row+1);
-    if (i > 0) {
-        mpModel->removeRow(i);
-    }
-    if (!mpModel->insertRow(row))
-        return;
-    if (row > 0) {
-        i = mpModel->items().lastIndexOf(item, row - 1);
-        if (i >= 0)
+        if (mMaxRowsParking > 0 && mpModelParking->rowCount() >= mMaxRowsParking) {
+            // +1 because new row is to be inserted
+            mpModelParking->removeRows(mMaxRowsParking, mpModelParking->rowCount() - mMaxRowsParking + 1);
+        }
+        int i = mpModelParking->items().indexOf(item, row+1);
+        if (i > 0) {
+            mpModelParking->removeRow(i);
+        }
+        if (!mpModelParking->insertRow(row))
+            return;
+        if (row > 0) {
+            i = mpModelParking->items().lastIndexOf(item, row - 1);
+            if (i >= 0)
+                mpModelParking->removeRow(i);
+        }
+        setItemAt(item, row);
+    }else if (playlistMode == 4){
+        if (mMaxRowsNormal > 0 && mpModelNormal->rowCount() >= mMaxRowsNormal) {
+            // +1 because new row is to be inserted
+            mpModelNormal->removeRows(mMaxRowsNormal, mpModelNormal->rowCount() - mMaxRowsNormal + 1);
+        }
+        int i = mpModelNormal->items().indexOf(item, row+1);
+        if (i > 0) {
+            mpModelNormal->removeRow(i);
+        }
+        if (!mpModelNormal->insertRow(row))
+            return;
+        if (row > 0) {
+            i = mpModelNormal->items().lastIndexOf(item, row - 1);
+            if (i >= 0)
+                mpModelNormal->removeRow(i);
+        }
+        setItemAt(item, row);
+    }else if (playlistMode == 5){
+        if (mMaxRowsManual > 0 && mpModelManual->rowCount() >= mMaxRowsManual) {
+            // +1 because new row is to be inserted
+            mpModelManual->removeRows(mMaxRowsManual, mpModelManual->rowCount() - mMaxRowsManual + 1);
+        }
+        int i = mpModelManual->items().indexOf(item, row+1);
+        if (i > 0) {
+            mpModelManual->removeRow(i);
+        }
+        if (!mpModelManual->insertRow(row))
+            return;
+        if (row > 0) {
+            i = mpModelManual->items().lastIndexOf(item, row - 1);
+            if (i >= 0)
+                mpModelManual->removeRow(i);
+        }
+        setItemAt(item, row);
+    }else if (playlistMode == 1){
+        if (mMaxRows > 0 && mpModel->rowCount() >= mMaxRows) {
+            // +1 because new row is to be inserted
+            mpModel->removeRows(mMaxRows, mpModel->rowCount() - mMaxRows + 1);
+        }
+        int i = mpModel->items().indexOf(item, row+1);
+        if (i > 0) {
             mpModel->removeRow(i);
+        }
+        if (!mpModel->insertRow(row))
+            return;
+        if (row > 0) {
+            i = mpModel->items().lastIndexOf(item, row - 1);
+            if (i >= 0)
+                mpModel->removeRow(i);
+        }
+        setItemAt(item, row);
     }
-    setItemAt(item, row);
+
 }
 
 void PlayList::setItemAt(const PlayListItem &item, int row)
 {
-    mpModel->setData(mpModel->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    if (playlistMode == 1){
+        mpModel->setData(mpModel->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    }else if (playlistMode == 2){
+        mpModelEvent->setData(mpModelEvent->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    }else if (playlistMode ==3 ){
+        mpModelParking->setData(mpModelParking->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    }else if (playlistMode == 4){
+        mpModelNormal->setData(mpModelNormal->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    }else if (playlistMode == 5){
+        mpModelManual->setData(mpModelManual->index(row), QVariant::fromValue(item), Qt::DisplayRole);
+    }
+
 }
 
 void PlayList::insert(const QString &url, int row)
@@ -311,42 +495,214 @@ void PlayList::insert(const QString &url, int row)
         title = QFileInfo(url).fileName();
     }
 
-    QString curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
-    struct stat buf;
-    stat(item.url().toStdString().c_str(), &buf);
-    char date[30];
-    //date = asctime(localtime(&buf.st_atime));
+    if (playlistMode == 2){
+        QString curNum = QString("%1").arg(rowsQuantityEvent+1, 2, 10, QChar('0'));
+        struct stat buf;
+        stat(item.url().toStdString().c_str(), &buf);
+        char date[30];
+        //date = asctime(localtime(&buf.st_atime));
 
-    strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+        strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
 
-    //SIZE:
-    size_t size = buf.st_size;
-    static const char *SIZES[] = { "B", "KB", "MB", "GB" };
-    int div = 0;
-    size_t rem = 0;
+        //SIZE:
+        size_t size = buf.st_size;
+        static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+        int div = 0;
+        size_t rem = 0;
 
-    while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
-        rem = (size % 1024);
-        div++;
-        size /= 1024;
+        while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+            rem = (size % 1024);
+            div++;
+            size /= 1024;
+        }
+
+        double size_d = (float)size + (float)rem / 1024.0;
+        double d = size_d * 100.0;
+        int i = d + 0.5;
+        d = (int)i / 100.0;
+        QString curSize = " " + QString::number(d)+SIZES[div];
+
+        //----------------------
+
+        QString formatedTitle = title.leftJustified(30, ' ');
+        //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+        item.pliNum = curNum;
+        item.pliDate = date;
+        item.pliSize = curSize;
+
+        item.setTitle(title);
+        insertItemAt(item, rowsQuantityEvent);
+        curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+        item.pliNum = curNum;
+        changePlaylistMode1();
+        insertItemAt(item, rowsQuantity);
+        changePlaylistMode2();
+    }else if (playlistMode ==3 ){
+        QString curNum = QString("%1").arg(rowsQuantityParking+1, 2, 10, QChar('0'));
+        struct stat buf;
+        stat(item.url().toStdString().c_str(), &buf);
+        char date[30];
+        //date = asctime(localtime(&buf.st_atime));
+
+        strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+
+        //SIZE:
+        size_t size = buf.st_size;
+        static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+        int div = 0;
+        size_t rem = 0;
+
+        while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+            rem = (size % 1024);
+            div++;
+            size /= 1024;
+        }
+
+        double size_d = (float)size + (float)rem / 1024.0;
+        double d = size_d * 100.0;
+        int i = d + 0.5;
+        d = (int)i / 100.0;
+        QString curSize = " " + QString::number(d)+SIZES[div];
+
+        //----------------------
+
+        QString formatedTitle = title.leftJustified(30, ' ');
+        //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+        item.pliNum = curNum;
+        item.pliDate = date;
+        item.pliSize = curSize;
+
+        item.setTitle(title);
+        insertItemAt(item, rowsQuantityParking);
+        curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+        item.pliNum = curNum;
+        changePlaylistMode1();
+        insertItemAt(item, rowsQuantity);
+        changePlaylistMode3();
+    }else if (playlistMode == 4){
+        QString curNum = QString("%1").arg(rowsQuantityNormal+1, 2, 10, QChar('0'));
+        struct stat buf;
+        stat(item.url().toStdString().c_str(), &buf);
+        char date[30];
+        //date = asctime(localtime(&buf.st_atime));
+
+        strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+
+        //SIZE:
+        size_t size = buf.st_size;
+        static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+        int div = 0;
+        size_t rem = 0;
+
+        while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+            rem = (size % 1024);
+            div++;
+            size /= 1024;
+        }
+
+        double size_d = (float)size + (float)rem / 1024.0;
+        double d = size_d * 100.0;
+        int i = d + 0.5;
+        d = (int)i / 100.0;
+        QString curSize = " " + QString::number(d)+SIZES[div];
+
+        //----------------------
+
+        QString formatedTitle = title.leftJustified(30, ' ');
+        //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+        item.pliNum = curNum;
+        item.pliDate = date;
+        item.pliSize = curSize;
+
+        item.setTitle(title);
+        insertItemAt(item, rowsQuantityNormal);
+        curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+        item.pliNum = curNum;
+        changePlaylistMode1();
+        insertItemAt(item, rowsQuantity);
+        changePlaylistMode4();
+    }else if (playlistMode == 5){
+        QString curNum = QString("%1").arg(rowsQuantityManual+1, 2, 10, QChar('0'));
+        struct stat buf;
+        stat(item.url().toStdString().c_str(), &buf);
+        char date[30];
+        //date = asctime(localtime(&buf.st_atime));
+
+        strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+
+        //SIZE:
+        size_t size = buf.st_size;
+        static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+        int div = 0;
+        size_t rem = 0;
+
+        while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+            rem = (size % 1024);
+            div++;
+            size /= 1024;
+        }
+
+        double size_d = (float)size + (float)rem / 1024.0;
+        double d = size_d * 100.0;
+        int i = d + 0.5;
+        d = (int)i / 100.0;
+        QString curSize = " " + QString::number(d)+SIZES[div];
+
+        //----------------------
+
+        QString formatedTitle = title.leftJustified(30, ' ');
+        //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+        item.pliNum = curNum;
+        item.pliDate = date;
+        item.pliSize = curSize;
+
+        item.setTitle(title);
+        insertItemAt(item, rowsQuantityManual);
+        curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+        item.pliNum = curNum;
+        changePlaylistMode1();
+        insertItemAt(item, rowsQuantity);
+        changePlaylistMode5();
+    }else if (playlistMode == 1){
+
+        QString curNum = QString("%1").arg(rowsQuantity+1, 2, 10, QChar('0'));
+        struct stat buf;
+        stat(item.url().toStdString().c_str(), &buf);
+        char date[30];
+        //date = asctime(localtime(&buf.st_atime));
+
+        strftime(date, sizeof(date), " %m/%d/%Y", localtime(&buf.st_ctime));
+
+        //SIZE:
+        size_t size = buf.st_size;
+        static const char *SIZES[] = { "B", "KB", "MB", "GB" };
+        int div = 0;
+        size_t rem = 0;
+
+        while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES)) {
+            rem = (size % 1024);
+            div++;
+            size /= 1024;
+        }
+
+        double size_d = (float)size + (float)rem / 1024.0;
+        double d = size_d * 100.0;
+        int i = d + 0.5;
+        d = (int)i / 100.0;
+        QString curSize = " " + QString::number(d)+SIZES[div];
+
+        //----------------------
+
+        QString formatedTitle = title.leftJustified(30, ' ');
+        //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
+        item.pliNum = curNum;
+        item.pliDate = date;
+        item.pliSize = curSize;
+
+        item.setTitle(title);
+        insertItemAt(item, rowsQuantity);
     }
 
-    double size_d = (float)size + (float)rem / 1024.0;
-    double d = size_d * 100.0;
-    int i = d + 0.5;
-    d = (int)i / 100.0;
-    QString curSize = " " + QString::number(d)+SIZES[div];
-
-    //----------------------
-
-    QString formatedTitle = title.leftJustified(30, ' ');
-    //item.setTitle(curNum + "     "+ date + "      " + curSize.leftJustified(12, ' ') + "         " + formatedTitle);
-    item.pliNum = curNum;
-    item.pliDate = date;
-    item.pliSize = curSize;
-
-    item.setTitle(title);
-    insertItemAt(item, rowsQuantity);
 }
 
 void PlayList::remove(const QString &url)
@@ -361,24 +717,84 @@ void PlayList::remove(const QString &url)
 
 void PlayList::setMaxRows(int r)
 {
-    mMaxRows = r;
+    if (playlistMode == 1){
+        mMaxRows = r;
+    }else if (playlistMode == 2){
+        mMaxRowsEvent = r;
+    }else if (playlistMode ==3 ){
+        mMaxRowsParking = r;
+    }else if (playlistMode == 4){
+        mMaxRowsNormal = r;
+    }else if (playlistMode == 5){
+        mMaxRowsManual = r;
+    }
 }
 
 int PlayList::maxRows() const
 {
-    return mMaxRows;
+
+    if (playlistMode == 1){
+        return mMaxRows;
+    }else if (playlistMode == 2){
+        return mMaxRowsEvent;
+    }else if (playlistMode ==3 ){
+        return mMaxRowsParking;
+    }else if (playlistMode == 4){
+        return mMaxRowsNormal;
+    }else if (playlistMode == 5){
+        return mMaxRowsManual;
+    }
 }
 
 void PlayList::removeSelectedItems()
 {
-    QItemSelectionModel *selection = mpListView->selectionModel();
-    if (!selection->hasSelection())
-        return;
-    QModelIndexList s = selection->selectedIndexes();
-    for (int i = s.size()-1; i >= 0; --i) {
-        mpModel->removeRow(s.at(i).row());
-        rowsQuantity = rowsQuantity - 1;
+    if (playlistMode == 1){
+        QItemSelectionModel *selection = mpListView->selectionModel();
+        if (!selection->hasSelection())
+            return;
+        QModelIndexList s = selection->selectedIndexes();
+        for (int i = s.size()-1; i >= 0; --i) {
+            mpModel->removeRow(s.at(i).row());
+            rowsQuantity = rowsQuantity - 1;
+        }
+    }else if (playlistMode == 2){
+        QItemSelectionModel *selection = mpListViewEvent->selectionModel();
+        if (!selection->hasSelection())
+            return;
+        QModelIndexList s = selection->selectedIndexes();
+        for (int i = s.size()-1; i >= 0; --i) {
+            mpModelEvent->removeRow(s.at(i).row());
+            rowsQuantity = rowsQuantity - 1;
+        }
+    }else if (playlistMode ==3 ){
+        QItemSelectionModel *selection = mpListViewParking->selectionModel();
+        if (!selection->hasSelection())
+            return;
+        QModelIndexList s = selection->selectedIndexes();
+        for (int i = s.size()-1; i >= 0; --i) {
+            mpModelParking->removeRow(s.at(i).row());
+            rowsQuantity = rowsQuantity - 1;
+        }
+    }else if (playlistMode == 4){
+        QItemSelectionModel *selection = mpListViewNormal->selectionModel();
+        if (!selection->hasSelection())
+            return;
+        QModelIndexList s = selection->selectedIndexes();
+        for (int i = s.size()-1; i >= 0; --i) {
+            mpModelNormal->removeRow(s.at(i).row());
+            rowsQuantity = rowsQuantity - 1;
+        }
+    }else if (playlistMode == 5){
+        QItemSelectionModel *selection = mpListViewManual->selectionModel();
+        if (!selection->hasSelection())
+            return;
+        QModelIndexList s = selection->selectedIndexes();
+        for (int i = s.size()-1; i >= 0; --i) {
+            mpModelManual->removeRow(s.at(i).row());
+            rowsQuantity = rowsQuantity - 1;
+        }
     }
+
 }
 
 void PlayList::clearItems()
@@ -398,9 +814,19 @@ void PlayList::addItems()
         QString file = files.at(i);
         if (!QFileInfo(file).isFile())
             continue;
-        insert(file, i);
 
+        insert(file, i);
+        if (playlistMode == 2){
+            rowsQuantityEvent+=1;
+        }else if (playlistMode ==3 ){
+            rowsQuantityParking+=1;
+        }else if (playlistMode == 4){
+            rowsQuantityNormal+=1;
+        }else if (playlistMode == 5){
+            rowsQuantityManual+=1;
+        }
         rowsQuantity+=1;
+
     }
 }
 
@@ -410,9 +836,151 @@ void PlayList::onAboutToPlay(const QModelIndex &index)
     isClicked = true;
     emit aboutToPlay(index.data(Qt::DisplayRole).value<PlayListItem>().url());
 
-
-    cout << "parasha" << rowIndex << endl;
     save();
 }
 
+void PlayList::changePlaylistMode1(){
+    playlistMode = 1;
+    plStack->setCurrentIndex(playlistMode-1);
+    cout << "playlistmode: " << playlistMode << endl;
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
 
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+}
+void PlayList::changePlaylistMode2(){
+    playlistMode = 2;
+    plStack->setCurrentIndex(playlistMode-1);
+    cout << "playlistmode: " << playlistMode << endl;
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
+
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+}
+void PlayList::changePlaylistMode3(){
+    playlistMode = 3;
+    plStack->setCurrentIndex(playlistMode-1);
+    cout << "playlistmode: " << playlistMode << endl;
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
+
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+}
+void PlayList::changePlaylistMode4(){
+    playlistMode = 4;
+    plStack->setCurrentIndex(playlistMode-1);
+    cout << "playlistmode: " << playlistMode << endl;
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
+
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+}
+void PlayList::changePlaylistMode5(){
+    playlistMode = 5;
+    plStack->setCurrentIndex(playlistMode-1);
+    cout << "playlistmode: " << playlistMode << endl;
+    all->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                       "border: 0;"
+                       "color: white;}"
+                       "QPushButton:hover {color: #ff9666};");
+
+    event->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                         "border: 0;"
+                         "color: white;}"
+                         "QPushButton:hover {color: #ff9666};");
+
+    parking->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                           "border: 0;"
+                           "color: white;}"
+                           "QPushButton:hover {color: #ff9666};");
+
+    normal->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/normal_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+
+    manual->setStyleSheet("QPushButton {border-image: url(:/images/images/file_list/active_heading_bg.png);"
+                          "border: 0;"
+                          "color: white;}"
+                          "QPushButton:hover {color: #ff9666};");
+}

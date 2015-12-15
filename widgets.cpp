@@ -36,14 +36,23 @@
 #include <qwt_picker_machine.h>
 
 void PlayerWindow::setGridLay(){
+    firstLayout->setSpacing(0);
+    firstLayout->setContentsMargins(0,0,0,0);
+
+
     firstLayout->addWidget(topPanel, 0, 0, 1, 6);
     firstLayout->addWidget(m_vo->widget(), 1, 0, 4, 4);
-    firstLayout->addWidget(m_vo2->widget(), 1, 4, 2, 2);
-    firstLayout->addWidget(container, 3, 4, 2, 2);
-    firstLayout->addWidget(mpPlayList, 5, 4, 3, 2);
+    firstLayout->addWidget(m_vo2->widget(), 1, 4, 2, 1);
+
+    firstLayout->addWidget(container, 3, 4, 2, 1);
+    firstLayout->addWidget(mpPlayList, 5, 4, 3, 1);
     firstLayout->addWidget(sliderButtonsWidg, 5, 0, 1, 4);
     firstLayout->addWidget(graphSectionWidg, 6, 0, 1, 4);
-    firstLayout->addWidget(bot_buttons, 7, 0, 1, 4);
+    firstLayout->addWidget(bottomStack, 7, 0, 1, 4);
+    container->hide();
+    //firstLayout->addWidget(bottomButtonsWidg2, 8,0,1,4);
+
+    //firstLayout->setAlignment(Qt::AlignLeft);
 
 
 }
@@ -51,86 +60,76 @@ void PlayerWindow::setGridLay(){
 void PlayerWindow::setTopPanel(){
     topPanel = new QWidget();
     QHBoxLayout *topLayout = new  QHBoxLayout();
+    topLayout->setContentsMargins(0,0,0,0);
     topPanel->setContentsMargins(0,0,0,0);
     topPanel->setLayout(topLayout);
     topPanel->setFixedSize(1000,32);
     topPanel->setStyleSheet("QWidget {background-image: url(:/images/images/top/top_bg.png);}");
+    topLayout->setAlignment(Qt::AlignVCenter);
+    topLayout->setSpacing(0);
 
-    QWidget *logo = new QWidget();
+    logo = new QWidget();
     logo->setStyleSheet("QWidget {background-image: url(:/images/images/top/logo1.png);}");
     logo->setContentsMargins(0,0,0,0);
     logo->setFixedSize(118,18);
 
-    QLabel *title = new QLabel("Viewer");
+    title = new QLabel("Viewer");
     title->setStyleSheet("QLabel {background: transparent}"
                          "QLabel {color: white}");
+    title->setAlignment(Qt::AlignCenter);
     title->setContentsMargins(0,0,0,0);
     title->setFixedSize(800, 18);
 
-    QPushButton *minimize = new QPushButton();
-    minimize->setStyleSheet("QPushButton {background-image: url(:/images/images/top/minimize_btn_hover.png);}"
-                            "QPushButton {background-image: url(:/images/images/top/minimize_btn_normal.png);}");
+    minimize = new QPushButton();
+    minimize->setStyleSheet("QPushButton {border-image: url(:/images/images/top/minimize_btn_normal.png);}"
+                            "QPushButton {border-image: url(:/images/images/top/minimize_btn_hover.png);}");
     minimize->setContentsMargins(0,0,0,0);
     minimize->setFixedSize(27,27);
 
-    QPushButton *close = new QPushButton();
-    close->setStyleSheet("QPushButton {background-image: url(:/images/images/top/close_btn_hover.png);}"
-                         "QPushButton {background-image: url(:/images/images/top/close_btn_normal.png);}");
+    maximize = new QPushButton();
+    maximize->setStyleSheet("QPushButton {border-image: url(:/images/images/top/maximize_normal.png);}"
+                            "QPushButton {border-image: url(:/images/images/top/maximize_hover.png);}");
+    maximize->setContentsMargins(0,0,0,0);
+    maximize->setFixedSize(27,27);
+
+    close = new QPushButton();
+    close->setStyleSheet("QPushButton {border-image: url(:/images/images/top/close_btn_normal.png);}"
+                         "QPushButton {border-image: url(:/images/images/top/close_btn_hover.png);}");
     close->setContentsMargins(0,0,0,0);
     close->setFixedSize(27,27);
 
     topLayout->addWidget(logo);
     topLayout->addWidget(title);
     topLayout->addWidget(minimize);
+    topLayout->addWidget(maximize);
     topLayout->addWidget(close);
+
+    connect(minimize, SIGNAL(clicked()), SLOT(hideMainWindow()));
+    connect(maximize, SIGNAL(clicked()), SLOT(maxNormalView()));
+    connect(close, SIGNAL(clicked()), qApp, SLOT(closeAllWindows()));
 }
 
 void PlayerWindow::setWidgetsSize(){
-    //mpPlayList->setMaximumHeight(200);
-    //mpPlayList->setMinimumWidth(340);
 
+    //m_vo->widget()->setFixedSize(620, 440);
     m_vo->widget()->setMinimumSize(620, 435);
-    m_vo->widget()->setMaximumSize(1220, 715);
+    m_vo->widget()->setMaximumSize(1300, 715);
+    //m_vo->widget()->setMaximumSize(1220, 715);
     m_vo->widget()->setStyleSheet("QWidget {background-image: url(:/images/images/main_camera/main_camera_box.png);}");
-    //m_vo2->widget()->setFixedHeight(196);
-    m_vo2->widget()->setMinimumSize(380,225);
-    m_vo2->widget()->setMaximumSize(700,365);
-    
-    //m_vo2->widget()->setBaseSize(675,380);
+
+    //m_vo2->widget()->setContentsMargins(0,0,0,0);
+    m_vo2->widget()->setFixedSize(380,225);
+    //m_vo2->widget()->setMaximumSize(700,365);
     m_vo2->widget()->setStyleSheet("QWidget {background-image: url(:/images/images/rear_camera/rear_camera_box.png);}");
-    //m_vo2->widget()->setContentsMargins(5,0,0,0);
-    //container->setFixedHeight(196);
-    container->setMinimumSize(380,210);
-    container->setMaximumSize(700,350);
-    //container->setBaseSize(675,380);
 
-
+    container->setFixedSize(380,215);
+    //container->setMaximumSize(700,350);
     container->setFocusPolicy(Qt::TabFocus);
-    container->setStyleSheet("QWidget {background-image: url(:/images/images/google_map/map_border_box.png);}");
+    container->setStyleSheet("QWidget {background-color: #121212;}");
     container->setContentsMargins(0,0,0,0);
 }
 
-void PlayerWindow::initMainVertWidgets(){
-    vertLeft = new QVBoxLayout();
-    vertLeft->setContentsMargins(0,0,0,0);
-    vertRight = new QVBoxLayout();
-    vertRight->setContentsMargins(0,0,0,0);
-    vertRight->setAlignment(Qt::AlignTop);
-    leftVertWidg = new QWidget();
-    rightVertWidg = new QWidget();
 
-    leftVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    rightVertWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
-    //rightVertWidg->setMaximumWidth(425);
-    leftVertWidg->setLayout(vertLeft);
-    rightVertWidg->setLayout(vertRight);
-    vertLeft->setMargin(0);
-    vertRight->setMargin(0);
-    vertLeft->setSpacing(0);
-    vertRight->setSpacing(0);
-
-
-}
 
 void PlayerWindow::initSliderButtonsWidgets(){
     m_slider = new QSlider();
@@ -142,20 +141,13 @@ void PlayerWindow::initSliderButtonsWidgets(){
 
     widg = new QWidget();
     hb = new QHBoxLayout();
-    //widg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
     hb->setContentsMargins(0,0,0,0);
+    hb->setAlignment(Qt::AlignCenter);
     widg->setContentsMargins(0,0,0,0);
-
-    //widg->setFixedHeight(55);
-    //widg->setMaximumWidth(1000);
-    //widg->setFixedHeight(114);
-    //widg->setMinimumWidth(435);
-    //widg->setMaximumWidth(715);
     widg->setLayout(hb);
 
     sliderWidg = new QWidget();
     sliderWidg->setContentsMargins(0,0,0,0);
-    //sliderWidg->setStyleSheet("QWidget { background-color: rgb(18, 18, 18); }");
     sliderWidg->setMaximumHeight(15);
     sliderLayout = new QHBoxLayout();
     sliderLayout->setContentsMargins(0,0,0,0);
@@ -181,30 +173,40 @@ void PlayerWindow::initSliderButtonsWidgets(){
     sliderButtonsWidg->setLayout(sliderButtonsLayout);
     sliderButtonsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/music_player/player_background.png); }");
     sliderButtonsWidg->setContentsMargins(0,0,0,0);
-    //sliderButtonsWidg->setFixedSize(674, 98);
-    sliderButtonsWidg->setFixedHeight(114);
-    sliderButtonsWidg->setMinimumWidth(620);
-    sliderButtonsWidg->setMaximumWidth(1220);
+    sliderButtonsWidg->setFixedSize(620,114);
+
+   // sliderButtonsWidg->setMaximumWidth(1220);
 
     widg->setStyleSheet("QWidget {background: transparent}");
     sliderWidg->setStyleSheet("QWidget {background: transparent}");
     sliderButtonsLayout->addWidget(sliderWidg);
     sliderButtonsLayout->addWidget(widg);
 
-    hb->addWidget(prev_button);
-    hb->addWidget(back_button);
-    hb->addWidget(m_playBtn);
-    hb->addWidget(forward_button);
-    hb->addWidget(next_button);
-    //hb->addWidget(m_stopBtn);
+    QWidget *playerButtons = new QWidget();
+    QHBoxLayout *playerButtonsLay = new QHBoxLayout();
+    playerButtons->setLayout(playerButtonsLay);
+    playerButtons->setFixedWidth(200);
+    playerButtonsLay->setContentsMargins(0,0,0,0);
+    playerButtons->setContentsMargins(0,0,0,0);
+    playerButtonsLay->setSpacing(15);
+
+    playerButtonsLay->addWidget(prev_button);
+    playerButtonsLay->addWidget(back_button);
+    playerButtonsLay->addWidget(m_playBtn);
+    playerButtonsLay->addWidget(forward_button);
+    playerButtonsLay->addWidget(next_button);
+    playerButtonsLay->setAlignment(Qt::AlignLeft);
+    hb->addWidget(playerButtons);
+
 
     strangeButtons = new QHBoxLayout();
     strangeButtonsWidg = new QWidget();
     strangeButtonsWidg->setLayout(strangeButtons);
-    hb->addSpacing(40);
+    strangeButtons->setAlignment(Qt::AlignRight);
+    hb->addSpacing(20);
     hb->addWidget(strangeButtonsWidg);
     //strangeButtonsWidg->setMinimumHeight(55);
-    strangeButtonsWidg->setMaximumWidth(350);
+    strangeButtonsWidg->setFixedWidth(m_vo->widget()->width()-270);
     strangeButtons->setContentsMargins(0,0,0,0);
     strangeButtonsWidg->setContentsMargins(0,0,0,0);
     strangeButtons->setAlignment(Qt::AlignRight);
@@ -244,31 +246,31 @@ void PlayerWindow::initGraphSectionWidgets(){
     graphSectionLayer = new QHBoxLayout();
     graphSectionWidg->setLayout(graphSectionLayer);
     graphSectionLayer->setContentsMargins(0,0,0,0);
-    //graphSectionWidg->setFixedSize(674, 126);
-    graphSectionWidg->setFixedHeight(126);
-    graphSectionWidg->setMinimumWidth(620);
-    graphSectionWidg->setMaximumWidth(1220);
-    //graphSectionLayer->setSpacing(0);
+    graphSectionWidg->setFixedSize(620, 126);
+
+    //graphSectionWidg->setMaximumWidth(1220);
+    graphSectionLayer->setSpacing(0);
 
     //LINE WITH SPEED
         lineWithSpeedWidg = new QWidget();
-        lineWithSpeedWidg->setStyleSheet("QWidget {background-image: url(:/images/images/bg/bg.png))}");
+        lineWithSpeedWidg->setStyleSheet("QWidget {border-image: url(:/images/images/bg/bg.png))}");
         //lineWithSpeedWidg->setMaximumHeight(35);
         layerWithSpeed = new QVBoxLayout();
         layerWithSpeed->setAlignment(Qt::AlignCenter);
         lineWithSpeedWidg->setLayout(layerWithSpeed);
-        lineWithSpeedWidg->setFixedHeight(124);
+        layerWithSpeed->setSpacing(0);
         graphSectionLayer->addWidget(lineWithSpeedWidg);
         layerWithSpeed->setContentsMargins(0,0,0,0);
         lineWithSpeedWidg->setContentsMargins(0,0,0,0);
         layerWithSpeed->addWidget(speedButton);
-
         speedButton->setAlignment(Qt::AlignCenter);
 
 
+        layerWithSpeed->setAlignment(Qt::AlignHCenter);
+
         layerWithSpeed->addWidget(speedProgress);
-        speedProgress->setContentsMargins(50, 0, 0, 0);
-        speedProgress->setAlignment(Qt::AlignCenter);
+        speedProgress->setContentsMargins(10, 0, 0, 0);
+        speedProgress->setAlignment(Qt::AlignRight);
         //speedProgress->setStyleSheet("QWidget {background-image: url(:/images/images/bg/bg.png))}");
         lineWithSpeedWidg->setFixedWidth(160);
         prndm = new QHBoxLayout();
@@ -355,7 +357,7 @@ void PlayerWindow::initGraphSectionWidgets(){
                 //gSensorsWidg->setContentsMargins(10,10,10,10);
                 //gSensorsAllLayout->setContentsMargins(10,10,10,10);
                 gSensorsWidg->setStyleSheet("QWidget { background-image: url(:/images/images/graph_section/graph_gray_bg.png); }");
-                gSensorsWidg->setMaximumWidth(355);
+                gSensorsWidg->setFixedWidth(340);
                 graphSectionLayer->addWidget(gSensorsWidg);
 
                 gSensorsLabels = new QVBoxLayout();
@@ -423,13 +425,11 @@ void PlayerWindow::initBottomButtonsWidget(){
     bottom_buttons = new QHBoxLayout();
     bottom_buttons->setContentsMargins(0,0,0,0);
     bot_buttons->setLayout(bottom_buttons);
-    //bot_buttons->setMaximumWidth(1000);
     //bottom_buttons->setAlignment(Qt::AlignCenter);
-    bottom_buttons->setSpacing(12);
-    //bot_buttons->setFixedSize(674, 125);
-    bot_buttons->setFixedHeight(125);
-    bot_buttons->setMinimumWidth(620);
-    bot_buttons->setMaximumWidth(1220);
+    bottom_buttons->setSpacing(10);
+    bot_buttons->setContentsMargins(0,0,0,0);
+    bot_buttons->setFixedSize(620, 125);
+    //bot_buttons->setMaximumWidth(1220);
 
 
 
@@ -447,35 +447,35 @@ void PlayerWindow::initBottomButtonsWidget(){
 
     botW1 = new QWidget();
     botW1->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW1->setMaximumHeight(130);
+    botW1->setFixedWidth(123);
     botW1->setLayout(bot1);
 
     botW2 = new QWidget();
     botW2->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW2->setMaximumHeight(130);
+    botW2->setFixedWidth(111);
     botW2->setLayout(bot2);
 
     botW3 = new QWidget();
     botW3->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW3->setMaximumHeight(130);
+    botW3->setFixedWidth(111);
     botW3->setLayout(bot3);
     botW4 = new QWidget();
     botW4->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW4->setMaximumHeight(130);
+    botW4->setFixedWidth(111);
     botW4->setLayout(bot4);
     botW5 = new QWidget();
     botW5->setStyleSheet("QWidget { background-image: url(:/images/images/graf_section/graph_gray_bg.png); }");
-    botW5->setMaximumHeight(130);
+    botW5->setFixedWidth(111);
     botW5->setLayout(bot5);
 
     bottom_buttons->addWidget(botW1);
-    bottom_buttons->addSpacing(10);
+    //bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW2);
-    bottom_buttons->addSpacing(10);
+    //bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW3);
-    bottom_buttons->addSpacing(10);
+    //bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW4);
-    bottom_buttons->addSpacing(10);
+    //bottom_buttons->addSpacing(10);
     bottom_buttons->addWidget(botW5);
 
     bot1->addWidget(obdi);
@@ -492,8 +492,39 @@ void PlayerWindow::initBottomButtonsWidget(){
     bot5->addWidget(right_signal);
     bot5->addWidget(patrol);
 
+    //full screen bot buttons:
+    bottomButtonsWidg2 = new QWidget();
+    bottomButtonsLayout2 = new QHBoxLayout();
+    bottomButtonsWidg2->setLayout(bottomButtonsLayout2);
+    bottomButtonsWidg2->setStyleSheet("QWidget { background-image: url(:/images/images/buttons_bg.png); }");
+    bottomButtonsWidg2->setFixedSize(1220, 60);
+    bottomButtonsWidg2->setContentsMargins(0,0,0,0);
 
+    bottomButtonsLayout2->addWidget(obdi2);
+
+    bottomButtonsLayout2->addWidget(left_signal2);
+    bottomButtonsLayout2->addWidget(brake2);
+    bottomButtonsLayout2->addWidget(accelerate2);
+    bottomButtonsLayout2->addWidget(right_signal2);
+    bottomButtonsLayout2->addWidget(wheel_angle2);
+
+    bottomButtonsLayout2->addWidget(temperature2);
+
+    bottomButtonsLayout2->addWidget(voltage2);
+
+    bottomButtonsLayout2->addWidget(patrol2);
+
+    bottomStack = new QStackedWidget();
+
+    bottomStack->addWidget(bot_buttons);
+    bottomStack->addWidget(bottomButtonsWidg2);
+
+    bottomStack->setContentsMargins(0,0,0,0);
+    bottomStack->setFixedSize(620, 125);
+    bottomStack->setCurrentIndex(0);
 }
+
+
 
 
 
@@ -501,12 +532,20 @@ void PlayerWindow::initPlaylistWidget(){
     //_______PLAYLIST_____
     mpPlayList = new PlayList(this);
     mpPlayList->load();
-    //mpPlayList->setMinimumSize(323, 357);
-    //mpPlayList->setFixedWidth(323);
-    mpPlayList->setFixedHeight(365);
-    mpPlayList->setMinimumWidth(380);
-    mpPlayList->setMaximumWidth(700);
+    mpPlayList->setFixedSize(380, 366);
+    mpPlayList->setContentsMargins(0,0,0,0);
+    //mpPlayList->setMaximumWidth(700);
     connect(mpPlayList, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
+
+    mpPlayListEvent = new PlayList(this);
+    mpPlayListEvent->load();
+    mpPlayListEvent->setFixedSize(380, 366);
+    mpPlayListEvent->setContentsMargins(0,0,0,0);
+    //mpPlayList->setMaximumWidth(700);
+    connect(mpPlayListEvent, SIGNAL(aboutToPlay(QString)), SLOT(play(QString)));
 
 }
 
+void PlayerWindow::initBottomButtons2(){
+    int i = 0;
+}

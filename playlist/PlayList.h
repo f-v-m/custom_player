@@ -6,6 +6,8 @@
 #include "PlayListItem.h"
 #include <QLabel>
 #include <windows.h>
+#include <QStackedWidget>
+#include <QPushButton>
 
 
 
@@ -37,6 +39,11 @@ public:
 
     int rowIndex;
     int rowsQuantity = 0;
+    int rowsQuantityEvent = 0;
+    int rowsQuantityParking = 0;
+    int rowsQuantityNormal = 0;
+    int rowsQuantityManual = 0;
+
     bool isClicked = false;
     WIN32_FIND_DATAA findData;
     std::map<std::string, FILETIME> report;
@@ -51,16 +58,25 @@ private slots:
     void addItems();
 
     void onAboutToPlay(const QModelIndex& index);
+    void changePlaylistMode1();
+    void changePlaylistMode2();
+    void changePlaylistMode3();
+    void changePlaylistMode4();
+    void changePlaylistMode5();
     //void highlight(const QModelIndex& index);
 private:
-    QListView *mpListView;
+    QListView *mpListView, *mpListViewEvent, *mpListViewParking, *mpListViewNormal, *mpListViewManual;
+
     QToolButton *mpClear, *mpRemove, *mpAdd;
 
-    PlayListDelegate *mpDelegate;
-    PlayListModel *mpModel;
-    int mMaxRows;
+    PlayListDelegate *mpDelegate, *mpDelegateEvent, *mpDelegateParking, *mpDelegateNormal, *mpDelegateManual;
+    PlayListModel *mpModel, *mpModelEvent, *mpModelParking, *mpModelNormal, *mpModelManual;
+    int mMaxRows, mMaxRowsEvent, mMaxRowsParking, mMaxRowsNormal, mMaxRowsManual;
     QString mFile;
     bool mFirstShow;
+    int playlistMode;
+    QStackedWidget *plStack;
+    QPushButton *all, *event, *parking, *normal, *manual;
 
 };
 

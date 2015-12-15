@@ -108,4 +108,76 @@ void PlayerWindow::backSeek(){
     m_player2->seekBackward();
 }
 
+void PlayerWindow::hideMainWindow(){
+    this->showMinimized();
+}
+
+void PlayerWindow::maxNormalView(){
+    if (!isMaxSize){
+        this->setFixedSize(1920,1112);
+        isMaxSize = !isMaxSize;
+        //top
+        topPanel->setFixedSize(1920,32);
+        topPanel->setStyleSheet("QWidget {background-image: url(:/images/images/top/top_bg2.png);}");
+        title->setFixedWidth(1720);
+        //m_vo
+        m_vo->widget()->setFixedSize(1220, 780);//715+65=780
+
+        //m_vo2
+        m_vo2->widget()->setFixedSize(700,400);//365+35=400
+        m_vo->setOutAspectRatio(1.5641);
+        m_vo2->setOutAspectRatio(1.75);
+        //container
+        container->setFixedSize(700,385);//350+30 = 385
+        mpPlayList->setFixedSize(700, 301);//366-65 = 301
+        mpPlayListEvent->setFixedSize(700,301);
+        sliderButtonsWidg->setFixedSize(1220, 114);
+        graphSectionWidg->setFixedSize(1220, 126);
+
+
+        bottomStack->setFixedSize(1220, 60);
+        bottomStack->setCurrentIndex(1);
+
+
+        plot->setFixedSize(880, 120);
+
+
+
+        gSensorsWidg->setFixedWidth(940);
+        strangeButtonsWidg->setFixedWidth(m_vo->widget()->width()-270);
+
+    }else{
+        this->setFixedSize(1000, 832);
+        isMaxSize = !isMaxSize;
+        //top
+        topPanel->setFixedSize(1000,32);
+        topPanel->setStyleSheet("QWidget {background-image: url(:/images/images/top/top_bg.png);}");
+        title->setFixedWidth(800);
+        //m_vo
+        //m_vo->widget()->setFixedSize(620, 440);
+        m_vo->widget()->setMinimumSize(620, 435);
+        m_vo->widget()->setMaximumSize(1300, 715);
+        //m_vo2
+        m_vo2->widget()->setFixedSize(380,225);
+        m_vo->setOutAspectRatio(1.4091);
+        m_vo2->setOutAspectRatio(1.6889);
+        container->setFixedSize(380,215);
+        mpPlayList->setFixedSize(380, 366);
+        mpPlayListEvent->setFixedSize(380,366);
+
+        sliderButtonsWidg->setFixedSize(620,114);
+        graphSectionWidg->setFixedSize(620, 126);
+        bottomStack->setFixedSize(620, 125);
+        bottomStack->setCurrentIndex(0);
+
+
+
+        plot->setFixedSize(280, 120);
+
+
+        gSensorsWidg->setFixedWidth(340);
+        strangeButtonsWidg->setFixedWidth(m_vo->widget()->width()-270);
+
+    }
+}
 

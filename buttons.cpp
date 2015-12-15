@@ -68,6 +68,15 @@ void PlayerWindow::setButtonsStyle(){
     changeButtonSize(voltage, 111, 51);
     changeButtonSize(right_signal, 111, 51);
     changeButtonSize(patrol, 111, 51);
+    obdi2->setFixedSize(60,51);
+    changeButtonSize(left_signal2, 111, 51);
+    changeButtonSize(wheel_angle2, 111, 51);
+    changeButtonSize(brake2, 111, 51);
+    changeButtonSize(temperature2, 111, 51);
+    changeButtonSize(accelerate2, 111, 51);
+    changeButtonSize(voltage2, 111, 51);
+    changeButtonSize(right_signal2, 111, 51);
+    changeButtonSize(patrol2, 111, 51);
     //changeButtonSize(speedButton, 150, 50);
 
     b1->setContentsMargins(0,0,0,0);
@@ -135,34 +144,59 @@ void PlayerWindow::setButtonsStyle(){
     //OBDI
     obdi->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/OBDI_normal.png);} "
                              "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/OBDI_hover.png)}");
+    obdi2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/OBDI_normal.png);} "
+                             "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/OBDI_hover.png)}");
     //LEFT SIGNAL
     left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/left_signal_hover.png)}");
+    left_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/left_signal_hover.png)}");
     //WHEEL ANGLE
     wheel_angle->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/whell_angle_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/whell_angle_hover.png);}"
                                "QPushButton { color: white ;}"
                                "QPushButton { text-align: center }");
+    wheel_angle2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/whell_angle_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/whell_angle_hover.png);}"
+                               "QPushButton { color: white ;}"
+                               "QPushButton { text-align: center }");
     //BRAKE
     brake->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/brake_hover.png)}");
+    brake2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/brake_hover.png)}");
 
     //temperature
     temperature->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/temprature_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/temprature_hover.png)}");
+    temperature2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/temprature_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/temprature_hover.png)}");
     //ACCELERATE
     accelerate->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/accelerate_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/accelerate_hover.png)}");
+    accelerate2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/accelerate_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/accelerate_hover.png)}");
+
     //VOLTAGE
     voltage->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/voltage_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/voltage_hover.png);}"
+                           "QPushButton {color: white;}"
+                           "QPushButton { text-align: center }");
+    voltage2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/voltage_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/voltage_hover.png);}"
                            "QPushButton {color: white;}"
                            "QPushButton { text-align: center }");
     //RIGHT SIGNAL
     right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/right_signal_hover.png)}");
+    right_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/right_signal_hover.png)}");
     //PETROL
     patrol->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/petrol_normal.png);} "
+                                "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/petrol_hover.png);}"
+                          "QPushButton {color: white;}"
+                          "QPushButton { text-align: center }");
+    patrol2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/petrol_normal.png);} "
                                 "QPushButton:hover { border-image: url(:/images/images/bottom_buttons/petrol_hover.png);}"
                           "QPushButton {color: white;}"
                           "QPushButton { text-align: center }");
@@ -177,7 +211,8 @@ void PlayerWindow::setButtonsStyle(){
     //SLIDER TEXT:
 
     //PROGRESS BAR:
-    speedProgress->setStyleSheet("QProgressBar:horizontal {border: 0px solid gray;}"
+    //speedProgress->setStyleSheet("QProgressBar { background-image: url(:/images/images/graph_section/gear_bg.png); }");
+    speedProgress->setStyleSheet("QProgressBar {border: 0px solid gray;}"
                                  "QProgressBar:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_normal2.png);}"
                                  "QProgressBar::chunk:horizontal {background-image: url(:/images/images/graph_section/speed_metter_dot_active2.png);}");
     speedProgress->setMaximumWidth(160);
@@ -267,6 +302,16 @@ void PlayerWindow::initButtons(){
     voltage = new QPushButton(tr(""));
     right_signal = new QPushButton(tr(""));
     patrol = new QPushButton(tr(""));
+
+    obdi2 = new QPushButton(tr(""));
+    left_signal2 = new QPushButton(tr(""));
+    wheel_angle2 = new QPushButton(tr(""));
+    brake2 = new QPushButton(tr(""));
+    temperature2 = new QPushButton(tr(""));
+    accelerate2 = new QPushButton(tr(""));
+    voltage2 = new QPushButton(tr(""));
+    right_signal2 = new QPushButton(tr(""));
+    patrol2 = new QPushButton(tr(""));
 
     speedButton = new QLabel("Current Speed");
 

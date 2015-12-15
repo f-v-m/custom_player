@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
     PlayerWindow player;
     player.setWindowFlags(Qt::FramelessWindowHint);
-    player.move(10,10);
+    //player.move(10,10);
     player.setFixedSize(1000, 832);
     //player.setMaximumSize(1920,1080);
     player.show();

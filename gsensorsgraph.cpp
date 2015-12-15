@@ -21,9 +21,9 @@ void PlayerWindow::initGraph(){
     plot = new QwtPlot();
     plot->setContentsMargins(0,-10,5,0);
 
-    //plot->setFixedSize(335, 120);
-    plot->setMinimumSize(335,120);
-    plot->setMaximumSize(940, 120);
+    plot->setFixedSize(280, 120);
+
+    //plot->setMaximumSize(940, 120);
 
     //setCentralWidget(plot);
 
@@ -35,7 +35,8 @@ void PlayerWindow::initGraph(){
         grid->setMajorPen(QPen( Qt::gray, 1 )); // цвет линий и толщина
         grid->enableX(false);
         grid->attach( plot );
-        plot->setAxisScale(0, -3000, 3000, 2000);
+        //plot->setAxisScale(0, -3000, 3000, 2000);
+        plot->setAxisAutoScale(0);
         //plot->setAxisAutoScale(plot->xBottom, true);
 
         plot->setAxisScale(plot->xBottom, x-20, x, 0);
@@ -57,11 +58,11 @@ void PlayerWindow::initGraph(){
             // Маркеры кривой
             // #include <qwt_symbol.h>
             QwtSymbol *symbol = new QwtSymbol( QwtSymbol::Ellipse,
-                QBrush( Qt::green ), QPen( Qt::green, 2 ), QSize( 8, 8 ) );
+                QBrush( Qt::green ), QPen( Qt::green, 2 ), QSize( 5, 5 ) );
             QwtSymbol *symbolY = new QwtSymbol( QwtSymbol::Ellipse,
-                QBrush( Qt::red ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+                QBrush( Qt::red ), QPen( Qt::red, 2 ), QSize( 5, 5 ) );
             QwtSymbol *symbolZ = new QwtSymbol( QwtSymbol::Ellipse,
-                QBrush( Qt::blue ), QPen( Qt::blue, 2 ), QSize( 8, 8 ) );
+                QBrush( Qt::blue ), QPen( Qt::blue, 2 ), QSize( 5, 5 ) );
 
 
 

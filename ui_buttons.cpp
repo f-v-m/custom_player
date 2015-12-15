@@ -80,35 +80,48 @@ void PlayerWindow::parseSub(){
         if (lst[15].toInt() == 0){
             left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
             right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
+            left_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
+            right_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
         }else if (lst[15].toInt() == 1){
             right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_active.png);} ");
             left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
+            right_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_active.png);} ");
+            left_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_normal.png);} ");
         }else if (lst[15].toInt() == 2){
             left_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_active.png);} ");
             right_signal->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
+            left_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/left_signal_active.png);} ");
+            right_signal2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/right_signal_normal.png);} ");
         }
 
         //BREAK
         if (lst[16].toInt() == 0){
             brake->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_normal.png);} ");
+            brake2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_normal.png);} ");
 
         }else if (lst[16].toInt() == 1){
             brake->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_active.png);} ");
+            brake2->setStyleSheet("QPushButton { border-image: url(:/images/images/bottom_buttons/brake_active.png);} ");
 
         }
         //Steering angle:
         wheel_angle->setText("   "+lst[22].remove(0, 2)+"°");
+        wheel_angle2->setText("   "+lst[22].remove(0, 2)+"°");
 
         //CURRENT SPEED:
         speedButton->setText(lst[26].remove(0, 2)+" km/h");
+        //speedButton2->setText(lst[26].remove(0, 2)+" km/h");
 
         //battery:
         voltage->setText("   "+lst[40]+" V");
+        voltage2->setText("   "+lst[40]+" V");
         //fuel:
         patrol->setText("   "+lst[41]+" %");
+        patrol2->setText("   "+lst[41]+" %");
 
         //speed progress:
         speedProgress->setValue(lst[26].toInt());
+        //speedProgress2->setValue(lst[26].toInt());
 
         //graph:
 
